@@ -38,7 +38,7 @@ func (runner *NodeRunner) StartNode() error {
 	go func() {
 		err := runner.cmd.Run()
 		if err != nil {
-			log.Fatalln("Node error: ", err)
+			log.Println("Node error: ", err)
 		}
 	}()
 
