@@ -57,5 +57,6 @@ func (runner *NodeRunner) StopNode() error {
 	} else {
 		log.Println("Node not started")
 	}
+	runner.cmd = nil
 	return nil
 }
