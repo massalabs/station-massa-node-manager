@@ -1,12 +1,15 @@
 package node_manager
 
 import (
+	"context"
 	"errors"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
+
+	"github.com/massalabs/thyra/pkg/node"
 )
 
 type NodeRunner struct {
@@ -49,9 +52,16 @@ func (runner *NodeRunner) StartNode() error {
 func (runner *NodeRunner) StopNode() error {
 	if runner.cmd != nil {
 		log.Println("Stopping node...")
-		err := runner.cmd.Process.Kill() // Should be possible to use private `stop_node` RPC call instead
+		client := node.NewClient("http://localhost:33034")
+		_, err := client.RPCClient.Call(
+			context.Background(),
+			"stop_node",
+		)
 		if err != nil {
-			return err
+			err := runner.cmd.Process.Kill()
+			if err != nil {
+				return err
+			}
 		}
 		println("Node stopped")
 	} else {
