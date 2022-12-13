@@ -17,6 +17,7 @@ func installMassaNode(c *gin.Context) {
 	link, err := node_manager.GetMassaNodeLink(os, arch)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
+		return
 	}
 
 	log.Println("Link: ", link)
@@ -29,6 +30,7 @@ func startNode(c *gin.Context) {
 	err := nodeRunner.StartNode()
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(200, gin.H{"message": "Node successfully started"})
 }
@@ -37,14 +39,19 @@ func stopNode(c *gin.Context) {
 	err := nodeRunner.StopNode()
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(200, gin.H{"message": "Node successfully stopped"})
 }
 
 func getNodeStatus(c *gin.Context) {
 	status, err := node_manager.GetStatus()
+	// TODO: Improve error handling.
+	// The node might be started but stuck in bootstraping.
+	// In this case, the node is not ready to receive requests and the error should be handled differently.
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(200, status)
 }

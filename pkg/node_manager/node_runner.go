@@ -17,6 +17,9 @@ type NodeRunner struct {
 }
 
 func (runner *NodeRunner) StartNode() error {
+	if runner.cmd != nil {
+		return errors.New("Node already started")
+	}
 	log.Println("Starting node...")
 
 	cwd, _ := os.Getwd()
@@ -59,11 +62,11 @@ func (runner *NodeRunner) StopNode() error {
 		)
 		if err != nil {
 			err := runner.cmd.Process.Kill()
-			if err != nil {
+			if err != nil { // This if might be useless
 				return err
 			}
 		}
-		println("Node stopped")
+		log.Println("Node stopped")
 	} else {
 		log.Println("Node not started")
 	}
