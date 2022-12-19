@@ -65,9 +65,12 @@ func main() {
 	router.POST("/stop_node", stopNode)
 	router.GET("/node_status", getNodeStatus)
 
-	router.Run("127.0.0.1:8080")
+	err := router.Run("127.0.0.1:8080")
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-	err := nodeRunner.StopNode()
+	err = nodeRunner.StopNode()
 	if err != nil {
 		log.Fatalln(err)
 	}
