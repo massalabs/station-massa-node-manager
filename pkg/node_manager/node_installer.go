@@ -56,8 +56,15 @@ func DownloadAndUnarchiveNode(link string) {
 	}
 
 	defer func() {
-		resp.Body.Close()
-		createdFile.Close()
+		err := resp.Body.Close()
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		err = createdFile.Close()
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}()
 
 	log.Println("File: ", createdFile.Name())
