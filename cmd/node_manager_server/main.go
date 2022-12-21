@@ -12,7 +12,6 @@ import (
 )
 
 var nodeRunner = node_manager.NodeRunner{}
-var pluginPath = ""
 
 func installMassaNode(c *gin.Context) {
 	os := runtime.GOOS
@@ -64,9 +63,9 @@ func main() {
 	port := flag.Int("port", 8080, "set listening port")
 	defaultPath, _ := os.Getwd()
 	path := flag.String("path", defaultPath, "set plugin path")
-	pluginPath = *path
-	node_manager.WorkingDir = *path
 	flag.Parse()
+
+	node_manager.WorkingDir = *path
 	nodeRunner := node_manager.NodeRunner{}
 
 	router := gin.Default()
