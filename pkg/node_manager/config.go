@@ -1,5 +1,9 @@
 package node_manager
 
+import "path"
+
+var WorkingDir string = "."
+
 const CACHE_DIR = ".cache/"
 const BIN_DIR = "bin/"
 
@@ -14,3 +18,15 @@ const NODE_ZIP_MACOS_ARM64_URL = MASSA_BASE_URL + "macos_aarch64.tar.gz"
 const NODE_ZIP_LINUX_ADM64_URL = MASSA_BASE_URL + "linux.tar.gz"
 const NODE_ZIP_LINUX_ARM64_URL = MASSA_BASE_URL + "linux_arm64.tar.gz"
 const NODE_ZIP_WINDOWS_ADM64_URL = MASSA_BASE_URL + "windows.zip"
+
+func getCacheDir() string {
+	return path.Join(WorkingDir, CACHE_DIR)
+}
+
+func getBinDir() string {
+	return path.Join(WorkingDir, BIN_DIR)
+}
+
+func getMassaNodePath() string {
+	return path.Join(WorkingDir, MASSA_NODE_PATH)
+}

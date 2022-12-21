@@ -1,14 +1,18 @@
 package main
 
 import (
+	"flag"
 	"log"
+	"os"
 	"runtime"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/massalabs/thyra-node-manager-plugin/pkg/node_manager"
 )
 
 var nodeRunner = node_manager.NodeRunner{}
+var pluginPath = ""
 
 func installMassaNode(c *gin.Context) {
 	os := runtime.GOOS
@@ -57,6 +61,12 @@ func getNodeStatus(c *gin.Context) {
 }
 
 func main() {
+	port := flag.Int("port", 8080, "set listening port")
+	defaultPath, _ := os.Getwd()
+	path := flag.String("path", defaultPath, "set plugin path")
+	pluginPath = *path
+	node_manager.WorkingDir = *path
+	flag.Parse()
 	nodeRunner := node_manager.NodeRunner{}
 
 	router := gin.Default()
@@ -65,7 +75,7 @@ func main() {
 	router.POST("/stop_node", stopNode)
 	router.GET("/node_status", getNodeStatus)
 
-	err := router.Run("127.0.0.1:8080")
+	err := router.Run("127.0.0.1:" + strconv.Itoa(*port))
 	if err != nil {
 		log.Fatalln(err)
 	}
