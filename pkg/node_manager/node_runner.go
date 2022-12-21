@@ -8,15 +8,45 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	"github.com/massalabs/thyra/pkg/node"
 )
 
+type NodeState string
+
+const (
+	RUNNING      NodeState = "RUNNING"
+	BOOTSTRAPING NodeState = "BOOTSTRAPING"
+	STOPPED      NodeState = "STOPPED"
+)
+
 type NodeRunner struct {
-	cmd *exec.Cmd
+	node *Node
+	cmd  *exec.Cmd
 }
 
-func (runner *NodeRunner) StartNode() error {
+func (runner *NodeRunner) GetNodeState() NodeState {
+	if runner.cmd == nil {
+		return STOPPED
+	}
+
+	if runner.cmd.ProcessState != nil && runner.cmd.ProcessState.Exited() {
+		return STOPPED
+	}
+
+	client := node.NewClient("http://" + runner.node.Ip + ":33035")
+	_, err := node.Status(client)
+	if err != nil {
+		if strings.HasPrefix(err.Error(), "calling get_status") {
+			return BOOTSTRAPING
+		}
+		return STOPPED
+	}
+	return RUNNING
+}
+
+func (runner *NodeRunner) StartNode(node Node) error {
 	if runner.cmd != nil {
 		return errors.New("Node already started")
 	}
@@ -54,7 +84,7 @@ func (runner *NodeRunner) StartNode() error {
 func (runner *NodeRunner) StopNode() error {
 	if runner.cmd != nil {
 		log.Println("Stopping node...")
-		client := node.NewClient("http://localhost:33034")
+		client := node.NewClient("http://" + runner.node.Ip + ":33034")
 		_, err := client.RPCClient.Call(
 			context.Background(),
 			"stop_node",
