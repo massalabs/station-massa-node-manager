@@ -19,7 +19,7 @@ interface Props {
     nodeStatus:
         | { status: NodeStatus | undefined; state: NodeState }
         | undefined;
-    fetchNodes: () => void;
+    fetchNodeStatus: () => void;
 }
 
 const NodeActions: React.FC<Props> = (props: Props) => {
@@ -38,7 +38,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                 })
                 .finally(() => {
                     setIsStartingNode(false);
-                    props.fetchNodes();
+                    props.fetchNodeStatus();
                 });
         }
     };
@@ -55,7 +55,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                 })
                 .finally(() => {
                     setIsStoppingNode(false);
-                    props.fetchNodes();
+                    props.fetchNodeStatus();
                 });
         }
     };

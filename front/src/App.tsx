@@ -58,6 +58,19 @@ export default function App() {
         setSelectedNode(node);
     };
 
+    const fetchNodeStatus = () => {
+        if (selectedNode) {
+            getNodeStatus()
+                .then((status) => {
+                    console.log(status.data);
+                    setNodeStatus(status.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    };
+
     const fetchNodes = () => {
         setIsFetchingNodes(true);
         getNodes()
@@ -97,7 +110,7 @@ export default function App() {
                 <Manager
                     selectedNode={selectedNode}
                     nodeStatus={nodeStatus}
-                    fetchNodes={fetchNodes}
+                    fetchNodeStatus={fetchNodeStatus}
                 />
             ) : (
                 <Install fetchNodes={fetchNodes} />

@@ -19,7 +19,7 @@ interface Props {
     nodeStatus:
         | { status: NodeStatus | undefined; state: NodeState }
         | undefined;
-    fetchNodes: () => void;
+    fetchNodeStatus: () => void;
 }
 
 const Manager: React.FC<Props> = (props: Props) => {
@@ -27,7 +27,7 @@ const Manager: React.FC<Props> = (props: Props) => {
         <Container maxWidth="xl" sx={{ my: 4 }}>
             <NodeActions
                 nodeStatus={props.nodeStatus}
-                fetchNodes={props.fetchNodes}
+                fetchNodeStatus={props.fetchNodeStatus}
             />
             <Grid container spacing={4} sx={{ mt: "8px" }}>
                 <Grid item xs={12} sm={12} md={8}>
