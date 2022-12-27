@@ -11,7 +11,7 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { HelpOutline } from "@mui/icons-material";
+import { Edit, HelpOutline } from "@mui/icons-material";
 
 import Node from "../../types/Node";
 import NodeStatus from "../../types/NodeStatus";
@@ -47,6 +47,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                         <Box
                             sx={{
                                 display: "flex",
+                                alignItems: "center",
                             }}
                         >
                             <Typography variant="h6">Node name:</Typography>
@@ -56,6 +57,9 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                             >
                                 {props.selectedNode.nodeName}
                             </Typography>
+                            <IconButton>
+                                <Edit />
+                            </IconButton>
                         </Box>
                     }
                 />
@@ -135,15 +139,23 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                                 <Typography variant="h6" width="50%">
                                     Current Period:
                                 </Typography>
-                                <Typography variant="h6">
-                                    {props.nodeStatus?.status?.execution_stats
-                                        .active_cursor.period ?? <Skeleton />}
+                                <Box
+                                    sx={{
+                                        display: "inline-flex",
+                                        width: "50%",
+                                    }}
+                                >
+                                    <Typography variant="h6">
+                                        {props.nodeStatus?.status
+                                            ?.execution_stats.active_cursor
+                                            .period ?? <Skeleton />}
+                                    </Typography>
                                     <Tooltip title="The period is the time between two slots of a same thread. It is approximately 16 seconds.">
                                         <IconButton sx={{ p: 0, ml: 1 }}>
                                             <HelpOutline fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
-                                </Typography>
+                                </Box>
                             </Box>
                             <Box
                                 sx={{
@@ -153,15 +165,23 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                                 <Typography variant="h6" width="50%">
                                     Current Thread:
                                 </Typography>
-                                <Typography variant="h6">
-                                    {props.nodeStatus?.status?.execution_stats
-                                        .active_cursor.thread ?? <Skeleton />}
+                                <Box
+                                    sx={{
+                                        display: "inline-flex",
+                                        width: "50%",
+                                    }}
+                                >
+                                    <Typography variant="h6">
+                                        {props.nodeStatus?.status
+                                            ?.execution_stats.active_cursor
+                                            .thread ?? <Skeleton />}
+                                    </Typography>
                                     <Tooltip title="The Massa blockchain is divided in 32 Threads that are running in parallel.">
                                         <IconButton sx={{ p: 0, ml: 1 }}>
                                             <HelpOutline fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
-                                </Typography>
+                                </Box>
                             </Box>
                         </Grid>
                     </Grid>
