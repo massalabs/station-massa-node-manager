@@ -1,7 +1,10 @@
 import React from "react";
-import { Button, Grid, Typography } from "@mui/material";
+
+import { Button, CircularProgress, Grid, Typography } from "@mui/material";
+
 import NodeStatus from "../types/NodeStatus";
 import NodeState from "../types/NodeState";
+
 import request from "../request";
 
 const startNodeRequest = (): Promise<any> => {
@@ -16,29 +19,43 @@ interface Props {
     nodeStatus:
         | { status: NodeStatus | undefined; state: NodeState }
         | undefined;
+    fetchNodes: () => void;
 }
 
 const NodeActions: React.FC<Props> = (props: Props) => {
+    const [isStartingNode, setIsStartingNode] = React.useState<boolean>(false);
+    const [isStoppingNode, setIsStoppingNode] = React.useState<boolean>(false);
+
     const handleStart = () => {
         if (props.nodeStatus?.state === "STOPPED") {
+            setIsStartingNode(true);
             startNodeRequest()
                 .then((response) => {
                     console.log(response.data);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.error(error);
+                })
+                .finally(() => {
+                    setIsStartingNode(false);
+                    props.fetchNodes();
                 });
         }
     };
 
     const handleStop = () => {
         if (props.nodeStatus?.state !== "STOPPED") {
+            setIsStoppingNode(true);
             stopNodeRequest()
                 .then((response) => {
                     console.log(response.data);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.error(error);
+                })
+                .finally(() => {
+                    setIsStoppingNode(false);
+                    props.fetchNodes();
                 });
         }
     };
@@ -58,7 +75,11 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     disabled={props.nodeStatus?.state !== "STOPPED"}
                     sx={{ borderRadius: 8, width: "256px", height: "64px" }}
                 >
-                    <Typography variant="h6">Start</Typography>
+                    {isStartingNode ? (
+                        <CircularProgress size={24} />
+                    ) : (
+                        <Typography variant="h6">Start</Typography>
+                    )}
                 </Button>
             </Grid>
             <Grid item sx={{ textAlign: "center" }}>
@@ -69,7 +90,11 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     disabled={props.nodeStatus?.state === "STOPPED"}
                     sx={{ borderRadius: 8, width: "256px", height: "64px" }}
                 >
-                    <Typography variant="h6">Stop</Typography>
+                    {isStoppingNode ? (
+                        <CircularProgress size={24} />
+                    ) : (
+                        <Typography variant="h6">Stop</Typography>
+                    )}
                 </Button>
             </Grid>
             <Grid item sx={{ textAlign: "center" }}>

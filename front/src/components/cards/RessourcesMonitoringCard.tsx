@@ -3,10 +3,12 @@ import React from "react";
 import {
     Card,
     CardContent,
-    CardHeader,
-    Divider,
+    IconButton,
+    Tooltip,
     Typography,
 } from "@mui/material";
+
+import { HelpOutline } from "@mui/icons-material";
 
 import LinearProgressWithLabel from "../LinearProgressWithLabel";
 
@@ -17,6 +19,11 @@ const RessourcesMonirotingCard: React.FC<Props> = (_props: Props) => {
         <React.Fragment>
             <Typography variant="subtitle2" sx={{ ml: 2, mt: 1 }}>
                 Ressources monitoring
+                <Tooltip title="Those are dummy information.">
+                    <IconButton sx={{ p: 0, ml: 1 }}>
+                        <HelpOutline fontSize="small" />
+                    </IconButton>
+                </Tooltip>
             </Typography>
             <Card
                 sx={{

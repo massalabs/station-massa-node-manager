@@ -19,15 +19,16 @@ interface Props {
     nodeStatus:
         | { status: NodeStatus | undefined; state: NodeState }
         | undefined;
+    fetchNodes: () => void;
 }
 
 const Manager: React.FC<Props> = (props: Props) => {
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
-    const [error, setError] = React.useState<string | undefined>(undefined);
-
     return (
         <Container maxWidth="xl" sx={{ my: 4 }}>
-            <NodeActions nodeStatus={props.nodeStatus} />
+            <NodeActions
+                nodeStatus={props.nodeStatus}
+                fetchNodes={props.fetchNodes}
+            />
             <Grid container spacing={4} sx={{ mt: "8px" }}>
                 <Grid item xs={12} sm={12} md={8}>
                     <NodeInfoCard

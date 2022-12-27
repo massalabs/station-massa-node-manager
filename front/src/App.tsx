@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { CircularProgress } from "@mui/material";
+
 import Node from "./types/Node";
 import NodeStatus from "./types/NodeStatus";
 import NodeState from "./types/NodeState";
@@ -10,7 +12,6 @@ import Install from "./pages/Install";
 import Manager from "./pages/Manager";
 
 import request from "./request";
-import { CircularProgress } from "@mui/material";
 
 const getNodeStatus = (): Promise<any> => {
     return request("GET", "http://localhost:8080/node_status", {});
@@ -32,12 +33,32 @@ export default function App() {
             return undefined;
         })()
     );
-
     const [nodeStatus, setNodeStatus] = React.useState<
         { status: NodeStatus | undefined; state: NodeState } | undefined
     >(undefined);
 
     React.useEffect(() => {
+        fetchNodes();
+    }, []);
+
+    React.useEffect(() => {
+        if (selectedNode) {
+            getNodeStatus()
+                .then((status) => {
+                    console.log(status.data);
+                    setNodeStatus(status.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    }, [selectedNode]);
+
+    const selectNode = (node: Node) => {
+        setSelectedNode(node);
+    };
+
+    const fetchNodes = () => {
         setIsFetchingNodes(true);
         getNodes()
             .then((response) => {
@@ -49,26 +70,9 @@ export default function App() {
                 setIsFetchingNodes(false);
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 setIsFetchingNodes(false);
             });
-    }, []);
-
-    React.useEffect(() => {
-        if (selectedNode) {
-            getNodeStatus()
-                .then((status) => {
-                    console.log(status.data);
-                    setNodeStatus(status.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-    }, [selectedNode]);
-
-    const selectNode = (node: Node) => {
-        setSelectedNode(node);
     };
 
     return (
@@ -90,9 +94,13 @@ export default function App() {
                     }}
                 />
             ) : selectedNode ? (
-                <Manager selectedNode={selectedNode} nodeStatus={nodeStatus} />
+                <Manager
+                    selectedNode={selectedNode}
+                    nodeStatus={nodeStatus}
+                    fetchNodes={fetchNodes}
+                />
             ) : (
-                <Install />
+                <Install fetchNodes={fetchNodes} />
             )}
         </React.Fragment>
     );

@@ -1,9 +1,10 @@
 import * as React from "react";
-import LinearProgress, {
+import {
+    Box,
+    LinearProgress,
     LinearProgressProps,
-} from "@mui/material/LinearProgress";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+    Typography,
+} from "@mui/material";
 
 const LinearProgressWithLabel: React.FC<
     LinearProgressProps & { value: number }

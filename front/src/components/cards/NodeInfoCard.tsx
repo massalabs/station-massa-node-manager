@@ -1,18 +1,23 @@
 import React from "react";
 
 import {
+    Box,
     Card,
     CardContent,
     CardHeader,
-    Divider,
     Grid,
+    IconButton,
     Skeleton,
+    Tooltip,
     Typography,
 } from "@mui/material";
+import { HelpOutline } from "@mui/icons-material";
 
 import Node from "../../types/Node";
 import NodeStatus from "../../types/NodeStatus";
 import NodeState from "../../types/NodeState";
+
+import AddressDiplay from "../AddressDisplay";
 
 interface Props {
     selectedNode: Node;
@@ -22,71 +27,142 @@ interface Props {
 }
 
 const NodeInfoCard: React.FC<Props> = (props: Props) => {
-    const formatNodeID = (id: string | undefined) => {
-        if (!id) {
-            return "";
-        }
-        return id.substring(0, 4) + "..." + id.substring(id.length - 4);
-    };
-
     return (
         <React.Fragment>
             <Typography variant="subtitle2" sx={{ ml: 2, mt: 1 }}>
-                Info
+                Basic info
             </Typography>
             <Card
                 sx={{
                     height: "256px",
                     borderRadius: 4,
                     overflow: "auto",
-
                 }}
             >
+                <CardHeader
+                    sx={{
+                        pb: 0,
+                    }}
+                    title={
+                        <Box
+                            sx={{
+                                display: "flex",
+                            }}
+                        >
+                            <Typography variant="h6">Node name:</Typography>
+                            <Typography
+                                variant="h5"
+                                sx={{ ml: 2, fontWeight: "bold" }}
+                            >
+                                {props.selectedNode.nodeName}
+                            </Typography>
+                        </Box>
+                    }
+                />
                 <CardContent>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6} md={6}>
                             <Typography variant="subtitle2">
                                 Node info
                             </Typography>
-                            <Typography variant="h6">
-                                Node name: {props.selectedNode.nodeName}
-                            </Typography>
-                            <Typography variant="h6">
-                                Node IP: {props.selectedNode.ip}
-                            </Typography>
-                            <Typography variant="h6">
-                                Node ID:{" "}
-                                {formatNodeID(
-                                    props.nodeStatus?.status?.node_id
-                                ) ?? <Skeleton />}
-                            </Typography>
-                            <Typography variant="h6">
-                                Node Version:{" "}
-                                {props.nodeStatus?.status?.version ?? (
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                }}
+                            >
+                                <Typography variant="h6" width="50%">
+                                    Node IP:
+                                </Typography>
+                                <Typography variant="h6">
+                                    {props.selectedNode.ip}
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                }}
+                            >
+                                <Typography variant="h6" width="50%">
+                                    Node ID:
+                                </Typography>
+                                {props.nodeStatus?.status ? (
+                                    <AddressDiplay
+                                        address={
+                                            props.nodeStatus?.status?.node_id
+                                        }
+                                    />
+                                ) : (
                                     <Skeleton />
                                 )}
-                            </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                }}
+                            >
+                                <Typography variant="h6" width="50%">
+                                    Node Version:
+                                </Typography>
+                                <Typography variant="h6">
+                                    {props.nodeStatus?.status?.version ?? (
+                                        <Skeleton />
+                                    )}
+                                </Typography>
+                            </Box>
                         </Grid>
                         <Grid item xs={12} sm={6} md={6}>
                             <Typography variant="subtitle2">
                                 Massa info
                             </Typography>
-                            <Typography variant="h6">
-                                Current Cycle:{" "}
-                                {props.nodeStatus?.status?.current_cycle ?? (
-                                    <Skeleton />
-                                )}
-                            </Typography>
-                            <Typography variant="h6">
-                                Current Period:{" "}
-                                {props.nodeStatus?.status?.execution_stats
-                                    .active_cursor.period ?? <Skeleton />}
-                            </Typography>
-                            <Typography variant="h6">
-                                Current Thread:{" "}
-                                {props.nodeStatus?.status?.execution_stats
-                                    .active_cursor.thread ?? <Skeleton />}
-                            </Typography>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                }}
+                            >
+                                <Typography variant="h6" width="50%">
+                                    Current Cycle:
+                                </Typography>
+                                <Typography variant="h6">
+                                    {props.nodeStatus?.status
+                                        ?.current_cycle ?? <Skeleton />}
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                }}
+                            >
+                                <Typography variant="h6" width="50%">
+                                    Current Period:
+                                </Typography>
+                                <Typography variant="h6">
+                                    {props.nodeStatus?.status?.execution_stats
+                                        .active_cursor.period ?? <Skeleton />}
+                                    <Tooltip title="The period is the time between two slots of a same thread. It is approximately 16 seconds.">
+                                        <IconButton sx={{ p: 0, ml: 1 }}>
+                                            <HelpOutline fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                }}
+                            >
+                                <Typography variant="h6" width="50%">
+                                    Current Thread:
+                                </Typography>
+                                <Typography variant="h6">
+                                    {props.nodeStatus?.status?.execution_stats
+                                        .active_cursor.thread ?? <Skeleton />}
+                                    <Tooltip title="The Massa blockchain is divided in 32 Threads that are running in parallel.">
+                                        <IconButton sx={{ p: 0, ml: 1 }}>
+                                            <HelpOutline fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Typography>
+                            </Box>
                         </Grid>
                     </Grid>
                 </CardContent>

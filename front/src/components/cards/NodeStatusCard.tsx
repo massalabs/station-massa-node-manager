@@ -1,13 +1,6 @@
 import React from "react";
 
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    Divider,
-    Skeleton,
-    Typography,
-} from "@mui/material";
+import { Card, CardContent, Skeleton, Typography } from "@mui/material";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PendingIcon from "@mui/icons-material/Pending";

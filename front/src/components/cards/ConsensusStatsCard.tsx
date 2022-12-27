@@ -1,17 +1,7 @@
 import React from "react";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    Divider,
-    Grid,
-    List,
-    ListItem,
-    ListItemSecondaryAction,
-    ListItemText,
-    Skeleton,
-    Typography,
-} from "@mui/material";
+
+import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
+
 import NodeStatus from "../../types/NodeStatus";
 import Node from "../../types/Node";
 import NodeState from "../../types/NodeState";

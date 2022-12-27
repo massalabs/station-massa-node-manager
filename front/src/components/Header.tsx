@@ -1,12 +1,7 @@
-import {
-    AppBar,
-    Button,
-    Menu,
-    MenuItem,
-    Toolbar,
-    Typography,
-} from "@mui/material";
 import React from "react";
+
+import { AppBar, Toolbar, Typography } from "@mui/material";
+
 import Node from "../types/Node";
 
 interface Props {
@@ -31,6 +26,7 @@ const Header: React.FC<Props> = (props: Props) => {
         setAnchorEl(null);
     };
 
+    // TODO: Add the possibility to select a node
     const selectNode = (node: Node) => {
         props.setSelectedNode(node);
         handleClose();
@@ -43,7 +39,9 @@ const Header: React.FC<Props> = (props: Props) => {
                 <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
                     Node Manager
                 </Typography>
-                {/* <Button
+                {/* 
+                // TODO: Add the possibility to add nodes and select a node
+                <Button
                     color="primary"
                     variant="contained"
                     onClick={handleClick}

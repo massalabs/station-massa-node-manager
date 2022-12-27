@@ -1,25 +1,31 @@
 import React from "react";
-import { Button, Container, Typography } from "@mui/material";
+
+import { Button, CircularProgress, Container, Typography } from "@mui/material";
+
 import request from "../request";
 
 const installNodeRequest = (name: string): Promise<any> => {
     return request("POST", "http://localhost:8080/install", { name });
 };
 
-interface Props {}
+interface Props {
+    fetchNodes: () => void;
+}
 
-const Install: React.FC<Props> = (_props: Props) => {
-    const [ isLoading, setIsLoading ] = React.useState<boolean>(false);
-    const [ error, setError ] = React.useState<string | undefined>(undefined);
+const Install: React.FC<Props> = (props: Props) => {
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
     const installNode = () => {
         setIsLoading(true);
-        installNodeRequest("Local Node").then((response) => {
-            setIsLoading(false);
-        }).catch((error) => {
-            setError(error);
-            setIsLoading(false);
-        });
+        installNodeRequest("Local Node")
+            .then((response) => {
+                setIsLoading(false);
+                props.fetchNodes();
+            })
+            .catch((error) => {
+                console.error(error);
+                setIsLoading(false);
+            });
     };
 
     return (
@@ -40,7 +46,11 @@ const Install: React.FC<Props> = (_props: Props) => {
                 onClick={installNode}
                 sx={{ borderRadius: 8, width: "65%", height: "96px" }}
             >
-                <Typography variant="h6">Install a local node</Typography>
+                {isLoading ? (
+                    <CircularProgress size={24} />
+                ) : (
+                    <Typography variant="h6">Install a local node</Typography>
+                )}
             </Button>
             <Typography variant="overline">
                 By clicking the button above, you will install a local node.
