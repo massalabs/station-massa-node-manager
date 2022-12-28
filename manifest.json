@@ -1,5 +1,0 @@
-{
-    "name":"Node Manager plugin",
-    "bin": "node-manager-plugin",
-    "version": "0.0.1"
-}

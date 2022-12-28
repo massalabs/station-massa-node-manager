@@ -44,14 +44,13 @@ func DownloadAndUnarchiveNode(link string) {
 		log.Fatalln(err)
 	}
 
-	cacheDir := getCacheDir()
-	err = os.MkdirAll(cacheDir, 0755)
+	err = os.MkdirAll(CACHE_DIR, 0755)
 	if err != nil {
 		log.Fatalln("Cache dir creation: ", err)
 	}
 
 	filename := filepath.Base(link)
-	createdFile, err := os.Create(cacheDir + filename)
+	createdFile, err := os.Create(CACHE_DIR + filename)
 	if err != nil {
 		log.Fatalln("Cache file creation: ", err)
 	}
@@ -75,22 +74,21 @@ func DownloadAndUnarchiveNode(link string) {
 		log.Fatalln(err)
 	}
 
-	binDir := getBinDir()
-	err = os.MkdirAll(binDir, 0755)
+	err = os.MkdirAll(BIN_DIR, 0755)
 	if err != nil {
 		log.Fatalln("Bin dir creation: ", err)
 	}
 
 	switch filepath.Ext(link) {
 	case ".zip":
-		log.Println("unzip", "-o", createdFile.Name(), "-d", binDir)
-		err := exec.Command("unzip", "-o", createdFile.Name(), "-d", binDir).Run()
+		log.Println("unzip", "-o", createdFile.Name(), "-d", BIN_DIR)
+		err := exec.Command("unzip", "-o", createdFile.Name(), "-d", BIN_DIR).Run()
 		if err != nil {
 			log.Fatalln("Failed unziping: ", err)
 		}
 	case ".gz":
-		log.Println("tar", "-xvf", createdFile.Name(), "-C", binDir)
-		err := exec.Command("tar", "-xvf", createdFile.Name(), "-C", binDir).Run()
+		log.Println("tar", "-xvf", createdFile.Name(), "-C", BIN_DIR)
+		err := exec.Command("tar", "-xvf", createdFile.Name(), "-C", BIN_DIR).Run()
 		if err != nil {
 			log.Fatalln("Failed untarring: ", err)
 		}
