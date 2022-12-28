@@ -22,8 +22,7 @@ func (runner *NodeRunner) StartNode() error {
 	}
 	log.Println("Starting node...")
 
-	cwd, _ := os.Getwd()
-	nodePath := filepath.Join(cwd, MASSA_NODE_PATH)
+	nodePath := getMassaNodePath()
 
 	nodeBinName := MASSA_NODE_BIN
 	if runtime.GOOS == "windows" {
