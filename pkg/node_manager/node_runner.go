@@ -77,6 +77,7 @@ func (runner *NodeRunner) StartNode(node Node) error {
 		}
 	}()
 
+	runner.node = &node
 	println("Node started")
 	return nil
 }
