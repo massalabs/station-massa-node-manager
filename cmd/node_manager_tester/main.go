@@ -25,12 +25,18 @@ func installMassaNode() {
 func main() {
 	installMassaNode()
 	nodeRunner := node_manager.NodeRunner{}
-	err := nodeRunner.StartNode()
+	err := nodeRunner.StartNode(
+		node_manager.Node{
+			Id:   1,
+			Name: "Test",
+			Ip:   "localhost",
+		},
+	)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	for i := 5; i > 0; i-- {
+	for i := 10; i > 0; i-- {
 		log.Printf("Shutting down node in %d seconds...", i)
 		time.Sleep(1 * time.Second)
 	}
@@ -39,4 +45,29 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	nodes, err := node_manager.GetNodes()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println("Nodes: ", nodes)
+
+	node := node_manager.Node{
+		Id:   1,
+		Name: "Test",
+		Ip:   "localhost",
+	}
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	node_manager.AddNode(node)
+
+	nodes, err = node_manager.GetNodes()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println("AFTER ADD Nodes: ", nodes)
 }
