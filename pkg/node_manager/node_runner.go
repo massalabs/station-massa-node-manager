@@ -35,7 +35,7 @@ func (runner *NodeRunner) GetNodeState() NodeState {
 		return STOPPED
 	}
 
-	client := node.NewClient("http://" + runner.node.Ip + ":33035")
+	client := node.NewClient("http://127.0.0.1:33035")
 	_, err := node.Status(client)
 	if err != nil {
 		if strings.HasPrefix(err.Error(), "calling get_status") {
@@ -85,7 +85,7 @@ func (runner *NodeRunner) StartNode(node Node) error {
 func (runner *NodeRunner) StopNode() error {
 	if runner.cmd != nil {
 		log.Println("Stopping node...")
-		client := node.NewClient("http://" + runner.node.Ip + ":33034")
+		client := node.NewClient("http://127.0.0.1:33034")
 		_, err := client.RPCClient.Call(
 			context.Background(),
 			"stop_node",
