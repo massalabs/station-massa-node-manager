@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 )
 
@@ -51,7 +52,7 @@ func DownloadAndUnarchiveNode(link string) {
 	}
 
 	filename := filepath.Base(link)
-	createdFile, err := os.Create(cacheDir + filename)
+	createdFile, err := os.Create(path.Join(cacheDir, filename))
 	if err != nil {
 		log.Fatalln("Cache file creation: ", err)
 	}

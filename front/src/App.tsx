@@ -14,11 +14,11 @@ import Manager from "./pages/Manager";
 import request from "./request";
 
 const getNodeStatus = (): Promise<any> => {
-    return request("GET", "http://localhost:8080/node_status", {});
+    return request("GET", "/node_status", {});
 };
 
 const getNodes = (): Promise<any> => {
-    return request("GET", "http://localhost:8080/nodes", {});
+    return request("GET", "/nodes", {});
 };
 
 export default function App() {
@@ -45,7 +45,6 @@ export default function App() {
         if (selectedNode) {
             getNodeStatus()
                 .then((status) => {
-                    console.log(status.data);
                     setNodeStatus(status.data);
                 })
                 .catch((error) => {
@@ -62,7 +61,6 @@ export default function App() {
         if (selectedNode) {
             getNodeStatus()
                 .then((status) => {
-                    console.log(status.data);
                     setNodeStatus(status.data);
                 })
                 .catch((error) => {

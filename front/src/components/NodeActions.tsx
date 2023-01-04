@@ -8,11 +8,19 @@ import NodeState from "../types/NodeState";
 import request from "../request";
 
 const startNodeRequest = (): Promise<any> => {
-    return request("POST", "http://localhost:8080/start_node", {});
+    return request(
+        "POST",
+        "/start_node",
+        {}
+    );
 };
 
 const stopNodeRequest = (): Promise<any> => {
-    return request("POST", "http://localhost:8080/stop_node", {});
+    return request(
+        "POST",
+        "/stop_node",
+        {}
+    );
 };
 
 interface Props {
@@ -30,9 +38,6 @@ const NodeActions: React.FC<Props> = (props: Props) => {
         if (props.nodeStatus?.state === "STOPPED") {
             setIsStartingNode(true);
             startNodeRequest()
-                .then((response) => {
-                    console.log(response.data);
-                })
                 .catch((error) => {
                     console.error(error);
                 })
@@ -47,9 +52,6 @@ const NodeActions: React.FC<Props> = (props: Props) => {
         if (props.nodeStatus?.state !== "STOPPED") {
             setIsStoppingNode(true);
             stopNodeRequest()
-                .then((response) => {
-                    console.log(response.data);
-                })
                 .catch((error) => {
                     console.error(error);
                 })
