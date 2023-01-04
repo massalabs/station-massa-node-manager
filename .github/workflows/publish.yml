@@ -1,0 +1,49 @@
+name: Build and publish
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  release:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: amd64
+            target: windows
+          - os: ubuntu-latest
+            arch: amd64
+            target: linux
+          - os: macos-latest
+            arch: amd64
+            target: darwin
+          - os: macos-latest
+            arch: arm64
+            target: darwin
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ">=1.19.2"
+      - name: Build front end
+        run: go generate ./cmd/node_manager_server
+      - name: Build binary and prepare archive for publish
+        shell: bash
+        run: |
+          export GOOS=${{ matrix.target }}
+          export GOARCH=${{ matrix.arch }}
+          export BUILD_DIR=build/thyra-node-manager-plugin
+          mkdir -p $BUILD_DIR/
+          cp LICENSE $BUILD_DIR/
+          cp manifest.json $BUILD_DIR/
+          go build -o $BUILD_DIR/node-manager-plugin ./cmd/node_manager_server
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: node-manager-plugin-${{ matrix.target }}_${{ matrix.arch }}
+          path: build
