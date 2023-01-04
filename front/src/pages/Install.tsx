@@ -5,7 +5,7 @@ import { Button, CircularProgress, Container, Typography } from "@mui/material";
 import request from "../request";
 
 const installNodeRequest = (name: string): Promise<any> => {
-    return request("POST", "http://localhost:8080/install", { name });
+    return request("POST", `http://localhost:${window.location.port}/install`, { name });
 };
 
 interface Props {

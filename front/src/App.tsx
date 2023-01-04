@@ -14,11 +14,11 @@ import Manager from "./pages/Manager";
 import request from "./request";
 
 const getNodeStatus = (): Promise<any> => {
-    return request("GET", "http://localhost:8080/node_status", {});
+    return request("GET", `http://localhost:${window.location.port}/node_status`, {});
 };
 
 const getNodes = (): Promise<any> => {
-    return request("GET", "http://localhost:8080/nodes", {});
+    return request("GET", `http://localhost:${window.location.port}/nodes`, {});
 };
 
 export default function App() {

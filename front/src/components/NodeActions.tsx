@@ -8,11 +8,11 @@ import NodeState from "../types/NodeState";
 import request from "../request";
 
 const startNodeRequest = (): Promise<any> => {
-    return request("POST", "http://localhost:8080/start_node", {});
+    return request("POST", `http://localhost:${window.location.port}/start_node`, {});
 };
 
 const stopNodeRequest = (): Promise<any> => {
-    return request("POST", "http://localhost:8080/stop_node", {});
+    return request("POST", `http://localhost:${window.location.port}/stop_node`, {});
 };
 
 interface Props {
