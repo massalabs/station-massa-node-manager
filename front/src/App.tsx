@@ -45,7 +45,6 @@ export default function App() {
         if (selectedNode) {
             getNodeStatus()
                 .then((status) => {
-                    console.log(status.data);
                     setNodeStatus(status.data);
                 })
                 .catch((error) => {
@@ -62,7 +61,6 @@ export default function App() {
         if (selectedNode) {
             getNodeStatus()
                 .then((status) => {
-                    console.log(status.data);
                     setNodeStatus(status.data);
                 })
                 .catch((error) => {
