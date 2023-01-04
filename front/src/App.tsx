@@ -14,11 +14,11 @@ import Manager from "./pages/Manager";
 import request from "./request";
 
 const getNodeStatus = (): Promise<any> => {
-    return request("GET", `/node_status`, {});
+    return request("GET", "/node_status", {});
 };
 
 const getNodes = (): Promise<any> => {
-    return request("GET", `/nodes`, {});
+    return request("GET", "/nodes", {});
 };
 
 export default function App() {
