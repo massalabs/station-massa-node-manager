@@ -82,18 +82,10 @@ func DownloadAndUnarchiveNode(link string) {
 		log.Fatalln("Bin dir creation: ", err)
 	}
 
-	switch filepath.Ext(link) {
-	case ".zip":
-		log.Println("unzip", "-o", createdFile.Name(), "-d", binDir)
-		err := exec.Command("unzip", "-o", createdFile.Name(), "-d", binDir).Run()
-		if err != nil {
-			log.Fatalln("Failed unziping: ", err)
-		}
-	case ".gz":
-		log.Println("tar", "-xvf", createdFile.Name(), "-C", binDir)
-		err := exec.Command("tar", "-xvf", createdFile.Name(), "-C", binDir).Run()
-		if err != nil {
-			log.Fatalln("Failed untarring: ", err)
-		}
+	cmd := exec.Command("tar", "-xvf", createdFile.Name(), "-C", binDir)
+	cmd.Stdout = os.Stdout
+	err = cmd.Run()
+	if err != nil {
+		log.Fatalln("Failed untarring: ", err)
 	}
 }
