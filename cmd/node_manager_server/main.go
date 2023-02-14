@@ -2,18 +2,21 @@ package main
 
 import (
 	"embed"
-	"flag"
+	"fmt"
 	"io/fs"
 	"log"
 	"math/rand"
+	"net"
 	"net/http"
 	"os"
+	"os/signal"
 	"runtime"
-	"strconv"
+	"syscall"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/massalabs/thyra-node-manager-plugin/pkg/node_manager"
+	"github.com/massalabs/thyra-node-manager-plugin/pkg/node_manager/plugin"
 	cors "github.com/rs/cors/wrapper/gin"
 )
 
@@ -154,13 +157,31 @@ func getNodes(c *gin.Context) {
 	c.JSON(200, nodes)
 }
 
-func main() {
-	port := flag.Int("port", 8080, "set listening port")
-	defaultPath, _ := os.Getwd()
-	path := flag.String("path", defaultPath, "set plugin path")
-	flag.Parse()
+func register(pluginID string, socket net.Addr) {
+	err := plugin.Register(
+		pluginID,
+		"hello world", "massalabs",
+		"A simple hello world plugin.",
+		socket,
+	)
+	if err != nil {
+		panic(fmt.Errorf("while registering plugin: %w", err))
+	}
+}
 
-	node_manager.WorkingDir = *path
+func main() {
+
+	//nolint:gomnd
+	if len(os.Args) != 2 {
+		panic("this program must be run with correlation id argument!")
+	}
+
+	quit := make(chan bool)
+	intSig := make(chan os.Signal, 1)
+	signal.Notify(intSig, syscall.SIGINT, syscall.SIGTERM)
+
+	//pluginID := os.Args[1]
+
 	nodeRunner := node_manager.NodeRunner{}
 
 	router := gin.Default()
@@ -173,13 +194,25 @@ func main() {
 
 	embedStatics(router)
 
-	err := router.Run("127.0.0.1:" + strconv.Itoa(*port))
+	//register(pluginID)
+
+	ln, _ := net.Listen("tcp", ":")
+
+	_, port, _ := net.SplitHostPort(ln.Addr().String())
+	fmt.Println("Listening on port", port)
+
+	http.Serve(ln, router)
+
+	// err := router.Run()
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
+
+	err := nodeRunner.StopNode()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	err = nodeRunner.StopNode()
-	if err != nil {
-		log.Fatalln(err)
-	}
+	<-intSig
+	quit <- true
 }
