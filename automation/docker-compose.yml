@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  sshubuntu:
+    build:
+      context: ./ubuntu
+    ports:
+      - "2022:22"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

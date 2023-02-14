@@ -5,11 +5,9 @@ import (
 	"fmt"
 	"io/fs"
 	"log"
-	"math/rand"
 	"net"
 	"net/http"
 	"os"
-	"runtime"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -54,9 +52,6 @@ type InstallNodeInput struct {
 	Name string `json:"name" binding:"required"`
 }
 
-// ? Should we move this to pkg/node_manager/node_installer.go ?
-// ? Might be great to have a get request to list available versions so that endpoint can take a version as parameter ?
-// TODO: Add a check to see if the node archive has already been downloaded in cache
 func installMassaNode(c *gin.Context) {
 	var input InstallNodeInput
 
@@ -65,40 +60,6 @@ func installMassaNode(c *gin.Context) {
 		return
 	}
 
-	nodes, err := node_manager.GetNodes()
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
-
-	for _, node := range nodes {
-		if node.Ip == node_manager.DEFAULT_NODE_IP {
-			c.JSON(500, gin.H{"error": "A node is already installed on localhost"})
-			return
-		}
-	}
-
-	os := runtime.GOOS
-	arch := runtime.GOARCH
-
-	link, err := node_manager.GetMassaNodeLink(os, arch)
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
-
-	log.Println("Link: ", link)
-	node_manager.DownloadAndUnarchiveNode(link)
-	log.Println("Massa Node installed")
-	err = node_manager.AddNode(node_manager.Node{
-		Id:   int(rand.Uint32()),
-		Name: input.Name,
-		Ip:   node_manager.DEFAULT_NODE_IP,
-	})
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
 	c.JSON(200, gin.H{"message": "Massa Node installed"})
 }
 
