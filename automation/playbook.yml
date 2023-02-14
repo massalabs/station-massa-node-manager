@@ -1,0 +1,62 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Uninstall old versions of docker
+      apt:
+        pkg:
+          - docker
+          - docker-engine
+          - docker.io
+          - containerd
+          - runc
+        state: absent
+
+    - name: Install required system packages
+      apt:
+        pkg:
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: latest
+        update_cache: true
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Install docker and docker-compose 
+      apt:
+        pkg:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: latest
+        update_cache: true
+
+    - name: Ensure docker deamon is running
+      service:
+        name: docker
+        state: started
+
+    - name: Copy docker compose file
+      copy:
+        src: /Users/nathanmassa/dev/massa-core-docker/docker-compose.yml
+        dest: /home/docker-compose.yml
+
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: /home/massa_mount
+        state: directory
+
+    - name: start docker compose
+      shell: docker compose up -d
