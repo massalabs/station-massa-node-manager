@@ -141,6 +141,5 @@ func AddNode(node Node) error {
 		return err
 	}
 
-	os.WriteFile(filePath, content, 0644)
-	return nil
+	return os.WriteFile(filePath, content, 0644)
 }

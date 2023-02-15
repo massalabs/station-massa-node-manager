@@ -176,7 +176,7 @@ func main() {
 
 	pluginID := os.Args[1]
 
-	nodeRunner := node_manager.NodeRunner{}
+	// nodeRunner := node_manager.NodeRunner{}
 
 	router := gin.Default()
 	router.Use(cors.Default())
@@ -192,9 +192,7 @@ func main() {
 
 	register(pluginID, ln.Addr())
 
-	http.Serve(ln, router)
-
-	err := nodeRunner.StopNode()
+	err := http.Serve(ln, router)
 	if err != nil {
 		log.Fatalln(err)
 	}
