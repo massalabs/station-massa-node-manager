@@ -50,7 +50,7 @@ func startNode() {
 	client := getSSHClient()
 	defer client.Close()
 
-	output, err := client.Exec("sudo docker compose up -d")
+	output, err := client.Exec("sudo docker compose up --pull -d --remove-orphans")
 	if err != nil {
 		panic(err)
 	}
@@ -70,9 +70,24 @@ func stopNode() {
 	fmt.Printf("docker-compose stop: %s\n", output)
 }
 
+func getLogs() {
+	client := getSSHClient()
+	defer client.Close()
+
+	output, err := client.Exec("sudo docker compose logs")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("docker-compose logs: %s\n", output)
+}
+
 func main() {
 	installMassaNode()
 	startNode()
+	getLogs()
+	time.Sleep(5 * time.Second)
+	getLogs()
 	time.Sleep(5 * time.Second)
 	stopNode()
 }

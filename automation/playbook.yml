@@ -17,8 +17,12 @@
         pkg:
           - ca-certificates
           - curl
+          - software-properties-common
           - gnupg
           - lsb-release
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
         state: latest
         update_cache: true
 
@@ -43,6 +47,12 @@
         state: latest
         update_cache: true
 
+    - name: Install Docker Module for Python
+      pip:
+        name:
+          - docker
+          - docker-compose
+
     - name: Ensure docker deamon is running
       service:
         name: docker
@@ -57,3 +67,12 @@
       ansible.builtin.file:
         path: /home/massa_mount
         state: directory
+
+    - name: Pull docker image
+      community.docker.docker_compose:
+        project_src: /home
+        pull: true
+        state: present
+
+    - name: Enable logrotate for docker containers
+      copy: src=docker-container-logrotate dest=/etc/logrotate.d/docker-container-logrotate
