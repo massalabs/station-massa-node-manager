@@ -156,6 +156,7 @@ func main() {
 
 	ln, _ := net.Listen("tcp", ":")
 
+	log.Println("Listening on " + ln.Addr().String())
 	if !standaloneMode {
 		register(pluginID, ln.Addr())
 	}
