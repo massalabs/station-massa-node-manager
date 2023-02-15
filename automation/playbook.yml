@@ -57,6 +57,3 @@
       ansible.builtin.file:
         path: /home/massa_mount
         state: directory
-
-    - name: start docker compose
-      shell: docker compose up -d
