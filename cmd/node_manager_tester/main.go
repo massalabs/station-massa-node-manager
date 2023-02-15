@@ -62,7 +62,10 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	node_manager.AddNode(node)
+	err = node_manager.AddNode(node)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	nodes, err = node_manager.GetNodes()
 	if err != nil {
