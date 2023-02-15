@@ -35,4 +35,4 @@ func getMassaNodePath() string {
 	return path.Join(WorkingDir, MASSA_NODE_PATH)
 }
 
-const SSHKeyFile = "./automation/sshKey.priv"
+const SSH_PRIVATE_KEY_DIR = "./ssh-private-keys"

@@ -4,15 +4,15 @@ import (
 	ansibler "github.com/febrianrendak/go-ansible"
 )
 
-func InstallMassaNode(username string, host string) (string, error) {
+func (node *Node) Install() error {
 	ansiblePlaybookConnectionOptions := &ansibler.AnsiblePlaybookConnectionOptions{
 		Connection: "ssh",
-		PrivateKey: SSHKeyFile, // ansible_ssh_private_key_file
-		User:       username,   // ansible_user
+		PrivateKey: node.getSSHKeyPath(), // ansible_ssh_private_key_file
+		User:       node.Username,        // ansible_user
 	}
 
 	ansiblePlaybookOptions := &ansibler.AnsiblePlaybookOptions{
-		Inventory: host + ",",
+		Inventory: node.Host + ",",
 	}
 
 	playbook := &ansibler.AnsiblePlaybookCmd{
@@ -22,10 +22,5 @@ func InstallMassaNode(username string, host string) (string, error) {
 		ExecPrefix:        "Go-ansible ",
 	}
 
-	err := playbook.Run()
-	if err != nil {
-		return "", err
-	}
-
-	return "ok", nil
+	return playbook.Run()
 }

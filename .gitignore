@@ -17,7 +17,6 @@
 bin/
 .cache/
 static/
-nodes.json
 
-automation/ubuntu/idkey*
-automation/inventory-secret
+nodes.json
+ssh-private-keys

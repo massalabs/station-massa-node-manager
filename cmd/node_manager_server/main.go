@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"encoding/base64"
 	"io/fs"
 	"log"
 	"net"
@@ -12,6 +11,7 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/massalabs/thyra-node-manager-plugin/pkg/node_manager"
+	"github.com/massalabs/thyra-node-manager-plugin/pkg/plugin"
 	cors "github.com/rs/cors/wrapper/gin"
 )
 
@@ -43,60 +43,52 @@ func embedStatics(router *gin.Engine) {
 	router.Use(static.Serve("/", EmbedFolder(staticFiles, "static")))
 }
 
-type InstallNodeInput struct {
-	User   string `json:"user" binding:"required"`
-	Host   string `json:"host" binding:"required"`
-	SshKey string `json:"sshkey" binding:"required"`
-}
-
-func decodeKey(sshKeyEncoded string) error {
-	rawDecodedText, err := base64.StdEncoding.DecodeString(sshKeyEncoded)
-	if err != nil {
-		return err
-	}
-
-	sshKey := []byte(rawDecodedText)
-	return os.WriteFile(node_manager.SSHKeyFile, sshKey, 0600)
-}
-
 func installMassaNode(c *gin.Context) {
-	var input InstallNodeInput
+	var input node_manager.InstallNodeInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := decodeKey(input.SshKey)
+	node := &node_manager.Node{Id: input.Id, Username: input.Username, Host: input.Host}
+
+	err := node.DecodeKey(input.SSHKeyEncoded)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err})
 		return
 	}
 
-	output, err := node_manager.InstallMassaNode(input.User, input.Host)
-
+	err = node.Install()
 	if err != nil {
-		c.JSON(400, gin.H{"error": err, "output": output})
+		c.JSON(400, gin.H{"error": err})
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Massa Node installed", "output": output})
+	err = node_manager.AddNode(node)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Massa Node installed"})
 }
 
 func startNode(c *gin.Context) {
-	var input InstallNodeInput
+	var input node_manager.ManageNodeInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := decodeKey(input.SshKey)
+	node, err := node_manager.GetNodeById(input.Id)
 	if err != nil {
-		c.JSON(400, gin.H{"error": err})
+		c.JSON(500, gin.H{"error": err})
 	}
 
-	output, err := node_manager.StartNode(input.User, input.Host)
+	output, err := node.StartNode()
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
@@ -106,25 +98,56 @@ func startNode(c *gin.Context) {
 }
 
 func stopNode(c *gin.Context) {
-	var input InstallNodeInput
+	var input node_manager.ManageNodeInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := decodeKey(input.SshKey)
+	node, err := node_manager.GetNodeById(input.Id)
 	if err != nil {
-		c.JSON(400, gin.H{"error": err})
+		c.JSON(500, gin.H{"error": err})
 	}
 
-	output, err := node_manager.StopNode(input.User, input.Host)
+	output, err := node.StopNode()
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(200, gin.H{"message": "Node successfully stopped", "output": output})
+}
+
+func getNodes(c *gin.Context) {
+	nodes, err := node_manager.GetNodes()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, nodes)
+}
+
+func getNodeStatus(c *gin.Context) {
+	var input node_manager.ManageNodeInput
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	node, err := node_manager.GetNodeById(input.Id)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err})
+	}
+
+	status, err := node.GetStatus()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, gin.H{"status": status})
 }
 
 func main() {
@@ -145,6 +168,8 @@ func main() {
 	router.POST("/install", installMassaNode)
 	router.POST("/start_node", startNode)
 	router.POST("/stop_node", stopNode)
+	router.GET("/node_status", getNodeStatus)
+	router.GET("/nodes", getNodes)
 
 	embedStatics(router)
 
@@ -152,7 +177,7 @@ func main() {
 
 	log.Println("Listening on " + ln.Addr().String())
 	if !standaloneMode {
-		// register(pluginID, ln.Addr())
+		plugin.Register("node-manager", "Node Manager", "Massalabs", "Install and manege Massa nodes", ln.Addr())
 	}
 
 	err := http.Serve(ln, router)

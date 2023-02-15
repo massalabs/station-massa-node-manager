@@ -25,7 +25,8 @@ type registerBody struct {
 
 func Register(
 	pluginID string,
-	name string, author string,
+	name string,
+	author string,
 	shortDescription string,
 	socket net.Addr,
 ) error {

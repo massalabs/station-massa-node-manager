@@ -4,8 +4,8 @@ import (
 	"github.com/sfreiberg/simplessh"
 )
 
-func getSSHClient(username string, host string) (*simplessh.Client, error) {
-	client, err := simplessh.ConnectWithKeyFile(host, username, SSHKeyFile)
+func (node *Node) getSSHClient() (*simplessh.Client, error) {
+	client, err := simplessh.ConnectWithKeyFile(node.Host, node.Username, node.getSSHKeyPath())
 	if err != nil {
 		return nil, err
 	}
@@ -13,8 +13,8 @@ func getSSHClient(username string, host string) (*simplessh.Client, error) {
 	return client, nil
 }
 
-func StartNode(username string, host string) (string, error) {
-	client, err := getSSHClient(username, host)
+func (node *Node) StartNode() (string, error) {
+	client, err := node.getSSHClient()
 	if err != nil {
 		return "", err
 	}
@@ -29,8 +29,8 @@ func StartNode(username string, host string) (string, error) {
 	return string(output), nil
 }
 
-func StopNode(username string, host string) (string, error) {
-	client, err := getSSHClient(username, host)
+func (node *Node) StopNode() (string, error) {
+	client, err := node.getSSHClient()
 	if err != nil {
 		return "", err
 	}

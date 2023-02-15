@@ -9,6 +9,7 @@ import (
 	"path"
 
 	"github.com/massalabs/thyra/pkg/node"
+	thyraNode "github.com/massalabs/thyra/pkg/node"
 )
 
 type ExecutionStats struct {
@@ -89,8 +90,8 @@ func Status(client *node.Client) (*State, error) {
 	return &resp, nil
 }
 
-func GetStatus() (*State, error) {
-	client := node.NewClient("http://localhost:33035")
+func (node *Node) GetStatus() (*State, error) {
+	client := thyraNode.NewClient(node.Host)
 	status, err := Status(client)
 	if err != nil {
 		return nil, err
@@ -98,12 +99,12 @@ func GetStatus() (*State, error) {
 	return status, nil
 }
 
-func GetNodesFilePath() string {
+func getNodesFilePath() string {
 	return path.Join(WorkingDir, NODES_FILENAME)
 }
 
 func GetNodes() ([]Node, error) {
-	filePath := GetNodesFilePath()
+	filePath := getNodesFilePath()
 
 	_, err := os.Stat(filePath)
 	if os.IsNotExist(err) {
@@ -127,15 +128,31 @@ func GetNodes() ([]Node, error) {
 	return nodes, nil
 }
 
-func AddNode(node Node) error {
+func GetNodeById(id string) (*Node, error) {
+	nodes, err := GetNodes()
+	if err != nil {
+		return nil, err
+	}
+
+	for i := 0; i < len(nodes); i++ {
+		node := nodes[i]
+		if node.Id == id {
+			return &node, nil
+		}
+	}
+
+	return nil, nil
+}
+
+func AddNode(node *Node) error {
 	nodes, err := GetNodes()
 	if err != nil {
 		return err
 	}
 
-	nodes = append(nodes, node)
+	nodes = append(nodes, *node)
 
-	filePath := GetNodesFilePath()
+	filePath := getNodesFilePath()
 	content, err := json.Marshal(nodes)
 	if err != nil {
 		return err
