@@ -131,12 +131,17 @@ func register(pluginID string, socket net.Addr) {
 func main() {
 
 	//nolint:gomnd
-	if len(os.Args) != 2 {
+	if len(os.Args) < 2 {
 		panic("this program must be run with correlation id argument!")
 	}
 
 	pluginID := os.Args[1]
 
+	standaloneArg := os.Args[2]
+	standaloneMode := false
+	if standaloneArg == "--standalone" {
+		standaloneMode = true
+	}
 	// nodeRunner := node_manager.NodeRunner{}
 
 	router := gin.Default()
@@ -151,7 +156,9 @@ func main() {
 
 	ln, _ := net.Listen("tcp", ":")
 
-	register(pluginID, ln.Addr())
+	if !standaloneMode {
+		register(pluginID, ln.Addr())
+	}
 
 	err := http.Serve(ln, router)
 	if err != nil {
