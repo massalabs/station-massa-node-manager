@@ -9,9 +9,7 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"os/signal"
 	"runtime"
-	"syscall"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -160,8 +158,8 @@ func getNodes(c *gin.Context) {
 func register(pluginID string, socket net.Addr) {
 	err := plugin.Register(
 		pluginID,
-		"hello world", "massalabs",
-		"A simple hello world plugin.",
+		"Node Manager", "massalabs",
+		"Install and manage your Massa node.",
 		socket,
 	)
 	if err != nil {
@@ -176,11 +174,7 @@ func main() {
 		panic("this program must be run with correlation id argument!")
 	}
 
-	quit := make(chan bool)
-	intSig := make(chan os.Signal, 1)
-	signal.Notify(intSig, syscall.SIGINT, syscall.SIGTERM)
-
-	//pluginID := os.Args[1]
+	pluginID := os.Args[1]
 
 	nodeRunner := node_manager.NodeRunner{}
 
@@ -194,25 +188,14 @@ func main() {
 
 	embedStatics(router)
 
-	//register(pluginID)
-
 	ln, _ := net.Listen("tcp", ":")
 
-	_, port, _ := net.SplitHostPort(ln.Addr().String())
-	fmt.Println("Listening on port", port)
+	register(pluginID, ln.Addr())
 
 	http.Serve(ln, router)
-
-	// err := router.Run()
-	// if err != nil {
-	// 	log.Fatalln(err)
-	// }
 
 	err := nodeRunner.StopNode()
 	if err != nil {
 		log.Fatalln(err)
 	}
-
-	<-intSig
-	quit <- true
 }
