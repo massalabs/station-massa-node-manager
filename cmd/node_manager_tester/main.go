@@ -5,18 +5,18 @@ import (
 	"time"
 
 	ansibler "github.com/febrianrendak/go-ansible"
+	"github.com/massalabs/thyra-node-manager-plugin/pkg/node_manager"
 	"github.com/sfreiberg/simplessh"
 )
 
 const host = "192.168.1.50"
-const keyFile = "./automation/ubuntu/idkey"
 const username = "massa-ssh"
 
 func installMassaNode() {
 	ansiblePlaybookConnectionOptions := &ansibler.AnsiblePlaybookConnectionOptions{
 		Connection: "ssh",
-		PrivateKey: keyFile,  // ansible_ssh_private_key_file
-		User:       username, // ansible_user
+		PrivateKey: node_manager.SSHKeyFile, // ansible_ssh_private_key_file
+		User:       username,                // ansible_user
 	}
 
 	ansiblePlaybookOptions := &ansibler.AnsiblePlaybookOptions{
@@ -34,11 +34,10 @@ func installMassaNode() {
 	if err != nil {
 		panic(err)
 	}
-
 }
 
 func getSSHClient() *simplessh.Client {
-	client, err := simplessh.ConnectWithKeyFile(host, username, keyFile)
+	client, err := simplessh.ConnectWithKeyFile(host, username, node_manager.SSHKeyFile)
 	if err != nil {
 		panic(err)
 	}

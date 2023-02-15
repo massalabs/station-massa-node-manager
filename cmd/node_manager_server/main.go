@@ -2,7 +2,7 @@ package main
 
 import (
 	"embed"
-	"fmt"
+	"encoding/base64"
 	"io/fs"
 	"log"
 	"net"
@@ -12,13 +12,8 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/massalabs/thyra-node-manager-plugin/pkg/node_manager"
-	"github.com/massalabs/thyra-node-manager-plugin/pkg/node_manager/plugin"
 	cors "github.com/rs/cors/wrapper/gin"
 )
-
-// TODO: Handle multiple NodeRunner
-// ? Use a map of NodeRunner ?
-var nodeRunner = node_manager.NodeRunner{}
 
 //go:generate ./install.sh
 
@@ -49,7 +44,19 @@ func embedStatics(router *gin.Engine) {
 }
 
 type InstallNodeInput struct {
-	Name string `json:"name" binding:"required"`
+	User   string `json:"user" binding:"required"`
+	Host   string `json:"host" binding:"required"`
+	SshKey string `json:"sshkey" binding:"required"`
+}
+
+func decodeKey(sshKeyEncoded string) error {
+	rawDecodedText, err := base64.StdEncoding.DecodeString(sshKeyEncoded)
+	if err != nil {
+		return err
+	}
+
+	sshKey := []byte(rawDecodedText)
+	return os.WriteFile(node_manager.SSHKeyFile, sshKey, 0600)
 }
 
 func installMassaNode(c *gin.Context) {
@@ -60,72 +67,64 @@ func installMassaNode(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Massa Node installed"})
+	err := decodeKey(input.SshKey)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+		return
+	}
+
+	output, err := node_manager.InstallMassaNode(input.User, input.Host)
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err, "output": output})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Massa Node installed", "output": output})
 }
 
 func startNode(c *gin.Context) {
-	nodes, err := node_manager.GetNodes()
+	var input InstallNodeInput
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := decodeKey(input.SshKey)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+	}
+
+	output, err := node_manager.StartNode(input.User, input.Host)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 
-	if len(nodes) == 0 {
-		c.JSON(500, gin.H{"error": "No node installed"})
-		return
-	}
-
-	err = nodeRunner.StartNode(nodes[0])
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(200, gin.H{"message": "Node successfully started"})
+	c.JSON(200, gin.H{"message": "Node successfully started", "output": output})
 }
 
 func stopNode(c *gin.Context) {
-	err := nodeRunner.StopNode()
+	var input InstallNodeInput
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := decodeKey(input.SshKey)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err})
+	}
+
+	output, err := node_manager.StopNode(input.User, input.Host)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(200, gin.H{"message": "Node successfully stopped"})
-}
 
-func getNodeStatus(c *gin.Context) {
-	state := nodeRunner.GetNodeState()
-	if state != node_manager.RUNNING {
-		c.JSON(200, gin.H{"status": nil, "state": state})
-		return
-	}
-
-	status, err := node_manager.GetStatus()
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(200, gin.H{"status": status, "state": state})
-}
-
-func getNodes(c *gin.Context) {
-	nodes, err := node_manager.GetNodes()
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(200, nodes)
-}
-
-func register(pluginID string, socket net.Addr) {
-	err := plugin.Register(
-		pluginID,
-		"Node Manager", "massalabs",
-		"Install and manage your Massa node.",
-		socket,
-	)
-	if err != nil {
-		panic(fmt.Errorf("while registering plugin: %w", err))
-	}
+	c.JSON(200, gin.H{"message": "Node successfully stopped", "output": output})
 }
 
 func main() {
@@ -135,22 +134,17 @@ func main() {
 		panic("this program must be run with correlation id argument!")
 	}
 
-	pluginID := os.Args[1]
-
 	standaloneArg := os.Args[2]
 	standaloneMode := false
 	if standaloneArg == "--standalone" {
 		standaloneMode = true
 	}
-	// nodeRunner := node_manager.NodeRunner{}
 
 	router := gin.Default()
 	router.Use(cors.Default())
 	router.POST("/install", installMassaNode)
 	router.POST("/start_node", startNode)
 	router.POST("/stop_node", stopNode)
-	router.GET("/node_status", getNodeStatus)
-	router.GET("/nodes", getNodes)
 
 	embedStatics(router)
 
@@ -158,7 +152,7 @@ func main() {
 
 	log.Println("Listening on " + ln.Addr().String())
 	if !standaloneMode {
-		register(pluginID, ln.Addr())
+		// register(pluginID, ln.Addr())
 	}
 
 	err := http.Serve(ln, router)
