@@ -61,16 +61,9 @@ func installMassaNode(c *gin.Context) {
 }
 
 func startNode(c *gin.Context) {
-	var input node_manager.ManageNodeInput
-
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	node, err := node_manager.GetNodeById(input.Id)
+	node, err := handleManageNodeRequest(c)
 	if err != nil {
-		c.JSON(500, gin.H{"error": err})
+		return
 	}
 
 	output, err := node.StartNode()
@@ -83,16 +76,9 @@ func startNode(c *gin.Context) {
 }
 
 func stopNode(c *gin.Context) {
-	var input node_manager.ManageNodeInput
-
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	node, err := node_manager.GetNodeById(input.Id)
+	node, err := handleManageNodeRequest(c)
 	if err != nil {
-		c.JSON(500, gin.H{"error": err})
+		return
 	}
 
 	output, err := node.StopNode()
@@ -102,6 +88,36 @@ func stopNode(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"message": "Node successfully stopped", "output": output})
+}
+
+func getNodeLogs(c *gin.Context) {
+	node, err := handleManageNodeRequest(c)
+	if err != nil {
+		return
+	}
+	output, err := node.GetLogs()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "got logs", "logs": output})
+}
+
+func handleManageNodeRequest(c *gin.Context) (*node_manager.Node, error) {
+	var input node_manager.ManageNodeInput
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return nil, err
+	}
+
+	node, err := node_manager.GetNodeById(input.Id)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err})
+	}
+
+	return node, nil
 }
 
 func getNodes(c *gin.Context) {
@@ -153,6 +169,7 @@ func main() {
 	router.POST("/install", installMassaNode)
 	router.POST("/start_node", startNode)
 	router.POST("/stop_node", stopNode)
+	router.GET("/node_logs", getNodeLogs)
 	router.GET("/node_status", getNodeStatus)
 	router.GET("/nodes", getNodes)
 

@@ -14,14 +14,7 @@ func (node *Node) getSSHClient() (*simplessh.Client, error) {
 }
 
 func (node *Node) StartNode() (string, error) {
-	client, err := node.getSSHClient()
-	if err != nil {
-		return "", err
-	}
-
-	defer client.Close()
-
-	output, err := client.Exec("sudo docker compose up --pull -d --remove-orphans")
+	output, err := node.runCommandSSH("sudo docker compose up --pull -d --remove-orphans")
 	if err != nil {
 		return "", err
 	}
@@ -30,17 +23,31 @@ func (node *Node) StartNode() (string, error) {
 }
 
 func (node *Node) StopNode() (string, error) {
-	client, err := node.getSSHClient()
-	if err != nil {
-		return "", err
-	}
-
-	defer client.Close()
-
-	output, err := client.Exec("sudo docker compose stop")
+	output, err := node.runCommandSSH("sudo docker compose stop")
 	if err != nil {
 		return "", err
 	}
 
 	return string(output), nil
+}
+
+func (node *Node) GetLogs() (string, error) {
+	output, err := node.runCommandSSH("sudo docker compose logs")
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(output), nil
+}
+
+func (node *Node) runCommandSSH(command string) ([]byte, error) {
+	client, err := node.getSSHClient()
+	if err != nil {
+		return []byte{}, err
+	}
+
+	defer client.Close()
+
+	return client.Exec(command)
 }
