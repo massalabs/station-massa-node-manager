@@ -100,7 +100,7 @@ func (node *Node) GetStatus() (*State, error) {
 }
 
 func getNodesFilePath() string {
-	return path.Join(WorkingDir, NODES_FILENAME)
+	return path.Join(WORKING_DIR, NODES_FILENAME)
 }
 
 func GetNodes() ([]Node, error) {
@@ -144,13 +144,27 @@ func GetNodeById(id string) (*Node, error) {
 	return nil, nil
 }
 
-func AddNode(node *Node) error {
+func (node *Node) addNode() error {
 	nodes, err := GetNodes()
 	if err != nil {
 		return err
 	}
 
-	nodes = append(nodes, *node)
+	exists := false
+
+	for i := 0; i < len(nodes); i++ {
+		// check if the node already exists
+		if nodes[i].Id == node.Id {
+			// return nil // no nothing
+			// or let's update it
+			nodes[i] = *node
+			exists = true
+		}
+	}
+
+	if !exists {
+		nodes = append(nodes, *node)
+	}
 
 	filePath := getNodesFilePath()
 	content, err := json.Marshal(nodes)

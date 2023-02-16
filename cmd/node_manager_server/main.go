@@ -51,24 +51,9 @@ func installMassaNode(c *gin.Context) {
 		return
 	}
 
-	node := &node_manager.Node{Id: input.Id, Username: input.Username, Host: input.Host}
-
-	err := node.DecodeKey(input.SSHKeyEncoded)
+	err := node_manager.Install(input)
 	if err != nil {
-		c.JSON(400, gin.H{"error": err})
-		return
-	}
-
-	err = node.Install()
-	if err != nil {
-		c.JSON(400, gin.H{"error": err})
-		return
-	}
-
-	err = node_manager.AddNode(node)
-
-	if err != nil {
-		c.JSON(400, gin.H{"error": err})
+		c.JSON(500, gin.H{"error": err})
 		return
 	}
 
