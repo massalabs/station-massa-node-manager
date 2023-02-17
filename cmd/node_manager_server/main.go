@@ -171,9 +171,11 @@ func main() {
 		panic("this program must be run with correlation id argument!")
 	}
 
-	standaloneArg := os.Args[2]
+	pluginID := os.Args[1]
+
 	standaloneMode := false
-	if standaloneArg == "--standalone" {
+
+	if len(os.Args) == 3 && os.Args[2] == "--standalone" {
 		standaloneMode = true
 	}
 
@@ -192,7 +194,7 @@ func main() {
 
 	log.Println("Listening on " + ln.Addr().String())
 	if !standaloneMode {
-		err := plugin.Register("node-manager", "Node Manager", "Massalabs", "Install and manege Massa nodes", ln.Addr())
+		err := plugin.Register(pluginID, "Node Manager", "Massalabs", "Install and manege Massa nodes", ln.Addr())
 		if err != nil {
 			log.Panicln(err)
 		}
