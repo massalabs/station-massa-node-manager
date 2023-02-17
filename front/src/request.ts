@@ -3,7 +3,7 @@ import axios, { Method, AxiosRequestConfig } from "axios";
 const request = async (
     method: Method | string,
     url: string,
-    payload: any
+    payload: any,
 ): Promise<any> => {
     const request_config: AxiosRequestConfig = {
         method,

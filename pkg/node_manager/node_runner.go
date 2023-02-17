@@ -5,7 +5,8 @@ import (
 )
 
 func (node *Node) getSSHClient() (*simplessh.Client, error) {
-	client, err := simplessh.ConnectWithKeyFile(node.Host, node.Username, node.getSSHKeyPath())
+
+	client, err := simplessh.ConnectWithKeyFile(node.Host, node.Username, node.GetSSHKeyPath())
 	if err != nil {
 		return nil, err
 	}

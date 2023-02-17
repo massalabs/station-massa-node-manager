@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"path"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -44,16 +45,28 @@ func embedStatics(router *gin.Engine) {
 }
 
 func installMassaNode(c *gin.Context) {
-	var input node_manager.InstallNodeInput
 
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	var input node_manager.InstallNodeInput
+	if err := c.ShouldBind(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"ShouldBindJSON error": err.Error()})
 		return
 	}
 
-	err := node_manager.Install(input)
+	node := input.CreateNode()
+
+	if err := node_manager.CreateDirIfNotExists(path.Dir(node.GetSSHKeyPath())); err != nil {
+		c.String(http.StatusInternalServerError, "Creating ssh key dir:"+err.Error())
+		return
+	}
+
+	if err := c.SaveUploadedFile(input.SshKeyFile, node.GetSSHKeyPath()); err != nil {
+		c.String(http.StatusInternalServerError, "saving ssh key file:"+err.Error())
+		return
+	}
+
+	err := node_manager.Install(node)
 	if err != nil {
-		c.JSON(500, gin.H{"error": err})
+		c.String(http.StatusInternalServerError, "installing node:"+err.Error())
 		return
 	}
 
@@ -179,7 +192,10 @@ func main() {
 
 	log.Println("Listening on " + ln.Addr().String())
 	if !standaloneMode {
-		plugin.Register("node-manager", "Node Manager", "Massalabs", "Install and manege Massa nodes", ln.Addr())
+		err := plugin.Register("node-manager", "Node Manager", "Massalabs", "Install and manege Massa nodes", ln.Addr())
+		if err != nil {
+			log.Panicln(err)
+		}
 	}
 
 	err := http.Serve(ln, router)

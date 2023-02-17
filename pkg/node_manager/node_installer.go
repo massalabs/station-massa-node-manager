@@ -1,21 +1,19 @@
 package node_manager
 
 import (
-	"encoding/base64"
+	"fmt"
 	"os"
 
 	ansibler "github.com/febrianrendak/go-ansible"
 )
 
-func Install(input InstallNodeInput) error {
-	node := input.createNode()
+func Install(node Node) error {
 
-	err := node.decodeAndWriteKey(input.SSHKeyEncoded)
-	if err != nil {
-		return err
+	if os.Chmod(node.GetSSHKeyPath(), 0600) != nil {
+		return fmt.Errorf("unable to set sshKey file permissions")
 	}
 
-	err = node.addNode()
+	err := node.addNode()
 	if err != nil {
 		return err
 	}
@@ -23,31 +21,16 @@ func Install(input InstallNodeInput) error {
 	return node.runPlaybook()
 }
 
-func createDirIfNotExists(dirname string) error {
+func CreateDirIfNotExists(dirname string) error {
 	_, err := os.Stat(dirname)
 	if os.IsNotExist(err) {
-		err = os.Mkdir(dirname, 0755)
+		err = os.MkdirAll(dirname, 0755)
 		if err != nil {
 			return err
 		}
 	}
 
 	return nil
-}
-
-func (node *Node) decodeAndWriteKey(SSHKeyEncoded string) error {
-	err := createDirIfNotExists(SSH_PRIVATE_KEY_DIR)
-	if err != nil {
-		return err
-	}
-
-	rawDecodedText, err := base64.StdEncoding.DecodeString(SSHKeyEncoded)
-	if err != nil {
-		return err
-	}
-
-	sshKey := []byte(rawDecodedText)
-	return os.WriteFile(node.getSSHKeyPath(), sshKey, 0600)
 }
 
 func (node *Node) runPlaybook() error {
@@ -57,7 +40,7 @@ func (node *Node) runPlaybook() error {
 
 	ansiblePlaybookConnectionOptions := &ansibler.AnsiblePlaybookConnectionOptions{
 		Connection: "ssh",
-		PrivateKey: node.getSSHKeyPath(), // ansible_ssh_private_key_file
+		PrivateKey: node.GetSSHKeyPath(), // ansible_ssh_private_key_file
 		User:       node.Username,        // ansible_user
 	}
 
