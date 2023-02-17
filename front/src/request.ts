@@ -7,7 +7,7 @@ const request = async (
 ): Promise<any> => {
     const request_config: AxiosRequestConfig = {
         method,
-        url,
+        url: `${window.location.pathname}${url}`,
         data: payload,
     };
     return new Promise((resolve, reject) => {

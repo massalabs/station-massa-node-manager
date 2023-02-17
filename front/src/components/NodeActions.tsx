@@ -10,7 +10,7 @@ import request from "../request";
 const startNodeRequest = (): Promise<any> => {
     return request(
         "POST",
-        "/start_node",
+        "start_node",
         {}
     );
 };
@@ -18,7 +18,7 @@ const startNodeRequest = (): Promise<any> => {
 const stopNodeRequest = (): Promise<any> => {
     return request(
         "POST",
-        "/stop_node",
+        "stop_node",
         {}
     );
 };

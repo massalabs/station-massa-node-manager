@@ -19,8 +19,6 @@ const Install: React.FC<Props> = (props: Props) => {
     const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
 
     const installNode = () => {
-        console.log({ name, host, password, username, selectedFile });
-
         if (!selectedFile) {
             console.error("No file selected");
             return
@@ -35,7 +33,7 @@ const Install: React.FC<Props> = (props: Props) => {
         formData.append('discord-id', discordId);
         formData.append('file', selectedFile);
 
-        axios.post('/install', formData, {
+        axios.post(`${window.location.pathname}install`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
