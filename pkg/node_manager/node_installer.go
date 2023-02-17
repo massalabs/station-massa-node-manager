@@ -1,21 +1,22 @@
 package node_manager
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 
 	ansibler "github.com/febrianrendak/go-ansible"
 )
 
-func Install(node Node) error {
+func Install(node Node) (string, error) {
 
 	if os.Chmod(node.GetSSHKeyPath(), 0600) != nil {
-		return fmt.Errorf("unable to set sshKey file permissions")
+		return "", fmt.Errorf("unable to set sshKey file permissions")
 	}
 
 	err := node.addNode()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	return node.runPlaybook()
@@ -24,7 +25,7 @@ func Install(node Node) error {
 func CreateDirIfNotExists(dirname string) error {
 	_, err := os.Stat(dirname)
 	if os.IsNotExist(err) {
-		err = os.MkdirAll(dirname, 0755)
+		err = os.Mkdir(dirname, 0755)
 		if err != nil {
 			return err
 		}
@@ -33,7 +34,7 @@ func CreateDirIfNotExists(dirname string) error {
 	return nil
 }
 
-func (node *Node) runPlaybook() error {
+func (node *Node) runPlaybook() (string, error) {
 	vars := make(map[string]interface{})
 	vars["discord_id"] = node.DiscordId
 	vars["wallet_password"] = node.WalletPassword
@@ -49,12 +50,20 @@ func (node *Node) runPlaybook() error {
 		Inventory: node.Host + ",",
 	}
 
+	var f *os.File
+	writer := bufio.NewWriter(f)
+
 	playbook := &ansibler.AnsiblePlaybookCmd{
 		Playbook:          "./automation/playbook.yml",
 		ConnectionOptions: ansiblePlaybookConnectionOptions,
 		Options:           ansiblePlaybookOptions,
-		ExecPrefix:        "Go-ansible ",
+		Writer:            writer,
 	}
 
-	return playbook.Run()
+	err := playbook.Run()
+	if err != nil {
+		return "", err
+	}
+
+	return "", nil
 }
