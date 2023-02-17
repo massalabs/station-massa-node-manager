@@ -52,3 +52,14 @@ func (node *Node) runCommandSSH(command string) ([]byte, error) {
 
 	return client.Exec(command)
 }
+
+func (node *Node) uploadFileSSH(local string, remote string) error {
+	client, err := node.getSSHClient()
+	if err != nil {
+		return err
+	}
+
+	defer client.Close()
+
+	return client.Upload(local, remote)
+}
