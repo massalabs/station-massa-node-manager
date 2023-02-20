@@ -10,33 +10,36 @@ import (
 //go:embed embedFiles/*
 var embedFiles embed.FS
 
-func Install(node Node) (string, error) {
+func Install(node Node) {
 
 	if os.Chmod(node.GetSSHKeyPath(), 0600) != nil {
-		return "", fmt.Errorf("unable to set sshKey file permissions")
+		fmt.Println("unable to set sshKey file permissions")
 	}
 
 	err := node.addNode()
 	if err != nil {
-		return "", err
+		fmt.Println(err.Error())
 	}
 
 	composeFileName := "docker-compose.yml"
 	composeFile, err := embedFiles.ReadFile("embedFiles/" + composeFileName)
 	if err != nil {
-		return "", fmt.Errorf("failed to read %s: %s", composeFileName, err)
+		fmt.Printf("failed to read %s: %s", composeFileName, err)
 	}
 
 	tmpDir := os.TempDir()
 
-	err = os.WriteFile(path.Join(tmpDir, composeFileName), composeFile, 0644)
+	tmpFile := path.Join(tmpDir, composeFileName)
+	err = os.WriteFile(tmpFile, composeFile, 0644)
 	if err != nil {
-		return "", fmt.Errorf("failed to write %s: %s", composeFileName, err)
+		fmt.Printf("failed to write %s: %s", composeFileName, err)
 	}
 
-	err = node.uploadFileSSH(path.Join(tmpDir, composeFileName), "~/"+composeFileName)
+	defer os.Remove(tmpFile)
+
+	err = node.uploadFileSSH(tmpFile, "~/"+composeFileName)
 	if err != nil {
-		return "", fmt.Errorf("failed to upload %s: %s", composeFileName, err)
+		fmt.Printf("failed to upload %s: %s", composeFileName, err)
 	}
 
 	dockerInstallScript := fmt.Sprintf(`
@@ -67,10 +70,12 @@ func Install(node Node) (string, error) {
 
 	output, err := node.runCommandSSH(dockerInstallScript)
 	if err != nil {
-		return "", err
+		fmt.Printf("Installation failed: %s", err)
 	}
 
-	return string(output), nil
+	// TODO: call SSH get status here
+	node.Status = Up
+	fmt.Printf("Installation success:\n %s", string(output))
 }
 
 func CreateDirIfNotExists(dirname string) error {
