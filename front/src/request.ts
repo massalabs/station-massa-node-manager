@@ -1,13 +1,13 @@
 import axios, { Method, AxiosRequestConfig } from "axios";
 
-const request = async (
+export const request = async (
     method: Method | string,
     url: string,
     payload: any,
 ): Promise<any> => {
     const request_config: AxiosRequestConfig = {
         method,
-        url: `${window.location.pathname}${url}`,
+        url,
         data: payload,
     };
     return new Promise((resolve, reject) => {
@@ -22,4 +22,21 @@ const request = async (
     });
 };
 
-export default request;
+export const localApiGet = async (
+    path: string,
+): Promise<any> => apiGet(`${window.location.pathname}${path}`)
+
+export const apiGet = async (
+    url: string,
+): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(url)
+            .then((response) => {
+                resolve(response);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};

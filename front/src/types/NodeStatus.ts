@@ -1,3 +1,15 @@
+export enum hostStatus {
+    Unknown,
+    Up,
+    Down,
+    Installing,
+    Bootstrapping,
+}
+
+export const getStateStr = (status: number): string => {
+    return Object.keys(hostStatus)[status];
+};
+
 export interface Slot {
     period: number;
     thread: number;

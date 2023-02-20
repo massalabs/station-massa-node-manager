@@ -3,7 +3,7 @@ import * as React from "react";
 import { CircularProgress } from "@mui/material";
 
 import Node from "./types/Node";
-import NodeStatus from "./types/NodeStatus";
+import NodeStatus, { getStateStr } from "./types/NodeStatus";
 import NodeState from "./types/NodeState";
 
 import Header from "./components/Header";
@@ -11,14 +11,26 @@ import Header from "./components/Header";
 import Install from "./pages/Install";
 import Manager from "./pages/Manager";
 
-import request from "./request";
+import { localApiGet, request } from "./request";
 
-const getNodeStatus = (): Promise<any> => {
-    return request("GET", "node_status", {});
+const getStatusFromNodeApi = async (host: string): Promise<any> => {
+    const res = await request("POST", `http://${host}:33035/api/v2`, {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "get_status",
+        params: []
+    })
+    console.log("getStatusFromNodeApi", res)
+    console.log("getStatusFromNodeApi", res.data.result)
+    return res;
 };
 
-const getNodes = (): Promise<any> => {
-    return request("GET", "nodes", {});
+const getNodeState = async (id: string): Promise<any> => {
+    return localApiGet(`node_status?id=${id}`)
+};
+
+const getNodes = async (): Promise<any> => {
+    return localApiGet("nodes");
 };
 
 export default function App() {
@@ -34,24 +46,12 @@ export default function App() {
         })()
     );
     const [nodeStatus, setNodeStatus] = React.useState<
-        { status: NodeStatus | undefined; state: NodeState } | undefined
+        { status: NodeStatus | undefined; state: string } | undefined
     >(undefined);
 
     React.useEffect(() => {
         fetchNodes();
     }, []);
-
-    React.useEffect(() => {
-        if (selectedNode) {
-            getNodeStatus()
-                .then((status) => {
-                    setNodeStatus(status.data);
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
-    }, [selectedNode]);
 
     const selectNode = (node: Node) => {
         setSelectedNode(node);
@@ -59,15 +59,25 @@ export default function App() {
 
     const fetchNodeStatus = () => {
         if (selectedNode) {
-            getNodeStatus()
+            getStatusFromNodeApi(selectedNode.Host)
                 .then((status) => {
-                    setNodeStatus(status.data);
+                    getNodeState(selectedNode.Id).then((state) => {
+                        console.log("setNodeStatus", status.data.result)
+                        console.log("setNodeStatus state", state, getStateStr(state) )
+                        setNodeStatus({status: status.data.result, state: getStateStr(state)});
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+
                 })
                 .catch((error) => {
                     console.error(error);
                 });
         }
     };
+
+    React.useEffect(() => fetchNodeStatus(), [selectedNode]);
 
     const fetchNodes = () => {
         setIsFetchingNodes(true);

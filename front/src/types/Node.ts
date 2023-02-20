@@ -1,8 +1,11 @@
 
 interface Node {
-    nodeName: string;
-    ip: string;
-    id: number;
+    Id: string;
+    Host: string;
+    DiscordId: string;
+    Status: string;
+    Username: string;
+    WalletPassword: string;
 }
 
 export default Node;

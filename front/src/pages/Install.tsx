@@ -40,7 +40,6 @@ const Install: React.FC<Props> = (props: Props) => {
         })
             .then((response) => {
                 setIsLoading(false);
-                console.log(" POST DONE! !", response)
                 props.fetchNodes();
             })
             .catch((error) => {

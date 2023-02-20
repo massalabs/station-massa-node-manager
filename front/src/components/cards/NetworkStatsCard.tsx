@@ -4,13 +4,12 @@ import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
 
 import NodeStatus from "../../types/NodeStatus";
 import Node from "../../types/Node";
-import NodeState from "../../types/NodeState";
 
 interface Props {
     selectedNode: Node | undefined;
     nodeStatus:
-        | { status: NodeStatus | undefined; state: NodeState }
-        | undefined;
+    | { status: NodeStatus | undefined; state: string }
+    | undefined;
 }
 
 const NetworkStatsCard: React.FC<Props> = (props: Props) => {
@@ -33,21 +32,21 @@ const NetworkStatsCard: React.FC<Props> = (props: Props) => {
                         <Grid item xs={12} md={12}>
                             <Typography variant="h6">Total</Typography>
                             <Typography variant="h3">
-                                {props.nodeStatus?.status?.network_stats
-                                    .active_node_count ?? <Skeleton />}
+                                {props.nodeStatus?.status?.network_stats?.active_node_count ?? <Skeleton />}
+
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={6} md={6}>
                             <Typography variant="h6">
-                                {props.nodeStatus?.status?.network_stats
-                                    .in_connection_count ?? <Skeleton />}
+                                {props.nodeStatus?.status?.network_stats?.in_connection_count ?? <Skeleton />}
+
                             </Typography>
                             <Typography variant="body2">Incoming</Typography>
                         </Grid>
                         <Grid item xs={12} sm={6} md={6}>
                             <Typography variant="h6">
-                                {props.nodeStatus?.status?.network_stats
-                                    .out_connection_count ?? <Skeleton />}
+                                {props.nodeStatus?.status?.network_stats?.out_connection_count ?? <Skeleton />}
+
                             </Typography>
                             <Typography variant="body2">Outgoing</Typography>
                         </Grid>

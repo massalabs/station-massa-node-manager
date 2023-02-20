@@ -4,13 +4,12 @@ import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
 
 import NodeStatus from "../../types/NodeStatus";
 import Node from "../../types/Node";
-import NodeState from "../../types/NodeState";
 
 interface Props {
     selectedNode: Node | undefined;
     nodeStatus:
-        | { status: NodeStatus | undefined; state: NodeState }
-        | undefined;
+    | { status: NodeStatus | undefined; state: string }
+    | undefined;
 }
 
 const ConsensusStatsCard: React.FC<Props> = (props: Props) => {
@@ -34,10 +33,10 @@ const ConsensusStatsCard: React.FC<Props> = (props: Props) => {
                             <Typography variant="h6">Total blocks</Typography>
                             <Typography variant="h3">
                                 {props.nodeStatus?.status ? (
-                                    props.nodeStatus.status.consensus_stats
-                                        .stale_block_count +
-                                    props.nodeStatus.status.consensus_stats
-                                        .final_block_count
+                                    props.nodeStatus?.status?.consensus_stats?.stale_block_count
+                                    +
+                                    props.nodeStatus?.status?.consensus_stats?.final_block_count
+
                                 ) : (
                                     <Skeleton />
                                 )}
@@ -45,8 +44,8 @@ const ConsensusStatsCard: React.FC<Props> = (props: Props) => {
                         </Grid>
                         <Grid item xs={12} sm={6} md={6}>
                             <Typography variant="h6">
-                                {props.nodeStatus?.status?.consensus_stats
-                                    .stale_block_count ?? <Skeleton />}
+                                {props.nodeStatus?.status?.consensus_stats?.stale_block_count
+                                    ?? <Skeleton />}
                             </Typography>
                             <Typography variant="body2">
                                 Stale Blocks
@@ -54,8 +53,8 @@ const ConsensusStatsCard: React.FC<Props> = (props: Props) => {
                         </Grid>
                         <Grid item xs={12} sm={6} md={6}>
                             <Typography variant="h6">
-                                {props.nodeStatus?.status?.consensus_stats
-                                    .final_block_count ?? <Skeleton />}
+                                {props.nodeStatus?.status?.consensus_stats?.final_block_count ?? <Skeleton />}
+
                             </Typography>
                             <Typography variant="body2">
                                 Final Blocks

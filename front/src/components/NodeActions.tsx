@@ -4,30 +4,32 @@ import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 
 import NodeStatus from "../types/NodeStatus";
 import NodeState from "../types/NodeState";
+import Node from "../types/Node";
 
-import request from "../request";
+import {request} from "../request";
 
-const startNodeRequest = (): Promise<any> => {
+const startNodeRequest = (id: string): Promise<any> => {
     return request(
         "POST",
-        "start_node",
+        `start_node?id=${id}`,
         {}
     );
 };
 
-const stopNodeRequest = (): Promise<any> => {
+const stopNodeRequest = (id: string): Promise<any> => {
     return request(
         "POST",
-        "stop_node",
+        `stop_node?id=${id}`,
         {}
     );
 };
 
 interface Props {
     nodeStatus:
-        | { status: NodeStatus | undefined; state: NodeState }
+        | { status: NodeStatus | undefined; state: string }
         | undefined;
-    fetchNodeStatus: () => void;
+    fetchNodeStatus: (host: string) => any;
+    selectedNode: Node;
 }
 
 const NodeActions: React.FC<Props> = (props: Props) => {
@@ -37,13 +39,13 @@ const NodeActions: React.FC<Props> = (props: Props) => {
     const handleStart = () => {
         if (props.nodeStatus?.state === "STOPPED") {
             setIsStartingNode(true);
-            startNodeRequest()
+            startNodeRequest(props.selectedNode.Id)
                 .catch((error) => {
                     console.error(error);
                 })
                 .finally(() => {
                     setIsStartingNode(false);
-                    props.fetchNodeStatus();
+                    props.fetchNodeStatus(props.selectedNode.Host);
                 });
         }
     };
@@ -51,13 +53,13 @@ const NodeActions: React.FC<Props> = (props: Props) => {
     const handleStop = () => {
         if (props.nodeStatus?.state !== "STOPPED") {
             setIsStoppingNode(true);
-            stopNodeRequest()
+            stopNodeRequest(props.selectedNode.Id)
                 .catch((error) => {
                     console.error(error);
                 })
                 .finally(() => {
                     setIsStoppingNode(false);
-                    props.fetchNodeStatus();
+                    props.fetchNodeStatus(props.selectedNode.Host);
                 });
         }
     };

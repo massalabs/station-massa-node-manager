@@ -17,9 +17,9 @@ import Node from "../types/Node";
 interface Props {
     selectedNode: Node;
     nodeStatus:
-        | { status: NodeStatus | undefined; state: NodeState }
+        | { status: NodeStatus | undefined; state: string }
         | undefined;
-    fetchNodeStatus: () => void;
+    fetchNodeStatus: (host: string) => any;
 }
 
 const Manager: React.FC<Props> = (props: Props) => {
@@ -27,6 +27,7 @@ const Manager: React.FC<Props> = (props: Props) => {
         <Container maxWidth="xl" sx={{ my: 4 }}>
             <NodeActions
                 nodeStatus={props.nodeStatus}
+                selectedNode={props.selectedNode}
                 fetchNodeStatus={props.fetchNodeStatus}
             />
             <Grid container spacing={4} sx={{ mt: "8px" }}>
