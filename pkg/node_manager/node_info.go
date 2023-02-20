@@ -107,13 +107,17 @@ func (node *Node) UpdateStatus() (NodeStatus, error) {
 		return Down, err
 	}
 
-	if strings.HasPrefix(string(output), "null") {
-		node.Status = Bootstrapping
-	} else {
-		node.Status = Up
-	}
+	content := strings.TrimSpace(string(output))
 
-	fmt.Println(string(output)) // debug
+	if strings.HasPrefix(content, "null") {
+		node.Status = Bootstrapping
+	} else if strings.HasSuffix(content, "not running") {
+		node.Status = Down
+	} else if strings.HasPrefix(content, "\"TEST") {
+		node.Status = Up
+	} else {
+		node.Status = Unknown
+	}
 
 	err = node.addOrUpdateNode()
 	if err != nil {
