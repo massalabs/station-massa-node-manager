@@ -120,21 +120,19 @@ func getNodeLogs(c *gin.Context) {
 }
 
 func handleManageNodeRequest(c *gin.Context) (*node_manager.Node, error) {
-	var input node_manager.ManageNodeInput
+	nodeId := c.Query("id")
 
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return nil, err
+	if nodeId == "" {
+		return nil, fmt.Errorf("please provide a node id")
 	}
 
-	node, err := node_manager.GetNodeById(input.Id)
+	node, err := node_manager.GetNodeById(nodeId)
 	if err != nil {
 		return nil, err
 	}
 
 	if node == nil {
-		err = fmt.Errorf("Node not found")
-		return nil, err
+		return nil, fmt.Errorf("node not found")
 	}
 
 	return node, nil
