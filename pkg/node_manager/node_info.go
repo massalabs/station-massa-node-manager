@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/massalabs/thyra/pkg/node"
 	thyraNode "github.com/massalabs/thyra/pkg/node"
@@ -106,9 +107,20 @@ func (node *Node) GetStatus() (NodeStatus, error) {
 		return Down, err
 	}
 
-	fmt.Println(output)
+	if strings.HasPrefix(string(output), "null") {
+		node.Status = Bootstrapping
+	} else {
+		node.Status = Up
+	}
 
-	return Up, nil
+	fmt.Println(string(output)) // debug
+
+	err = node.addNode()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	return node.Status, err
 }
 
 func getNodesFilePath() string {

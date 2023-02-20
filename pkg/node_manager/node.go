@@ -22,6 +22,7 @@ const (
 	Up
 	Down
 	Installing
+	Bootstrapping
 )
 
 type ManageNodeInput struct {
