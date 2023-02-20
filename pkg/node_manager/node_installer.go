@@ -53,11 +53,11 @@ func Install(node Node) {
 	sudo apt-get install -y curl jq
 	curl -fsSL https://get.docker.com -o get-docker.sh
 	sudo sh ./get-docker.sh
-	cat << 'EOF' > .env
+	cat << '	EOF' > .env
 	DISCORD_ID=%s
 	WALLETPWD=%s
 	EOF
-	cat << 'EOF' > docker-container-logrotate
+	cat << '	EOF' > docker-container-logrotate
 	/var/lib/docker/containers/*/*.log {
 		rotate 0
 		hourly
@@ -68,7 +68,7 @@ func Install(node Node) {
 		copytruncate
 		nodateext
 		maxage 1
-	  }
+	}
 	EOF
 	sudo mv docker-container-logrotate /etc/logrotate.d/docker-container-logrotate
 	sudo docker compose up -d --pull always --remove-orphans
