@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 )
 
 //go:embed embedFiles/*
@@ -71,11 +72,12 @@ func Install(node Node) {
 	EOF
 	sudo mv docker-container-logrotate /etc/logrotate.d/docker-container-logrotate
 	sudo docker compose up -d --pull always --remove-orphans
+	echo "Node installation completed"
 	`, node.DiscordId, node.WalletPassword)
 
 	output, err := node.runCommandSSH(dockerInstallScript)
-	if err != nil {
-		fmt.Printf("Installation failed: %s", err)
+	if err != nil || !strings.Contains(string(output), "Node installation completed") {
+		fmt.Printf("Installation failed: %s \n %s", err, string(output))
 		return
 	}
 
