@@ -27,12 +27,6 @@ func Install(node Node) (string, error) {
 		return "", fmt.Errorf("failed to read %s: %s", composeFileName, err)
 	}
 
-	logRotateFileName := "docker-container-logrotate"
-	logRotateFile, err := embedFiles.ReadFile("embedFiles/" + logRotateFileName)
-	if err != nil {
-		return "", fmt.Errorf("failed to read %s: %s", logRotateFileName, err)
-	}
-
 	tmpDir := os.TempDir()
 
 	err = os.WriteFile(path.Join(tmpDir, composeFileName), composeFile, 0644)
@@ -40,19 +34,9 @@ func Install(node Node) (string, error) {
 		return "", fmt.Errorf("failed to write %s: %s", composeFileName, err)
 	}
 
-	err = os.WriteFile(path.Join(tmpDir, logRotateFileName), logRotateFile, 0644)
-	if err != nil {
-		return "", fmt.Errorf("failed to write %s: %s", logRotateFileName, err)
-	}
-
-	err = node.uploadFileSSH(path.Join(tmpDir, composeFileName), "/home/"+composeFileName)
+	err = node.uploadFileSSH(path.Join(tmpDir, composeFileName), "~/"+composeFileName)
 	if err != nil {
 		return "", fmt.Errorf("failed to upload %s: %s", composeFileName, err)
-	}
-
-	err = node.uploadFileSSH(path.Join(tmpDir, logRotateFileName), "/etc/logrotate.d/"+logRotateFileName)
-	if err != nil {
-		return "", fmt.Errorf("failed to upload %s: %s", logRotateFileName, err)
 	}
 
 	dockerInstallScript := fmt.Sprintf(`
@@ -60,11 +44,24 @@ func Install(node Node) (string, error) {
 	sudo apt-get install -y curl \
 	curl -fsSL https://get.docker.com -o get-docker.sh
 	sudo sh ./get-docker.sh
-	cat << 'EOF' > /home/.env
+	cat << 'EOF' > .env
 	DISCORD_ID=%s
 	WALLETPWD=%s
 	EOF
-	cd /home
+	cat << 'EOF' > docker-container-logrotate
+	/var/lib/docker/containers/*/*.log {
+		rotate 0
+		hourly
+		notifempty
+		nocompress
+		size 50M
+		missingok
+		copytruncate
+		nodateext
+		maxage 1
+	  }
+	EOF
+	sudo mv docker-container-logrotate /etc/logrotate.d/docker-container-logrotate
 	sudo docker compose up -d --pull always --remove-orphans
 	`, node.DiscordId, node.WalletPassword)
 
