@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"fmt"
 	"io/fs"
 	"log"
 	"net"
@@ -73,6 +74,7 @@ func installMassaNode(c *gin.Context) {
 func startNode(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -88,6 +90,7 @@ func startNode(c *gin.Context) {
 func stopNode(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -103,8 +106,10 @@ func stopNode(c *gin.Context) {
 func getNodeLogs(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+
 	output, err := node.GetLogs()
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
@@ -124,7 +129,12 @@ func handleManageNodeRequest(c *gin.Context) (*node_manager.Node, error) {
 
 	node, err := node_manager.GetNodeById(input.Id)
 	if err != nil {
-		c.JSON(500, gin.H{"error": err})
+		return nil, err
+	}
+
+	if node == nil {
+		err = fmt.Errorf("Node not found")
+		return nil, err
 	}
 
 	return node, nil
@@ -140,16 +150,10 @@ func getNodes(c *gin.Context) {
 }
 
 func getNodeStatus(c *gin.Context) {
-	var input node_manager.ManageNodeInput
-
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	node, err := node_manager.GetNodeById(input.Id)
+	node, err := handleManageNodeRequest(c)
 	if err != nil {
-		c.JSON(500, gin.H{"error": err})
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
 	}
 
 	status, err := node.GetStatus()
