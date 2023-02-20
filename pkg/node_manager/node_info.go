@@ -101,10 +101,10 @@ func (node *Node) GetState() (*State, error) {
 	return status, nil
 }
 
-func (node *Node) UpdateStatus() (NodeStatus, error) {
+func (node *Node) UpdateStatus() (string, error) {
 	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status | jq '.version'")
 	if err != nil {
-		return Down, err
+		return Down.String(), err
 	}
 
 	content := strings.TrimSpace(string(output))
@@ -124,7 +124,7 @@ func (node *Node) UpdateStatus() (NodeStatus, error) {
 		fmt.Println(err.Error())
 	}
 
-	return node.Status, err
+	return node.Status.String(), err
 }
 
 func getNodesFilePath() string {

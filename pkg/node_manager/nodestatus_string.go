@@ -12,11 +12,12 @@ func _() {
 	_ = x[Up-1]
 	_ = x[Down-2]
 	_ = x[Installing-3]
+	_ = x[Bootstrapping-4]
 }
 
-const _NodeStatus_name = "UnknownUpDownInstalling"
+const _NodeStatus_name = "UnknownUpDownInstallingBootstrapping"
 
-var _NodeStatus_index = [...]uint8{0, 7, 9, 13, 23}
+var _NodeStatus_index = [...]uint8{0, 7, 9, 13, 23, 36}
 
 func (i NodeStatus) String() string {
 	if i < 0 || i >= NodeStatus(len(_NodeStatus_index)-1) {
