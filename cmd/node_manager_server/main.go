@@ -64,13 +64,14 @@ func installMassaNode(c *gin.Context) {
 		return
 	}
 
+	node.Status = node_manager.Installing
 	output, err := node_manager.Install(node)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "installing node:"+err.Error())
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Massa Node installed", "output": output})
+	c.JSON(204, gin.H{"message": "Massa Node installation started", "output": output})
 }
 
 func startNode(c *gin.Context) {

@@ -14,6 +14,16 @@ type InstallNodeInput struct {
 	SshKeyFile     *multipart.FileHeader `form:"file" binding:"required"`
 }
 
+//go:generate stringer -type=NodeStatus
+type NodeStatus int
+
+const (
+	Unknown NodeStatus = iota
+	Up
+	Down
+	Installing
+)
+
 type ManageNodeInput struct {
 	Id string `json:"id" binding:"required"`
 }
@@ -24,6 +34,7 @@ type Node struct {
 	Host           string
 	DiscordId      string
 	WalletPassword string
+	Status         NodeStatus
 }
 
 func (node *Node) GetSSHKeyPath() string {
@@ -32,5 +43,5 @@ func (node *Node) GetSSHKeyPath() string {
 
 func (input *InstallNodeInput) CreateNode() Node {
 	return Node{Id: input.Id, Username: input.Username, Host: input.Host,
-		DiscordId: input.DiscordId, WalletPassword: input.WalletPassword}
+		DiscordId: input.DiscordId, WalletPassword: input.WalletPassword, Status: Unknown}
 }
