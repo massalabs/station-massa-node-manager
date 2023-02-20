@@ -67,6 +67,7 @@ type NetworkStats struct {
 	OutConnectionCount *uint `json:"out_connection_count"`
 }
 
+// call RPC get_status
 func Status(client *node.Client) (*State, error) {
 	rawResponse, err := client.RPCClient.Call(
 		context.Background(),
@@ -90,13 +91,24 @@ func Status(client *node.Client) (*State, error) {
 	return &resp, nil
 }
 
-func (node *Node) GetStatus() (*State, error) {
+func (node *Node) GetState() (*State, error) {
 	client := thyraNode.NewClient(node.Host)
 	status, err := Status(client)
 	if err != nil {
 		return nil, err
 	}
 	return status, nil
+}
+
+func (node *Node) GetStatus() (NodeStatus, error) {
+	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status | jq '.version'")
+	if err != nil {
+		return Down, err
+	}
+
+	fmt.Println(output)
+
+	return Up, nil
 }
 
 func getNodesFilePath() string {

@@ -20,6 +20,7 @@ func Install(node Node) {
 	err := node.addNode()
 	if err != nil {
 		fmt.Println(err.Error())
+		return
 	}
 
 	composeFileName := "docker-compose.yml"
@@ -40,15 +41,15 @@ func Install(node Node) {
 
 	defer os.Remove(tmpFile)
 
-	err = node.uploadFileSSH(tmpFile, "~/"+composeFileName)
+	err = node.uploadFileSSH(tmpFile, "/home/"+node.Username+"/"+composeFileName)
 	if err != nil {
 		fmt.Printf("failed to upload %s: %s", composeFileName, err)
 		return
 	}
 
 	dockerInstallScript := fmt.Sprintf(`
-	sudo apt-get update \
-	sudo apt-get install -y curl jq \
+	sudo apt-get update
+	sudo apt-get install -y curl jq
 	curl -fsSL https://get.docker.com -o get-docker.sh
 	sudo sh ./get-docker.sh
 	cat << 'EOF' > .env
