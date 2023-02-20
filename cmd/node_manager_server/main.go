@@ -49,7 +49,7 @@ func installMassaNode(c *gin.Context) {
 
 	var input node_manager.InstallNodeInput
 	if err := c.ShouldBind(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"ShouldBindJSON error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"ShouldBind error": err.Error()})
 		return
 	}
 
@@ -68,7 +68,7 @@ func installMassaNode(c *gin.Context) {
 	node.Status = node_manager.Installing
 	go node_manager.Install(node)
 
-	c.JSON(204, gin.H{"message": "Massa Node installation started"})
+	c.JSON(201, gin.H{"message": "Massa Node installation started"})
 }
 
 func startNode(c *gin.Context) {
@@ -84,7 +84,7 @@ func startNode(c *gin.Context) {
 		return
 	}
 
-	c.JSON(204, gin.H{"message": "Node successfully started", "output": output})
+	c.JSON(200, gin.H{"message": "Node successfully started", "output": output})
 }
 
 func stopNode(c *gin.Context) {
@@ -100,7 +100,7 @@ func stopNode(c *gin.Context) {
 		return
 	}
 
-	c.JSON(204, gin.H{"message": "Node successfully stopped", "output": output})
+	c.JSON(200, gin.H{"message": "Node successfully stopped", "output": output})
 }
 
 func getNodeLogs(c *gin.Context) {

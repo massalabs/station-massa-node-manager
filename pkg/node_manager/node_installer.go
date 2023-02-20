@@ -14,6 +14,7 @@ func Install(node Node) {
 
 	if os.Chmod(node.GetSSHKeyPath(), 0600) != nil {
 		fmt.Println("unable to set sshKey file permissions")
+		return
 	}
 
 	err := node.addNode()
@@ -25,6 +26,7 @@ func Install(node Node) {
 	composeFile, err := embedFiles.ReadFile("embedFiles/" + composeFileName)
 	if err != nil {
 		fmt.Printf("failed to read %s: %s", composeFileName, err)
+		return
 	}
 
 	tmpDir := os.TempDir()
@@ -33,6 +35,7 @@ func Install(node Node) {
 	err = os.WriteFile(tmpFile, composeFile, 0644)
 	if err != nil {
 		fmt.Printf("failed to write %s: %s", composeFileName, err)
+		return
 	}
 
 	defer os.Remove(tmpFile)
@@ -40,6 +43,7 @@ func Install(node Node) {
 	err = node.uploadFileSSH(tmpFile, "~/"+composeFileName)
 	if err != nil {
 		fmt.Printf("failed to upload %s: %s", composeFileName, err)
+		return
 	}
 
 	dockerInstallScript := fmt.Sprintf(`
@@ -71,6 +75,7 @@ func Install(node Node) {
 	output, err := node.runCommandSSH(dockerInstallScript)
 	if err != nil {
 		fmt.Printf("Installation failed: %s", err)
+		return
 	}
 
 	// TODO: call SSH get status here
