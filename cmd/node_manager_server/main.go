@@ -156,7 +156,7 @@ func getNodeStatus(c *gin.Context) {
 		return
 	}
 
-	status, err := node.GetStatus()
+	status, err := node.UpdateStatus()
 	if err != nil {
 		c.JSON(500, gin.H{"status": status, "error": err.Error()})
 		return

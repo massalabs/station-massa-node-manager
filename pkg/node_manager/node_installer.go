@@ -18,7 +18,7 @@ func Install(node Node) {
 		return
 	}
 
-	err := node.addNode()
+	err := node.addOrUpdateNode()
 	if err != nil {
 		fmt.Println(err.Error())
 		return
@@ -81,9 +81,12 @@ func Install(node Node) {
 		return
 	}
 
-	// TODO: call SSH get status here
-	node.Status = Up
+	status, err := node.UpdateStatus()
+	if err != nil {
+		return
+	}
 	fmt.Printf("Installation success:\n %s", string(output))
+	fmt.Printf("New status is: %s", status)
 }
 
 func CreateDirIfNotExists(dirname string) error {

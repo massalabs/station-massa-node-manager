@@ -101,7 +101,7 @@ func (node *Node) GetState() (*State, error) {
 	return status, nil
 }
 
-func (node *Node) GetStatus() (NodeStatus, error) {
+func (node *Node) UpdateStatus() (NodeStatus, error) {
 	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status | jq '.version'")
 	if err != nil {
 		return Down, err
@@ -115,7 +115,7 @@ func (node *Node) GetStatus() (NodeStatus, error) {
 
 	fmt.Println(string(output)) // debug
 
-	err = node.addNode()
+	err = node.addOrUpdateNode()
 	if err != nil {
 		fmt.Println(err.Error())
 	}
@@ -168,7 +168,7 @@ func GetNodeById(id string) (*Node, error) {
 	return nil, nil
 }
 
-func (node *Node) addNode() error {
+func (node *Node) addOrUpdateNode() error {
 	nodes, err := GetNodes()
 	if err != nil {
 		return err
