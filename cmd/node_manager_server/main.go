@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"io/fs"
 	"log"
+	"mime"
 	"net"
 	"net/http"
 	"os"
 	"path"
+	"path/filepath"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -133,6 +135,27 @@ func getNodeLogs(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "got logs", "logs": output})
 }
 
+func backupWallet(c *gin.Context) {
+	node, err := handleManageNodeRequest(c)
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	filePath, err := node.BackupWallet()
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	fileName := filepath.Base(filePath)
+	c.Header("Content-Disposition", "attachment; filename="+fileName)
+	contentType := mime.TypeByExtension(filepath.Ext(filePath))
+	c.Header("Content-Type", contentType)
+
+	c.File(filePath)
+}
+
 func handleManageNodeRequest(c *gin.Context) (*node_manager.Node, error) {
 	nodeId := c.Query("id")
 
@@ -206,6 +229,7 @@ func main() {
 	router.GET("/node_logs", getNodeLogs)
 	router.GET("/node_status", getNodeStatus)
 	router.GET("/nodes", getNodes)
+	router.GET("/backup_wallet", backupWallet)
 
 	embedStatics(router)
 

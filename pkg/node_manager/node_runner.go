@@ -1,6 +1,10 @@
 package node_manager
 
 import (
+	"fmt"
+	"os"
+	"path"
+
 	"github.com/sfreiberg/simplessh"
 )
 
@@ -42,6 +46,36 @@ func (node *Node) GetLogs() (string, error) {
 	return string(output), nil
 }
 
+func (node *Node) BackupWallet() (string, error) {
+	backupFile := "wallet_backup.zip"
+	localFile := path.Join(WORKING_DIR, node.Id+"_"+backupFile)
+
+	_, err := os.Stat(localFile)
+	if !os.IsNotExist(err) {
+		// backup file already present
+		return localFile, nil
+	}
+
+	output, err := node.runCommandSSH(`zip -j ` + backupFile + ` wallet_backup.zip \
+	massa_mount/node_privkey.key massa_mount/staking_wallet.dat massa_mount/wallet.dat`)
+
+	if err != nil {
+		return "", err
+	}
+
+	fmt.Println(string(output))
+
+	err = node.DownloadFileSSH(
+		fmt.Sprintf("/home/%s/%s", node.Username, backupFile),
+		localFile)
+
+	if err != nil {
+		return "", err
+	}
+
+	return localFile, nil
+}
+
 func (node *Node) runCommandSSH(command string) ([]byte, error) {
 	client, err := node.getSSHClient()
 	if err != nil {
@@ -62,4 +96,15 @@ func (node *Node) uploadFileSSH(local string, remote string) error {
 	defer client.Close()
 
 	return client.Upload(local, remote)
+}
+
+func (node *Node) DownloadFileSSH(remote string, local string) error {
+	client, err := node.getSSHClient()
+	if err != nil {
+		return err
+	}
+
+	defer client.Close()
+
+	return client.Download(remote, local)
 }
