@@ -51,7 +51,7 @@ func installMassaNode(c *gin.Context) {
 
 	var input node_manager.InstallNodeInput
 	if err := c.ShouldBind(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"ShouldBind error": err.Error()})
+		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -84,19 +84,19 @@ func installMassaNode(c *gin.Context) {
 	node.Status = node_manager.Installing
 	go node_manager.Install(node, isDockerComposePresent)
 
-	c.JSON(201, gin.H{"message": "Massa Node installation started"})
+	c.String(http.StatusCreated, "Massa Node installation started")
 }
 
 func startNode(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	output, err := node.StartNode()
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -106,45 +106,45 @@ func startNode(c *gin.Context) {
 func stopNode(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	output, err := node.StopNode()
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Node successfully stopped", "output": output})
+	c.JSON(http.StatusOK, gin.H{"message": "Node successfully stopped", "output": output})
 }
 
 func getNodeLogs(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	output, err := node.GetLogs()
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "got logs", "logs": output})
+	c.String(http.StatusOK, output)
 }
 
 func backupWallet(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	filePath, err := node.BackupWallet()
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -178,7 +178,7 @@ func handleManageNodeRequest(c *gin.Context) (*node_manager.Node, error) {
 func getNodes(c *gin.Context) {
 	nodes, err := node_manager.GetNodes()
 	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
+		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 	c.JSON(200, nodes)
@@ -187,7 +187,7 @@ func getNodes(c *gin.Context) {
 func getNodeStatus(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
