@@ -11,8 +11,46 @@ import (
 //go:embed embedFiles/*
 var embedFiles embed.FS
 
-func Install(node Node) {
+func (node *Node) uploadCustomDockerComposeFile() error {
+	composeFileName := node.GetDockerComposePath()
+	err := node.uploadFileSSH(composeFileName, "/home/"+node.Username+"/docker-compose.yml")
+	if err != nil {
+		fmt.Printf("failed to upload %s: %s", composeFileName, err)
+		return err
+	}
 
+	return nil
+}
+
+func (node *Node) uploadDefaultDockerComposeFile() error {
+	composeFileName := "docker-compose.yml"
+	composeFile, err := embedFiles.ReadFile("embedFiles/" + composeFileName)
+	if err != nil {
+		fmt.Printf("failed to read %s: %s", composeFileName, err)
+		return err
+	}
+
+	tmpDir := os.TempDir()
+
+	tmpFile := path.Join(tmpDir, composeFileName)
+	err = os.WriteFile(tmpFile, composeFile, 0644)
+	if err != nil {
+		fmt.Printf("failed to write %s: %s", composeFileName, err)
+		return err
+	}
+
+	defer os.Remove(tmpFile)
+
+	err = node.uploadFileSSH(tmpFile, "/home/"+node.Username+"/"+composeFileName)
+	if err != nil {
+		fmt.Printf("failed to upload %s: %s", composeFileName, err)
+		return err
+	}
+
+	return nil
+}
+
+func Install(node Node, isDockerComposePresent bool) {
 	if os.Chmod(node.GetSSHKeyPath(), 0600) != nil {
 		fmt.Println("unable to set sshKey file permissions")
 		return
@@ -24,28 +62,14 @@ func Install(node Node) {
 		return
 	}
 
-	composeFileName := "docker-compose.yml"
-	composeFile, err := embedFiles.ReadFile("embedFiles/" + composeFileName)
-	if err != nil {
-		fmt.Printf("failed to read %s: %s", composeFileName, err)
-		return
+	if isDockerComposePresent {
+		err = node.uploadCustomDockerComposeFile()
+	} else {
+		err = node.uploadDefaultDockerComposeFile()
 	}
 
-	tmpDir := os.TempDir()
-
-	tmpFile := path.Join(tmpDir, composeFileName)
-	err = os.WriteFile(tmpFile, composeFile, 0644)
 	if err != nil {
-		fmt.Printf("failed to write %s: %s", composeFileName, err)
-		return
-	}
-
-	defer os.Remove(tmpFile)
-
-	err = node.uploadFileSSH(tmpFile, "/home/"+node.Username+"/"+composeFileName)
-	if err != nil {
-		fmt.Printf("failed to upload %s: %s", composeFileName, err)
-		return
+		fmt.Printf("failed to upload docker compose file: %s", err)
 	}
 
 	dockerInstallScript := fmt.Sprintf(`

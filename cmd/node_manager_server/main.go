@@ -60,13 +60,27 @@ func installMassaNode(c *gin.Context) {
 		return
 	}
 
+	if err := node_manager.CreateDirIfNotExists(path.Dir(node.GetDockerComposePath())); err != nil {
+		c.String(http.StatusInternalServerError, "Creating docker compose dir:"+err.Error())
+		return
+	}
+
 	if err := c.SaveUploadedFile(input.SshKeyFile, node.GetSSHKeyPath()); err != nil {
 		c.String(http.StatusInternalServerError, "saving ssh key file:"+err.Error())
 		return
 	}
 
+	isDockerComposePresent := input.DockerComposeFile != nil
+
+	if isDockerComposePresent {
+		if err := c.SaveUploadedFile(input.DockerComposeFile, node.GetDockerComposePath()); err != nil {
+			c.String(http.StatusInternalServerError, "saving docker compose file:"+err.Error())
+			return
+		}
+	}
+
 	node.Status = node_manager.Installing
-	go node_manager.Install(node)
+	go node_manager.Install(node, isDockerComposePresent)
 
 	c.JSON(201, gin.H{"message": "Massa Node installation started"})
 }
