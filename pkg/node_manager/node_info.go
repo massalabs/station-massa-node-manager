@@ -6,64 +6,14 @@ import (
 	"log"
 	"os"
 	"path"
+	"strconv"
 	"strings"
-
-	"github.com/massalabs/thyra/pkg/node"
 )
 
-type ExecutionStats struct {
-	TimeWindowStart              *uint      `json:"time_window_start"`
-	TimeWindowEnd                *uint      `json:"time_window_end"`
-	FinalBlockCount              *uint      `json:"final_block_count"`
-	FinalExecutedOperationsCount *uint      `json:"final_executed_operations_count"`
-	ActiveCurser                 *node.Slot `json:"active_cursor"`
-}
-
-type State struct {
-	Config         *Config         `json:"config"`
-	ConsensusStats *ConsensusStats `json:"consensus_stats"`
-	CurrentCycle   *uint           `json:"current_cycle"`
-	CurrentTime    *uint           `json:"current_time"`
-	ExecutionStats *ExecutionStats `json:"execution_stats"`
-	LastSlot       *node.Slot      `json:"last_slot"`
-	NetworkStats   *NetworkStats   `json:"network_stats"`
-	NextSlot       *node.Slot      `json:"next_slot"`
-	NodeID         *string         `json:"node_id"`
-	NodeIP         *string         `json:"node_ip"`
-	PoolStats      *[]uint         `json:"pool_stats"`
-	Version        *string         `json:"version"`
-}
-
-type Config struct {
-	BlockReward             *string `json:"block_reward"`
-	DeltaF0                 *uint   `json:"delta_f0"`
-	EndTimeStamp            *uint   `json:"end_timestamp"`
-	GenesisTimestamp        *uint   `json:"genesis_timestamp"`
-	OperationValidityParios *uint   `json:"operation_validity_periods"`
-	PeriodsPerCycle         *uint   `json:"periods_per_cycle"`
-	PosLockCycles           *uint   `json:"pos_lock_cycles"`
-	PosLookbackCycle        *uint   `json:"pos_lookback_cycles"`
-	RollPrice               *string `json:"roll_price"`
-	T0                      *uint   `json:"t0"`
-	ThreadCount             *uint   `json:"thread_count"`
-}
-
-type ConsensusStats struct {
-	CliqueCount         *uint `json:"clique_count"`
-	EndTimespan         *uint `json:"end_timespan"`
-	FinalBlockCount     *uint `json:"final_block_count"`
-	FinalOperationCount *uint `json:"final_operation_count"`
-	StakerCount         *uint `json:"staker_count"`
-	StaleBlockCount     *uint `json:"stale_block_count"`
-	StartTimespan       *uint `json:"start_timespan"`
-}
-
-type NetworkStats struct {
-	ActiveNodeCount    *uint `json:"active_node_count"`
-	BannedPeerCount    *uint `json:"banned_peer_count"`
-	InConnectionCount  *uint `json:"in_connection_count"`
-	KnowPeerCount      *uint `json:"known_peer_count"`
-	OutConnectionCount *uint `json:"out_connection_count"`
+type SystemMetrics struct {
+	CPU  float64
+	RAM  float64
+	Disk int
 }
 
 func (node *Node) UpdateStatus() (string, error) {
@@ -91,6 +41,40 @@ func (node *Node) UpdateStatus() (string, error) {
 	}
 
 	return node.Status.String(), err
+}
+
+func (node *Node) GetSystemMetrics() (*SystemMetrics, error) {
+	result, err := node.runCommandSSH("grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage}'")
+	if err != nil {
+		return nil, err
+	}
+
+	cpu, err := strconv.ParseFloat(strings.TrimSpace((string(result))), 64)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err = node.runCommandSSH("free | awk 'FNR == 2 {print $3/$2 * 100.0}'")
+	if err != nil {
+		return nil, err
+	}
+
+	ram, err := strconv.ParseFloat(strings.TrimSpace((string(result))), 64)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err = node.runCommandSSH("df | awk 'FNR == 2 {print $5}' | cut -c 1-2")
+	if err != nil {
+		return nil, err
+	}
+
+	disk, err := strconv.Atoi(strings.TrimSpace(string(result)))
+	if err != nil {
+		return nil, err
+	}
+
+	return &SystemMetrics{cpu, ram, disk}, nil
 }
 
 func getNodesFilePath() string {
