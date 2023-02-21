@@ -1,7 +1,6 @@
 package node_manager
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -10,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/massalabs/thyra/pkg/node"
-	thyraNode "github.com/massalabs/thyra/pkg/node"
 )
 
 type ExecutionStats struct {
@@ -68,39 +66,6 @@ type NetworkStats struct {
 	OutConnectionCount *uint `json:"out_connection_count"`
 }
 
-// call RPC get_status
-func Status(client *node.Client) (*State, error) {
-	rawResponse, err := client.RPCClient.Call(
-		context.Background(),
-		"get_status",
-	)
-	if err != nil {
-		return nil, fmt.Errorf("calling get_status: %w", err)
-	}
-
-	if rawResponse.Error != nil {
-		return nil, rawResponse.Error
-	}
-
-	var resp State
-
-	err = rawResponse.GetObject(&resp)
-	if err != nil {
-		return nil, fmt.Errorf("parsing get_status jsonrpc response '%+v': %w", rawResponse, err)
-	}
-
-	return &resp, nil
-}
-
-func (node *Node) GetState() (*State, error) {
-	client := thyraNode.NewClient(node.Host)
-	status, err := Status(client)
-	if err != nil {
-		return nil, err
-	}
-	return status, nil
-}
-
 func (node *Node) UpdateStatus() (string, error) {
 	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status | jq '.version'")
 	if err != nil {
@@ -108,10 +73,11 @@ func (node *Node) UpdateStatus() (string, error) {
 	}
 
 	content := strings.TrimSpace(string(output))
+	fmt.Println(content)
 
 	if strings.HasPrefix(content, "null") {
 		node.Status = Bootstrapping
-	} else if strings.HasSuffix(content, "not running") {
+	} else if strings.HasSuffix(content, "not running") || strings.HasSuffix(content, "is restarting, wait until the container is running") {
 		node.Status = Down
 	} else if strings.HasPrefix(content, "\"TEST") {
 		node.Status = Up
