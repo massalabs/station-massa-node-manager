@@ -3,7 +3,6 @@ import React from "react";
 import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 
 import NodeStatus from "../types/NodeStatus";
-import NodeState from "../types/NodeState";
 import Node from "../types/Node";
 
 import {request} from "../request";
@@ -25,10 +24,10 @@ const stopNodeRequest = (id: string): Promise<any> => {
 };
 
 interface Props {
-    nodeStatus:
-        | { status: NodeStatus | undefined; state: string }
-        | undefined;
-    fetchNodeStatus: (host: string) => any;
+    nodeStatus: NodeStatus | undefined
+    nodeSshStatus: string
+    fetchNodeStatus: () => any;
+    fetchNodeSshStatus: () => any;
     selectedNode: Node;
 }
 
@@ -37,7 +36,8 @@ const NodeActions: React.FC<Props> = (props: Props) => {
     const [isStoppingNode, setIsStoppingNode] = React.useState<boolean>(false);
 
     const handleStart = () => {
-        if (props.nodeStatus?.state === "STOPPED") {
+        const status = props.nodeSshStatus;
+        if (status === "Down") {
             setIsStartingNode(true);
             startNodeRequest(props.selectedNode.Id)
                 .catch((error) => {
@@ -45,13 +45,15 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                 })
                 .finally(() => {
                     setIsStartingNode(false);
-                    props.fetchNodeStatus(props.selectedNode.Host);
+                    props.fetchNodeSshStatus();
                 });
         }
     };
 
     const handleStop = () => {
-        if (props.nodeStatus?.state !== "STOPPED") {
+        const status = props.nodeSshStatus;
+
+        if (status === "Up" || status === "Bootstrapping") {
             setIsStoppingNode(true);
             stopNodeRequest(props.selectedNode.Id)
                 .catch((error) => {
@@ -59,7 +61,8 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                 })
                 .finally(() => {
                     setIsStoppingNode(false);
-                    props.fetchNodeStatus(props.selectedNode.Host);
+                    props.fetchNodeSshStatus();
+
                 });
         }
     };
@@ -76,7 +79,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     variant="contained"
                     color="primary"
                     onClick={handleStart}
-                    disabled={props.nodeStatus?.state !== "STOPPED"}
+                    disabled={props.nodeSshStatus !== "Down"}
                     sx={{ borderRadius: 8, width: "256px", height: "64px" }}
                 >
                     {isStartingNode ? (
@@ -91,7 +94,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     variant="contained"
                     color="primary"
                     onClick={handleStop}
-                    disabled={props.nodeStatus?.state === "STOPPED"}
+                    disabled={props.nodeSshStatus === "Down"}
                     sx={{ borderRadius: 8, width: "256px", height: "64px" }}
                 >
                     {isStoppingNode ? (

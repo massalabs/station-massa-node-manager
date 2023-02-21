@@ -7,12 +7,8 @@ import PendingIcon from "@mui/icons-material/Pending";
 import CancelIcon from "@mui/icons-material/Cancel";
 import HelpIcon from "@mui/icons-material/Help";
 
-import NodeStatus from "../../types/NodeStatus";
-
 interface Props {
-    nodeStatus:
-        | { status: NodeStatus | undefined; state: string }
-        | undefined;
+    nodeSshStatus: string;
 }
 
 const NodeStatusCard: React.FC<Props> = (props: Props) => {
@@ -57,12 +53,12 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
                 }}
             >
                 <CardContent sx={{ textAlign: "center" }}>
-                    {getStatusIcon(props.nodeStatus?.state)}
+                    {getStatusIcon(props.nodeSshStatus)}
                     <Typography
                         variant="h4"
-                        color={getStatusColor(props.nodeStatus?.state)}
+                        color={getStatusColor(props.nodeSshStatus)}
                     >
-                        {props.nodeStatus?.state ?? <Skeleton />}
+                        {props.nodeSshStatus ?? <Skeleton />}
                     </Typography>
                 </CardContent>
             </Card>

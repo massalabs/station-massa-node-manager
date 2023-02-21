@@ -16,10 +16,10 @@ import Node from "../types/Node";
 
 interface Props {
     selectedNode: Node;
-    nodeStatus:
-        | { status: NodeStatus | undefined; state: string }
-        | undefined;
-    fetchNodeStatus: (host: string) => any;
+    nodeStatus: NodeStatus | undefined;
+    nodeSshStatus: string
+    fetchNodeStatus: () => any;
+    fetchNodeSshStatus: () => any;
 }
 
 const Manager: React.FC<Props> = (props: Props) => {
@@ -27,8 +27,10 @@ const Manager: React.FC<Props> = (props: Props) => {
         <Container maxWidth="xl" sx={{ my: 4 }}>
             <NodeActions
                 nodeStatus={props.nodeStatus}
+                nodeSshStatus={props.nodeSshStatus}
                 selectedNode={props.selectedNode}
                 fetchNodeStatus={props.fetchNodeStatus}
+                fetchNodeSshStatus={props.fetchNodeSshStatus}
             />
             <Grid container spacing={4} sx={{ mt: "8px" }}>
                 <Grid item xs={12} sm={12} md={8}>
@@ -38,7 +40,7 @@ const Manager: React.FC<Props> = (props: Props) => {
                     />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
-                    <NodeStatusCard nodeStatus={props.nodeStatus} />
+                    <NodeStatusCard nodeSshStatus={props.nodeSshStatus} />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                     <NetworkStatsCard

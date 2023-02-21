@@ -4,7 +4,6 @@ import { CircularProgress } from "@mui/material";
 
 import Node from "./types/Node";
 import NodeStatus, { getStateStr } from "./types/NodeStatus";
-import NodeState from "./types/NodeState";
 
 import Header from "./components/Header";
 
@@ -45,31 +44,20 @@ export default function App() {
             return undefined;
         })()
     );
-    const [nodeStatus, setNodeStatus] = React.useState<
-        { status: NodeStatus | undefined; state: string } | undefined
-    >(undefined);
+
+    const [nodeStatus, setNodeStatus] = React.useState<NodeStatus | undefined>(undefined);
+    const [nodeSshStatus, setNodeSshStatus] = React.useState<string>("");
 
     React.useEffect(() => {
         fetchNodes();
     }, []);
 
-    const selectNode = (node: Node) => {
-        setSelectedNode(node);
-    };
-
     const fetchNodeStatus = () => {
         if (selectedNode) {
             getStatusFromNodeApi(selectedNode.Host)
                 .then((status) => {
-                    getNodeState(selectedNode.Id).then((state) => {
-                        console.log("setNodeStatus", status.data.result)
-                        console.log("setNodeStatus state", state, getStateStr(state) )
-                        setNodeStatus({status: status.data.result, state: getStateStr(state)});
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-
+                    console.log("setNodeStatus", status.data.result)
+                    setNodeStatus(status.data.result);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -77,7 +65,21 @@ export default function App() {
         }
     };
 
+    const fetchSshStatus = () => {
+        console.log("selectedNode??",selectedNode)
+        if (selectedNode) {
+            getNodeState(selectedNode.Id).then((state) => {
+                console.log("fetchSshStatus state", state, getStateStr(state))
+                setNodeSshStatus(state.data.status);
+            })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    };
+
     React.useEffect(() => fetchNodeStatus(), [selectedNode]);
+    React.useEffect(() => fetchSshStatus(), [selectedNode]);
 
     const fetchNodes = () => {
         setIsFetchingNodes(true);
@@ -101,7 +103,7 @@ export default function App() {
             <Header
                 nodes={nodes}
                 selectedNode={selectedNode}
-                setSelectedNode={selectNode}
+                setSelectedNode={setSelectedNode}
             />
 
             {isFetchingNodes ? (
@@ -118,7 +120,9 @@ export default function App() {
                 <Manager
                     selectedNode={selectedNode}
                     nodeStatus={nodeStatus}
+                    nodeSshStatus={nodeSshStatus}
                     fetchNodeStatus={fetchNodeStatus}
+                    fetchNodeSshStatus={fetchSshStatus}
                 />
             ) : (
                 <Install fetchNodes={fetchNodes} />

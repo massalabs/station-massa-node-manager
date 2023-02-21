@@ -20,9 +20,7 @@ import AddressDiplay from "../AddressDisplay";
 
 interface Props {
     selectedNode: Node;
-    nodeStatus:
-        | { status: NodeStatus | undefined; state: string }
-        | undefined;
+    nodeStatus:NodeStatus | undefined;
 }
 
 const NodeInfoCard: React.FC<Props> = (props: Props) => {
@@ -89,10 +87,10 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                                 <Typography variant="h6" width="50%">
                                     Node ID:
                                 </Typography>
-                                {props.nodeStatus?.status ? (
+                                {props.nodeStatus ? (
                                     <AddressDiplay
                                         address={
-                                            props.nodeStatus?.status?.node_id
+                                            props.nodeStatus?.node_id
                                         }
                                     />
                                 ) : (
@@ -108,7 +106,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                                     Node Version:
                                 </Typography>
                                 <Typography variant="h6">
-                                    {props.nodeStatus?.status?.version ?? (
+                                    {props.nodeStatus?.version ?? (
                                         <Skeleton />
                                     )}
                                 </Typography>
@@ -127,7 +125,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                                     Current Cycle:
                                 </Typography>
                                 <Typography variant="h6">
-                                    {props.nodeStatus?.status
+                                    {props.nodeStatus
                                         ?.current_cycle ?? <Skeleton />}
                                 </Typography>
                             </Box>
@@ -146,7 +144,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                                     }}
                                 >
                                     <Typography variant="h6">
-                                        {props.nodeStatus?.status
+                                        {props.nodeStatus
                                             ?.execution_stats?.active_cursor
                                             .period ?? <Skeleton />}
                                     </Typography>
@@ -172,7 +170,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                                     }}
                                 >
                                     <Typography variant="h6">
-                                        {props.nodeStatus?.status
+                                        {props.nodeStatus
                                             ?.execution_stats?.active_cursor
                                             .thread ?? <Skeleton />}
                                     </Typography>
