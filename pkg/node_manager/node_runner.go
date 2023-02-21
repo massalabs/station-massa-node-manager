@@ -15,7 +15,7 @@ func (node *Node) getSSHClient() (*simplessh.Client, error) {
 }
 
 func (node *Node) StartNode() (string, error) {
-	output, err := node.runCommandSSH("sudo docker compose up --pull -d --remove-orphans")
+	output, err := node.runCommandSSH("sudo docker compose up --pull --remove-orphans -d")
 	if err != nil {
 		return "", err
 	}
