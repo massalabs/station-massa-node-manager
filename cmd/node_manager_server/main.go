@@ -19,8 +19,6 @@ import (
 	cors "github.com/rs/cors/wrapper/gin"
 )
 
-//go:generate ./install.sh
-
 //go:embed static/*
 var staticFiles embed.FS
 
