@@ -96,7 +96,7 @@ cat << 'EOF' > docker-container-logrotate
 	}
 EOF
 sudo mv docker-container-logrotate /etc/logrotate.d/docker-container-logrotate
-sudo docker compose up -d --pull always
+sudo docker compose pull
 echo "Node installation completed"
 `, node.DiscordId, node.WalletPassword)
 
