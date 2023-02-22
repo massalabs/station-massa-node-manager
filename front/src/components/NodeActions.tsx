@@ -5,7 +5,9 @@ import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import NodeStatus from "../types/NodeStatus";
 import Node from "../types/Node";
 
-import {request} from "../request";
+import { request } from "../request";
+import { NodeMonitor } from "../types/NodeMonitor";
+import axios from "axios";
 
 const startNodeRequest = (id: string): Promise<any> => {
     return request(
@@ -25,9 +27,9 @@ const stopNodeRequest = (id: string): Promise<any> => {
 
 interface Props {
     nodeStatus: NodeStatus | undefined
-    nodeSshStatus: string
+    nodeMonitor: NodeMonitor | undefined
     fetchNodeStatus: () => any;
-    fetchNodeSshStatus: () => any;
+    fetchMonitoring: () => any;
     selectedNode: Node;
 }
 
@@ -36,7 +38,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
     const [isStoppingNode, setIsStoppingNode] = React.useState<boolean>(false);
 
     const handleStart = () => {
-        const status = props.nodeSshStatus;
+        const status = props.nodeMonitor?.status;
         if (status === "Down") {
             setIsStartingNode(true);
             startNodeRequest(props.selectedNode.Id)
@@ -45,14 +47,13 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                 })
                 .finally(() => {
                     setIsStartingNode(false);
-                    props.fetchNodeSshStatus();
+                    props.fetchMonitoring();
                 });
         }
     };
 
     const handleStop = () => {
-        const status = props.nodeSshStatus;
-
+        const status = props.nodeMonitor?.status;
         if (status === "Up" || status === "Bootstrapping") {
             setIsStoppingNode(true);
             stopNodeRequest(props.selectedNode.Id)
@@ -61,10 +62,30 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                 })
                 .finally(() => {
                     setIsStoppingNode(false);
-                    props.fetchNodeSshStatus();
+                    props.fetchMonitoring();
 
                 });
         }
+    };
+
+    const handleBackup = () => {
+        axios({
+            url: `backup_wallet?id=${props.selectedNode.Id}`,
+            method: 'GET',
+            responseType: 'blob',
+        })
+            .then(response => {
+                const blob = new Blob([response.data])
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'wallet_backup.zip');
+                document.body.appendChild(link);
+                link.click();
+            })
+            .catch((error) => {
+                console.error('Error downloading wallet_backup.zip:', error);
+            })
     };
 
     return (
@@ -79,7 +100,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     variant="contained"
                     color="primary"
                     onClick={handleStart}
-                    disabled={props.nodeSshStatus !== "Down"}
+                    disabled={props.nodeMonitor?.status !== "Down"}
                     sx={{ borderRadius: 8, width: "256px", height: "64px" }}
                 >
                     {isStartingNode ? (
@@ -94,7 +115,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     variant="contained"
                     color="primary"
                     onClick={handleStop}
-                    disabled={props.nodeSshStatus === "Down"}
+                    disabled={props.nodeMonitor?.status === "Down"}
                     sx={{ borderRadius: 8, width: "256px", height: "64px" }}
                 >
                     {isStoppingNode ? (
@@ -102,6 +123,16 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     ) : (
                         <Typography variant="h6">Stop</Typography>
                     )}
+                </Button>
+            </Grid>
+            <Grid item sx={{ textAlign: "center" }}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleBackup}
+                    sx={{ borderRadius: 8, width: "256px", height: "64px" }}
+                >
+                    <Typography variant="h6">Backup wallet</Typography>
                 </Button>
             </Grid>
             <Grid item sx={{ textAlign: "center" }}>

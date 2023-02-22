@@ -23,7 +23,6 @@ func (node *Node) UpdateStatus() (string, error) {
 	}
 
 	content := strings.TrimSpace(string(output))
-	fmt.Println(content)
 
 	if strings.HasPrefix(content, "null") {
 		node.Status = Bootstrapping

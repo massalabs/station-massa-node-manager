@@ -6,9 +6,10 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PendingIcon from "@mui/icons-material/Pending";
 import CancelIcon from "@mui/icons-material/Cancel";
 import HelpIcon from "@mui/icons-material/Help";
+import { NodeMonitor } from "../../types/NodeMonitor";
 
 interface Props {
-    nodeSshStatus: string;
+    nodeMonitor: NodeMonitor | undefined
 }
 
 const NodeStatusCard: React.FC<Props> = (props: Props) => {
@@ -17,6 +18,8 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
             case "Up":
                 return "green";
             case "Down":
+            case "Unknown":
+
                 return "error";
             default:
                 return "yellow";
@@ -30,8 +33,10 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
                     <CheckCircleIcon sx={{ fontSize: 64 }} color="success" />
                 );
             case "Down":
+            case "Unknown":
                 return <CancelIcon sx={{ fontSize: 64 }} color="error" />;
             case "Bootstrapping":
+            case "Installing":
                 return <PendingIcon sx={{ fontSize: 64 }} color="warning" />;
             default:
                 return <HelpIcon sx={{ fontSize: 64 }} />;
@@ -53,12 +58,12 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
                 }}
             >
                 <CardContent sx={{ textAlign: "center" }}>
-                    {getStatusIcon(props.nodeSshStatus)}
+                    {getStatusIcon(props.nodeMonitor?.status)}
                     <Typography
                         variant="h4"
-                        color={getStatusColor(props.nodeSshStatus)}
+                        color={getStatusColor(props.nodeMonitor?.status)}
                     >
-                        {props.nodeSshStatus ?? <Skeleton />}
+                        {props.nodeMonitor?.status ?? <Skeleton />}
                     </Typography>
                 </CardContent>
             </Card>

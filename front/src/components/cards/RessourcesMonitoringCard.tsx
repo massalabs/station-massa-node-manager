@@ -8,22 +8,18 @@ import {
     Typography,
 } from "@mui/material";
 
-import { HelpOutline } from "@mui/icons-material";
-
 import LinearProgressWithLabel from "../LinearProgressWithLabel";
+import { NodeMonitor } from "../../types/NodeMonitor";
 
-interface Props {}
+interface Props {
+    nodeMonitor: NodeMonitor | undefined
+}
 
-const RessourcesMonirotingCard: React.FC<Props> = (_props: Props) => {
+const RessourcesMonirotingCard: React.FC<Props> = (props: Props) => {
     return (
         <React.Fragment>
             <Typography variant="subtitle2" sx={{ ml: 2, mt: 1 }}>
                 Ressources monitoring
-                <Tooltip title="Those are dummy information.">
-                    <IconButton sx={{ p: 0, ml: 1 }}>
-                        <HelpOutline fontSize="small" />
-                    </IconButton>
-                </Tooltip>
             </Typography>
             <Card
                 sx={{
@@ -34,15 +30,15 @@ const RessourcesMonirotingCard: React.FC<Props> = (_props: Props) => {
                 <CardContent>
                     <Typography variant="h6">
                         CPU
-                        <LinearProgressWithLabel value={34} color="success" />
+                        <LinearProgressWithLabel value={props.nodeMonitor?.metrics.CPU ?? 0} color="success" />
                     </Typography>
                     <Typography variant="h6">
                         RAM
-                        <LinearProgressWithLabel value={57} color="success" />
+                        <LinearProgressWithLabel value={props.nodeMonitor?.metrics.RAM ?? 0} color="success" />
                     </Typography>
                     <Typography variant="h6">
                         Disk
-                        <LinearProgressWithLabel value={78} color="warning" />
+                        <LinearProgressWithLabel value={props.nodeMonitor?.metrics.Disk ?? 0} color="warning" />
                     </Typography>
                 </CardContent>
             </Card>

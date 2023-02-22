@@ -3,7 +3,8 @@ import * as React from "react";
 import { CircularProgress } from "@mui/material";
 
 import Node from "./types/Node";
-import NodeStatus, { getStateStr } from "./types/NodeStatus";
+import NodeStatus from "./types/NodeStatus";
+import { NodeMonitor } from "./types/NodeMonitor";
 
 import Header from "./components/Header";
 
@@ -19,7 +20,6 @@ const getStatusFromNodeApi = async (host: string): Promise<any> => {
         method: "get_status",
         params: []
     })
-    console.log("getStatusFromNodeApi", res)
     console.log("getStatusFromNodeApi", res.data.result)
     return res;
 };
@@ -46,7 +46,7 @@ export default function App() {
     );
 
     const [nodeStatus, setNodeStatus] = React.useState<NodeStatus | undefined>(undefined);
-    const [nodeSshStatus, setNodeSshStatus] = React.useState<string>("");
+    const [nodeMonitor, setNodeMonitor] = React.useState<NodeMonitor | undefined>(undefined);
 
     React.useEffect(() => {
         fetchNodes();
@@ -56,7 +56,6 @@ export default function App() {
         if (selectedNode) {
             getStatusFromNodeApi(selectedNode.Host)
                 .then((status) => {
-                    console.log("setNodeStatus", status.data.result)
                     setNodeStatus(status.data.result);
                 })
                 .catch((error) => {
@@ -65,12 +64,11 @@ export default function App() {
         }
     };
 
-    const fetchSshStatus = () => {
-        console.log("selectedNode??",selectedNode)
+    const fetchMonitoring = () => {
         if (selectedNode) {
             getNodeState(selectedNode.Id).then((state) => {
-                console.log("fetchSshStatus state", state, getStateStr(state))
-                setNodeSshStatus(state.data.status);
+                console.log("setnodeMonitor data", state.data)
+                setNodeMonitor(state.data);
             })
                 .catch((error) => {
                     console.error(error);
@@ -79,7 +77,17 @@ export default function App() {
     };
 
     React.useEffect(() => fetchNodeStatus(), [selectedNode]);
-    React.useEffect(() => fetchSshStatus(), [selectedNode]);
+
+    React.useEffect(() => {
+        fetchMonitoring();
+
+        // Fetch data every 5 seconds
+        const intervalId = setInterval(() => {
+            fetchMonitoring();
+        }, 5000);
+
+        return () => clearInterval(intervalId);
+    }, [selectedNode]);
 
     const fetchNodes = () => {
         setIsFetchingNodes(true);
@@ -120,9 +128,9 @@ export default function App() {
                 <Manager
                     selectedNode={selectedNode}
                     nodeStatus={nodeStatus}
-                    nodeSshStatus={nodeSshStatus}
+                    nodeMonitor={nodeMonitor}
                     fetchNodeStatus={fetchNodeStatus}
-                    fetchNodeSshStatus={fetchSshStatus}
+                    fetchMonitoring={fetchMonitoring}
                 />
             ) : (
                 <Install fetchNodes={fetchNodes} />

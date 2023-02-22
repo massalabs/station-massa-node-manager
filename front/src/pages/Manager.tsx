@@ -10,16 +10,16 @@ import RessourcesMonirotingCard from "../components/cards/RessourcesMonitoringCa
 
 import NodeActions from "../components/NodeActions";
 
-import NodeState from "../types/NodeState";
+import {NodeMonitor} from "../types/NodeMonitor";
 import NodeStatus from "../types/NodeStatus";
 import Node from "../types/Node";
 
 interface Props {
     selectedNode: Node;
     nodeStatus: NodeStatus | undefined;
-    nodeSshStatus: string
+    nodeMonitor: NodeMonitor | undefined
     fetchNodeStatus: () => any;
-    fetchNodeSshStatus: () => any;
+    fetchMonitoring: () => any;
 }
 
 const Manager: React.FC<Props> = (props: Props) => {
@@ -27,10 +27,10 @@ const Manager: React.FC<Props> = (props: Props) => {
         <Container maxWidth="xl" sx={{ my: 4 }}>
             <NodeActions
                 nodeStatus={props.nodeStatus}
-                nodeSshStatus={props.nodeSshStatus}
+                nodeMonitor={props.nodeMonitor}
                 selectedNode={props.selectedNode}
                 fetchNodeStatus={props.fetchNodeStatus}
-                fetchNodeSshStatus={props.fetchNodeSshStatus}
+                fetchMonitoring={props.fetchMonitoring}
             />
             <Grid container spacing={4} sx={{ mt: "8px" }}>
                 <Grid item xs={12} sm={12} md={8}>
@@ -40,7 +40,7 @@ const Manager: React.FC<Props> = (props: Props) => {
                     />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
-                    <NodeStatusCard nodeSshStatus={props.nodeSshStatus} />
+                    <NodeStatusCard nodeMonitor={props.nodeMonitor} />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                     <NetworkStatsCard
@@ -49,7 +49,9 @@ const Manager: React.FC<Props> = (props: Props) => {
                     />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
-                    <RessourcesMonirotingCard />
+                    <RessourcesMonirotingCard 
+                        nodeMonitor={props.nodeMonitor}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                     <ConsensusStatsCard
