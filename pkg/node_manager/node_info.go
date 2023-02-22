@@ -45,32 +45,32 @@ func (node *Node) UpdateStatus() (string, error) {
 func (node *Node) GetSystemMetrics() (*SystemMetrics, error) {
 	result, err := node.runCommandSSH("grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage}'")
 	if err != nil {
-		return nil, err
+		return &SystemMetrics{0, 0, 0}, err
 	}
 
 	cpu, err := strconv.ParseFloat(strings.TrimSpace((string(result))), 64)
 	if err != nil {
-		return nil, err
+		return &SystemMetrics{0, 0, 0}, err
 	}
 
 	result, err = node.runCommandSSH("free | awk 'FNR == 2 {print $3/$2 * 100.0}'")
 	if err != nil {
-		return nil, err
+		return &SystemMetrics{cpu, 0, 0}, err
 	}
 
 	ram, err := strconv.ParseFloat(strings.TrimSpace((string(result))), 64)
 	if err != nil {
-		return nil, err
+		return &SystemMetrics{cpu, 0, 0}, err
 	}
 
 	result, err = node.runCommandSSH("df | awk 'FNR == 2 {print $5}' | cut -c 1-2")
 	if err != nil {
-		return nil, err
+		return &SystemMetrics{cpu, ram, 0}, err
 	}
 
 	disk, err := strconv.Atoi(strings.TrimSpace(string(result)))
 	if err != nil {
-		return nil, err
+		return &SystemMetrics{cpu, ram, 0}, err
 	}
 
 	return &SystemMetrics{cpu, ram, disk}, nil

@@ -195,11 +195,7 @@ func getNodeStatus(c *gin.Context) {
 		return
 	}
 
-	metrics, err := node.GetSystemMetrics()
-	if err != nil {
-		c.JSON(500, gin.H{"status": status, "error": err.Error()})
-		return
-	}
+	metrics, _ := node.GetSystemMetrics()
 
 	c.JSON(200, gin.H{"status": status, "metrics": metrics})
 }
