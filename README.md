@@ -2,12 +2,12 @@
 
 ## Setup
 
-  go install golang.org/x/tools/cmd/stringer@latest
+    go install golang.org/x/tools/cmd/stringer@latest
 
 ## Generate
 
-  go generate ./...
+    go generate ./...
 
 ## Build
 
-  go build -o node_manager ./cmd/node_manager_server/main.go
+    go build -o node_manager ./cmd/node_manager_server/main.go
