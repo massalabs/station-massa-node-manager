@@ -1,3 +1,3 @@
-package main
+package root
 
 //go:generate ./install.sh

@@ -7,3 +7,7 @@
 ## Generate
 
   go generate ./...
+
+## Build
+
+  go build -o node_manager ./cmd/node_manager_server/main.go
