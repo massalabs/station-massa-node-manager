@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
 	"strconv"
 	"strings"
 )
@@ -117,12 +116,8 @@ func (node *Node) GetSystemMetrics() (*SystemMetrics, error) {
 	return &SystemMetrics{cpu, ram, disk}, nil
 }
 
-func getNodesFilePath() string {
-	return path.Join(WORKING_DIR, NODES_FILENAME)
-}
-
 func GetNodes() ([]Node, error) {
-	filePath := getNodesFilePath()
+	filePath := GetNodesListFile()
 
 	_, err := os.Stat(filePath)
 	if os.IsNotExist(err) {
@@ -184,11 +179,10 @@ func (node *Node) addOrUpdateNode() error {
 		nodes = append(nodes, *node)
 	}
 
-	filePath := getNodesFilePath()
 	content, err := json.Marshal(nodes)
 	if err != nil {
 		return err
 	}
 
-	return os.WriteFile(filePath, content, 0644)
+	return os.WriteFile(GetNodesListFile(), content, 0644)
 }

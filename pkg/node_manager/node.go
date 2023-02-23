@@ -40,11 +40,11 @@ type Node struct {
 }
 
 func (node *Node) GetSSHKeyPath() string {
-	return path.Join(SSH_PRIVATE_KEY_DIR, node.Id+".priv")
+	return path.Join(GetSshKeysDir(), node.Id+".priv")
 }
 
 func (node *Node) GetDockerComposePath() string {
-	return path.Join(DOCKER_COMPOSE_DIR, node.Id+".yml")
+	return path.Join(GetSshKeysDir(), node.Id+".yml")
 }
 
 func (input *InstallNodeInput) CreateNode() Node {

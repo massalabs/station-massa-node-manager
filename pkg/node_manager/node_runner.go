@@ -48,7 +48,7 @@ func (node *Node) GetLogs() (string, error) {
 
 func (node *Node) BackupWallet() (string, error) {
 	backupFile := "wallet_backup.zip"
-	localFile := path.Join(WORKING_DIR, node.Id+"_"+backupFile)
+	localFile := path.Join(GetWorkDir(), node.Id+"_"+backupFile)
 
 	_, err := os.Stat(localFile)
 	if !os.IsNotExist(err) {
