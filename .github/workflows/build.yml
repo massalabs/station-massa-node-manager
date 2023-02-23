@@ -2,26 +2,16 @@ name: Build and publish
 
 on:
   push:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      release-version:
-        description: "Version to produce"
-        required: true
-      release-as-draft:
-        description: "Draft release"
-        required: true
-        type: boolean
-        default: true
-      release-as-prerelease:
-        description: "Pre-release"
-        required: true
-        type: boolean
-        default: false
-      generate-release-notes:
-        description: "Generate release notes"
-        required: true
-        type: boolean
-        default: true
+      tag_name:
+        type: string
+      draft:
+        type: string
+      prerelease:
+        type: string
+      generate_release_notes:
+        type: string
 
 jobs:
 
