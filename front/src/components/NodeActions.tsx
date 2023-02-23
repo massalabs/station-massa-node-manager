@@ -139,14 +139,15 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                 <Button
                     variant="contained"
                     color="primary"
-                    disabled={true}
+                    onClick={handleStart}
                     sx={{ borderRadius: 8, width: "256px", height: "64px" }}
                 >
-                    <Typography variant="h6">Update</Typography>
+                    {isStartingNode ? (
+                        <CircularProgress size={24} />
+                    ) : (
+                        <Typography variant="h6">Update</Typography>
+                    )}
                 </Button>
-                <Typography variant="body2">
-                    You are using the latest version
-                </Typography>
             </Grid>
         </Grid>
     );
