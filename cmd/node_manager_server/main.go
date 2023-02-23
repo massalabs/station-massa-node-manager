@@ -195,9 +195,15 @@ func getNodeStatus(c *gin.Context) {
 		return
 	}
 
+	wallet_infos, err := node.WalletInfo()
+	if err != nil {
+		c.JSON(500, gin.H{"status": status, "getting Wallet info": err.Error()})
+		return
+	}
+
 	metrics, _ := node.GetSystemMetrics()
 
-	c.JSON(200, gin.H{"status": status, "metrics": metrics})
+	c.JSON(200, gin.H{"status": status, "metrics": metrics, "wallet_infos": wallet_infos})
 }
 
 func main() {

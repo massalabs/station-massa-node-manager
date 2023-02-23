@@ -16,6 +16,15 @@ type SystemMetrics struct {
 	Disk int
 }
 
+type WalletInfo struct {
+	Thread            float64
+	Candidate_rolls   float64
+	Final_rolls       float64
+	Active_rolls      float64
+	Final_balance     string
+	Candidate_balance string
+}
+
 func (node *Node) UpdateStatus() (string, error) {
 	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status | jq '.version'")
 	if err != nil {
@@ -40,6 +49,38 @@ func (node *Node) UpdateStatus() (string, error) {
 	}
 
 	return node.Status.String(), err
+}
+
+func (node *Node) WalletInfo() (*WalletInfo, error) {
+	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j wallet_info")
+	if err != nil {
+		return nil, err
+	}
+
+	content := strings.TrimSpace(string(output))
+
+	var data map[string]interface{}
+	err = json.Unmarshal([]byte(content), &data)
+	if err != nil {
+		return nil, err
+	}
+
+	var wallet_info map[string]interface{}
+	for _, infos := range data {
+		wallet_info = infos.(map[string]interface{})
+		break
+
+	}
+
+	address_info := wallet_info["address_info"].(map[string]interface{})
+
+	return &WalletInfo{address_info["thread"].(float64),
+			address_info["candidate_rolls"].(float64),
+			address_info["final_rolls"].(float64),
+			address_info["final_rolls"].(float64),
+			address_info["final_balance"].(string),
+			address_info["candidate_balance"].(string)},
+		nil
 }
 
 func (node *Node) GetSystemMetrics() (*SystemMetrics, error) {
