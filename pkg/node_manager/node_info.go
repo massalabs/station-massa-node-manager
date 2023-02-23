@@ -63,7 +63,7 @@ func (node *Node) GetSystemMetrics() (*SystemMetrics, error) {
 		return &SystemMetrics{cpu, 0, 0}, err
 	}
 
-	result, err = node.runCommandSSH("df | awk 'FNR == 2 {print $5}' | cut -c 1-2")
+	result, err = node.runCommandSSH("df --output=pcent / | awk 'NR==2{print substr($1, 1, length($1)-1)}'")
 	if err != nil {
 		return &SystemMetrics{cpu, ram, 0}, err
 	}
