@@ -237,7 +237,7 @@ func main() {
 
 	log.Println("Listening on " + ln.Addr().String())
 	if !standaloneMode {
-		err := plugin.Register(pluginID, "Node Manager", "Massalabs", "Install and manege Massa nodes", ln.Addr())
+		err := plugin.Register(pluginID, "Node Manager", "Massalabs", "Install and manage Massa nodes", ln.Addr())
 		if err != nil {
 			log.Panicln(err)
 		}
