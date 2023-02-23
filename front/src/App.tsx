@@ -70,9 +70,10 @@ export default function App() {
                 console.log("setnodeMonitor data", state.data)
                 setNodeMonitor(state.data);
             })
-                .catch((error) => {
-                    console.error(error);
-                });
+            .catch((error) => {
+                setNodeMonitor({status: "Down", metrics: {CPU: 0, RAM: 0, Disk: 0}});
+                console.error(error);
+            });
         }
     };
 

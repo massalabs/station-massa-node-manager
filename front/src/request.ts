@@ -5,14 +5,14 @@ export const request = async (
     url: string,
     payload: any,
 ): Promise<any> => {
-    const request_config: AxiosRequestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         method,
         url,
         data: payload,
     };
     return new Promise((resolve, reject) => {
         axios
-            .request(request_config)
+            .request(requestConfig)
             .then((response) => {
                 resolve(response);
             })

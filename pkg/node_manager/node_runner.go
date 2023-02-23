@@ -19,7 +19,7 @@ func (node *Node) getSSHClient() (*simplessh.Client, error) {
 }
 
 func (node *Node) StartNode() (string, error) {
-	output, err := node.runCommandSSH("sudo docker compose up --pull -d")
+	output, err := node.runCommandSSH("sudo docker compose pull && sudo docker compose up -d")
 	if err != nil {
 		return "", err
 	}

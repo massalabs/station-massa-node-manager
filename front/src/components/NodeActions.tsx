@@ -37,9 +37,12 @@ const NodeActions: React.FC<Props> = (props: Props) => {
     const [isStartingNode, setIsStartingNode] = React.useState<boolean>(false);
     const [isStoppingNode, setIsStoppingNode] = React.useState<boolean>(false);
 
-    const handleStart = () => {
-        const status = props.nodeMonitor?.status;
-        if (status === "Down") {
+    const canStart = () => {
+        return props.nodeMonitor?.status !== "Up"
+    }
+
+    const handleStart = (force = false) => {
+        if (force || canStart()) {
             setIsStartingNode(true);
             startNodeRequest(props.selectedNode.Id)
                 .catch((error) => {
@@ -52,9 +55,13 @@ const NodeActions: React.FC<Props> = (props: Props) => {
         }
     };
 
-    const handleStop = () => {
+    const canStop = () => {
         const status = props.nodeMonitor?.status;
-        if (status === "Up" || status === "Bootstrapping") {
+        return status === "Up" || status === "Bootstrapping"
+    }
+
+    const handleStop = () => {
+        if (canStop()) {
             setIsStoppingNode(true);
             stopNodeRequest(props.selectedNode.Id)
                 .catch((error) => {
@@ -99,8 +106,8 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleStart}
-                    disabled={props.nodeMonitor?.status !== "Down"}
+                    onClick={() => handleStart()}
+                    disabled={!canStart()}
                     sx={{ borderRadius: 8, width: "256px", height: "64px" }}
                 >
                     {isStartingNode ? (
@@ -115,7 +122,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     variant="contained"
                     color="primary"
                     onClick={handleStop}
-                    disabled={props.nodeMonitor?.status === "Down"}
+                    disabled={!canStop()}
                     sx={{ borderRadius: 8, width: "256px", height: "64px" }}
                 >
                     {isStoppingNode ? (
@@ -139,7 +146,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleStart}
+                    onClick={() => handleStart(true)}
                     sx={{ borderRadius: 8, width: "256px", height: "64px" }}
                 >
                     {isStartingNode ? (
