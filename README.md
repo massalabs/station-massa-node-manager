@@ -16,3 +16,6 @@
 
     mkdir -p ~/.config/thyra/my_plugins/node_manager
     mv node_manager ~/.config/thyra/my_plugins/node_manager
+
+## Get your Discord token
+ https://www.androidauthority.com/get-discord-token-3149920/
