@@ -17,15 +17,22 @@ services:
       - TARGET_ROLL_AMOUNT=NULL
 
     ports:
-     - "31244:31244"
-     - "31245:31245"
-     - "33035:33035"
+      - "31244:31244"
+      - "31245:31245"
+      - "33035:33035"
     cap_add:
       - SYS_NICE
       - SYS_RESOURCE
       - SYS_TIME
     volumes:
-     - ./massa_mount:/massa_mount
+      - ./massa_mount:/massa_mount
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --stop-timeout 360s massa-core
 
 volumes:
   massa-core:
