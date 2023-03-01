@@ -20,7 +20,6 @@ const getStatusFromNodeApi = async (host: string): Promise<any> => {
         method: "get_status",
         params: []
     })
-    console.log("getStatusFromNodeApi", res.data.result)
     return res;
 };
 

@@ -3,8 +3,8 @@ import axios, { Method, AxiosRequestConfig } from "axios";
 export const request = async (
     method: Method | string,
     url: string,
-    payload: any,
-): Promise<any> => {
+    payload: any
+) => {
     const requestConfig: AxiosRequestConfig = {
         method,
         url,
@@ -14,29 +14,52 @@ export const request = async (
         axios
             .request(requestConfig)
             .then((response) => {
-                resolve(response);
+                return response;
             })
             .catch((error) => {
-                reject(error);
+                console.error(error);
             });
     });
 };
 
-export const localApiGet = async (
-    path: string,
-): Promise<any> => apiGet(`${window.location.pathname}${path}`)
+//Production mode
+const localPrefixUrl = window.location.pathname;
+//Uncomment to work on front and put the port of the back in local
+// const localPrefixUrl = "http://localhost:53918/";
 
-export const apiGet = async (
-    url: string,
-): Promise<any> => {
-    return new Promise((resolve, reject) => {
-        axios
-            .get(url)
-            .then((response) => {
-                resolve(response);
-            })
-            .catch((error) => {
-                reject(error);
-            });
+export const localApiPost = async (path: string, data?:{} , headers?:AxiosRequestConfig<{}>) => {
+
+    return axios.post(localPrefixUrl+path,data , headers)
+    .then((response) => {
+        return response;
+    })
+    .catch((error) => {
+        console.error(error);
     });
+} 
+
+export const apiPost = async (url: string , data?:{} , headers?:AxiosRequestConfig<{}>) => {
+    return axios
+        .post(url,data , headers)
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+export const localApiGet = async (
+    path: string
+    // Change to personal port
+) => apiGet(`${localPrefixUrl}${path}`);
+
+export const apiGet = async (url: string  , headers?:AxiosRequestConfig<{}>) => {
+    return axios
+        .get(url, headers)
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 };

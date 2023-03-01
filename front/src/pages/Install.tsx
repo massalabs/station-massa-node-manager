@@ -2,6 +2,7 @@ import React from "react";
 import { Button, TextField, CircularProgress, Typography, Container } from "@mui/material";
 import axios from "axios";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { apiPost, localApiPost } from "../request";
 
 interface Props {
     fetchNodes: () => void;
@@ -33,7 +34,7 @@ const Install: React.FC<Props> = (props: Props) => {
         formData.append('discord-id', discordId);
         formData.append('file', selectedFile);
 
-        axios.post(`${window.location.pathname}install`, formData, {
+        localApiPost(`install`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -74,11 +75,11 @@ const Install: React.FC<Props> = (props: Props) => {
                 justifyContent: "center",
             }}
         >
-            <TextField required label="Node Name" id="name" onChange={(e) => setName(e.target.value)} />
-            <TextField required label="Host IP" id="host" onChange={(e) => setHost(e.target.value)} />
-            <TextField required label="Wallet password" id="password" onChange={(e) => setPassword(e.target.value)} />
-            <TextField required label="SSH user" id="username" onChange={(e) => setUser(e.target.value)} />
-            <TextField required label="Discord token" id="discordId" onChange={(e) => setDiscord(e.target.value)} />
+            <TextField required sx={{marginTop: '8px'}} label="Node Name" id="name" onChange={(e) => setName(e.target.value)} />
+            <TextField required sx={{marginTop: '8px'}} label="Host IP" id="host" onChange={(e) => setHost(e.target.value)} />
+            <TextField required sx={{marginTop: '8px'}} label="Wallet password" id="password" onChange={(e) => setPassword(e.target.value)} />
+            <TextField required sx={{marginTop: '8px'}} label="SSH user" id="username" onChange={(e) => setUser(e.target.value)} />
+            <TextField required sx={{marginTop: '8px'}} label="Discord token" id="discordId" onChange={(e) => setDiscord(e.target.value)} />
             <Button variant="contained"
                 color="primary"
                 onClick={handleClick}
@@ -92,6 +93,7 @@ const Install: React.FC<Props> = (props: Props) => {
                         backgroundColor: '#1976d2',
                         borderColor: '#1976d2',
                     },
+                    marginTop: '16px',
                 }}
                 startIcon={<CloudUploadIcon />}>
                 {selectedFile ? selectedFile.name : 'Select SSH private key file'}

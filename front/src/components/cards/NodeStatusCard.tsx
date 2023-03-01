@@ -50,7 +50,7 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
             </Typography>
             <Card
                 sx={{
-                    height: "256px",
+                    height: "350px",
                     borderRadius: 4,
                     display: "flex",
                     alignItems: "center",
