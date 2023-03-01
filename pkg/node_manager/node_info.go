@@ -2,7 +2,6 @@ package node_manager
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -42,12 +41,7 @@ func (node *Node) UpdateStatus() (string, error) {
 		node.Status = Unknown
 	}
 
-	err = node.addOrUpdateNode()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-
-	return node.Status.String(), err
+	return node.Status.String(), node.addOrUpdateNode()
 }
 
 func (node *Node) WalletInfo() (*WalletInfo, error) {
@@ -68,7 +62,6 @@ func (node *Node) WalletInfo() (*WalletInfo, error) {
 	for _, infos := range data {
 		wallet_info = infos.(map[string]interface{})
 		break
-
 	}
 
 	address_info := wallet_info["address_info"].(map[string]interface{})

@@ -191,14 +191,12 @@ func getNodeStatus(c *gin.Context) {
 
 	status, err := node.UpdateStatus()
 	if err != nil {
-		c.JSON(500, gin.H{"status": status, "error": err.Error()})
-		return
+		fmt.Println(err.Error())
 	}
 
 	wallet_infos, err := node.WalletInfo()
 	if err != nil {
-		c.JSON(500, gin.H{"status": status, "getting Wallet info": err.Error()})
-		return
+		fmt.Println(err.Error())
 	}
 
 	metrics, _ := node.GetSystemMetrics()
