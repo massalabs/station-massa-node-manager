@@ -55,12 +55,12 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:54730/install",
+					"raw": "http://localhost:8080/install",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "54730",
+					"port": "8080",
 					"path": [
 						"install"
 					]
@@ -116,12 +116,12 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:54730/install",
+							"raw": "http://localhost:8080/install",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "54730",
+							"port": "8080",
 							"path": [
 								"install"
 							]
@@ -200,12 +200,12 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:54730/install",
+							"raw": "http://localhost:8080/install",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "54730",
+							"port": "8080",
 							"path": [
 								"install"
 							]
@@ -252,12 +252,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:54730/start_node?id=lan",
+					"raw": "http://localhost:8080/start_node?id=lan",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "54730",
+					"port": "8080",
 					"path": [
 						"start_node"
 					],
@@ -285,12 +285,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:55014/start_node?id=lan",
+							"raw": "http://localhost:8080/start_node?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "55014",
+							"port": "8080",
 							"path": [
 								"start_node"
 							],
@@ -341,12 +341,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:55014/start_node?id=lan",
+							"raw": "http://localhost:8080/start_node?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "55014",
+							"port": "8080",
 							"path": [
 								"start_node"
 							],
@@ -397,12 +397,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:64794/start_node?id=lan",
+							"raw": "http://localhost:8080/start_node?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "64794",
+							"port": "8080",
 							"path": [
 								"start_node"
 							],
@@ -455,12 +455,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:64794/stop_node?id=lan",
+					"raw": "http://localhost:8080/stop_node?id=lan",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "64794",
+					"port": "8080",
 					"path": [
 						"stop_node"
 					],
@@ -488,12 +488,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:56266/stop_node?id=lan",
+							"raw": "http://localhost:8080/stop_node?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "56266",
+							"port": "8080",
 							"path": [
 								"stop_node"
 							],
@@ -544,12 +544,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:64794/stop_node?id=lan",
+							"raw": "http://localhost:8080/stop_node?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "64794",
+							"port": "8080",
 							"path": [
 								"stop_node"
 							],
@@ -605,12 +605,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:50967/nodes",
+					"raw": "http://localhost:8080/nodes",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "50967",
+					"port": "8080",
 					"path": [
 						"nodes"
 					]
@@ -623,12 +623,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:55014/nodes",
+							"raw": "http://localhost:8080/nodes",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "55014",
+							"port": "8080",
 							"path": [
 								"nodes"
 							]
@@ -678,12 +678,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:54730/node_status?id=lan",
+					"raw": "http://localhost:8080/node_status?id=lan",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "54730",
+					"port": "8080",
 					"path": [
 						"node_status"
 					],
@@ -702,12 +702,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:55014/node_status?id=lan",
+							"raw": "http://localhost:8080/node_status?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "55014",
+							"port": "8080",
 							"path": [
 								"node_status"
 							],
@@ -749,12 +749,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:56266/node_status?id=lan",
+							"raw": "http://localhost:8080/node_status?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "56266",
+							"port": "8080",
 							"path": [
 								"node_status"
 							],
@@ -796,12 +796,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:64794/node_status?id=lan",
+							"raw": "http://localhost:8080/node_status?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "64794",
+							"port": "8080",
 							"path": [
 								"node_status"
 							],
@@ -857,12 +857,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:64794/node_logs?id=lan",
+					"raw": "http://localhost:8080/node_logs?id=lan",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "64794",
+					"port": "8080",
 					"path": [
 						"node_logs"
 					],
@@ -881,12 +881,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:55014/node_logs?id=lan",
+							"raw": "http://localhost:8080/node_logs?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "55014",
+							"port": "8080",
 							"path": [
 								"node_logs"
 							],
@@ -928,12 +928,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:64794/node_logs?id=lan",
+							"raw": "http://localhost:8080/node_logs?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "64794",
+							"port": "8080",
 							"path": [
 								"node_logs"
 							],

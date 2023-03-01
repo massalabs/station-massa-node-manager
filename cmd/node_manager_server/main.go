@@ -214,9 +214,11 @@ func main() {
 	pluginID := os.Args[1]
 
 	standaloneMode := false
+	address := ":"
 
 	if len(os.Args) == 3 && os.Args[2] == "--standalone" {
 		standaloneMode = true
+		address = ":8080"
 	}
 
 	router := gin.Default()
@@ -231,7 +233,7 @@ func main() {
 
 	embedStatics(router)
 
-	ln, _ := net.Listen("tcp", ":")
+	ln, _ := net.Listen("tcp", address)
 
 	log.Println("Listening on " + ln.Addr().String())
 	if !standaloneMode {
