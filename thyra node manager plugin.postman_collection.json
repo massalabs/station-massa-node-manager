@@ -1,0 +1,975 @@
+{
+	"info": {
+		"_postman_id": "a1844dca-4f6b-434b-8bf8-4364b1f9f1e7",
+		"name": "thyra node manager plugin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7885963"
+	},
+	"item": [
+		{
+			"name": "install lan",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "FILE",
+						"value": "-----BEGIN OPENSSH PRIVATE KEY-----\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n-----END OPENSSH PRIVATE KEY-----\n",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/user/dev/thyra-node-manager-plugin/ssh-private-keys/lan.priv"
+						},
+						{
+							"key": "id",
+							"value": "lan",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "massa-ssh",
+							"type": "text"
+						},
+						{
+							"key": "wallet-password",
+							"value": "2deMoonB",
+							"type": "text"
+						},
+						{
+							"key": "host",
+							"value": "192.168.1.36",
+							"type": "text"
+						},
+						{
+							"key": "docker-compose",
+							"type": "file",
+							"src": "/Users/user/dev/thyra-node-manager-plugin/pkg/node_manager/embedFiles/docker-compose copy.yml",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:54730/install",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "54730",
+					"path": [
+						"install"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "install lan",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "FILE",
+								"value": "-----BEGIN OPENSSH PRIVATE KEY-----\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n-----END OPENSSH PRIVATE KEY-----\n",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/user/dev/thyra-node-manager-plugin/ssh-private-keys/lan.priv"
+								},
+								{
+									"key": "id",
+									"value": "lan",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "massa-ssh",
+									"type": "text"
+								},
+								{
+									"key": "wallet-password",
+									"value": "2deMoonB",
+									"type": "text"
+								},
+								{
+									"key": "host",
+									"value": "192.168.1.36",
+									"type": "text"
+								},
+								{
+									"key": "docker-compose",
+									"type": "file",
+									"src": "/Users/user/dev/thyra-node-manager-plugin/pkg/node_manager/embedFiles/docker-compose copy.yml",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:54730/install",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "54730",
+							"path": [
+								"install"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:56:31 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "45"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Massa Node installation started\"\n}"
+				},
+				{
+					"name": "install lan error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "FILE",
+								"value": "-----BEGIN OPENSSH PRIVATE KEY-----\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n-----END OPENSSH PRIVATE KEY-----\n",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/user/dev/thyra-node-manager-plugin/ssh-private-keys/lan.priv"
+								},
+								{
+									"key": "id",
+									"value": "lan",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "massa-ssh",
+									"type": "text"
+								},
+								{
+									"key": "wallet-password",
+									"value": "2deMoonB",
+									"type": "text"
+								},
+								{
+									"key": "host",
+									"value": "192.168.1.36",
+									"type": "text"
+								},
+								{
+									"key": "docker-compose",
+									"type": "file",
+									"src": "/Users/user/dev/thyra-node-manager-plugin/pkg/node_manager/embedFiles/docker-compose copy.yml",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:54730/install",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "54730",
+							"path": [
+								"install"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:57:22 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "38"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Creating ssh key dir:...\"\n}"
+				}
+			]
+		},
+		{
+			"name": "start",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:54730/start_node?id=lan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "54730",
+					"path": [
+						"start_node"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "lan"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "start",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:55014/start_node?id=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "55014",
+							"path": [
+								"start_node"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:12:42 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "472"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Node successfully started\",\n    \"output\": \" massa-core Pulling \\n watchtower Pulling \\n massa-core Pulled \\n watchtower Pulled \\n Network massa-ssh_default  Creating\\n Network massa-ssh_default  Created\\n Container massa-core  Creating\\n Container watchtower  Creating\\n Container watchtower  Created\\n Container massa-core  Created\\n Container watchtower  Starting\\n Container massa-core  Starting\\n Container watchtower  Started\\n Container massa-core  Started\\n\"\n}"
+				},
+				{
+					"name": "start",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:55014/start_node?id=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "55014",
+							"path": [
+								"start_node"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:35:26 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "234"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Node successfully started\",\n    \"output\": \" massa-core Pulling \\n watchtower Pulling \\n massa-core Pulled \\n watchtower Pulled \\n Container watchtower  Running\\n Container massa-core  Starting\\n Container massa-core  Started\\n\"\n}"
+				},
+				{
+					"name": "start error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:64794/start_node?id=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "64794",
+							"path": [
+								"start_node"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:54:29 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "67"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"dial tcp 192.168.1.36:22: connect: connection refused\"\n}"
+				}
+			]
+		},
+		{
+			"name": "stop",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:64794/stop_node?id=lan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "64794",
+					"path": [
+						"stop_node"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "lan"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "stop",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:56266/stop_node?id=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "56266",
+							"path": [
+								"stop_node"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:38:28 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "181"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Node successfully stopped\",\n    \"output\": \" Container watchtower  Stopping\\n Container massa-core  Stopping\\n Container massa-core  Stopped\\n Container watchtower  Stopped\\n\"\n}"
+				},
+				{
+					"name": "stop error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:64794/stop_node?id=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "64794",
+							"path": [
+								"stop_node"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:54:16 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "67"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"dial tcp 192.168.1.36:22: connect: connection refused\"\n}"
+				}
+			]
+		},
+		{
+			"name": "get nodes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:50967/nodes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50967",
+					"path": [
+						"nodes"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get nodes",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:55014/nodes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "55014",
+							"path": [
+								"nodes"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:35:02 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "221"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"Id\": \"lan\",\n        \"Username\": \"massa-ssh\",\n        \"Host\": \"192.168.1.36\",\n        \"DiscordId\": \"\",\n        \"WalletPassword\": \"2deMoonB\",\n        \"Status\": 2\n    },\n    {\n        \"Id\": \"aws\",\n        \"Username\": \"inno\",\n        \"Host\": \"35.*.*.*\",\n        \"DiscordId\": \"\",\n        \"WalletPassword\": \"2deMoonB\",\n        \"Status\": 2\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "node status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:54730/node_status?id=lan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "54730",
+					"path": [
+						"node_status"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "lan"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "node status",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:55014/node_status?id=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "55014",
+							"path": [
+								"node_status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:15:56 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "87"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"metrics\": {\n        \"CPU\": 1.70245,\n        \"RAM\": 8.48926,\n        \"Disk\": 18\n    },\n    \"status\": \"Bootstrapping\",\n    \"wallet_infos\": null\n}"
+				},
+				{
+					"name": "node status with metrics",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:56266/node_status?id=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "56266",
+							"path": [
+								"node_status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:36:19 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "205"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"metrics\": {\n        \"CPU\": 0.610279,\n        \"RAM\": 8.23754,\n        \"Disk\": 18\n    },\n    \"status\": \"Up\",\n    \"wallet_infos\": {\n        \"Thread\": 1.1,\n        \"Candidate_rolls\": 1.1,\n        \"Final_rolls\": 1.1,\n        \"Active_rolls\": 1.1,\n        \"Final_balance\": \"1.1\",\n        \"Candidate_balance\": \"1.1\"\n    }\n}"
+				},
+				{
+					"name": "node status offline",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:64794/node_status?id=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "64794",
+							"path": [
+								"node_status"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:53:43 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "74"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"metrics\": {\n        \"CPU\": 0,\n        \"RAM\": 0,\n        \"Disk\": 0\n    },\n    \"status\": \"Down\",\n    \"wallet_infos\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "node logs",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:64794/node_logs?id=lan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "64794",
+					"path": [
+						"node_logs"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "lan"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "node logs",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:55014/node_logs?id=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "55014",
+							"path": [
+								"node_logs"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:34:44 GMT"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "massa-core  | [20230301-10H22][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nwatchtower  | time=\"2023-03-01T10:12:43Z\" level=info msg=\"Watchtower 1.5.3\"\nwatchtower  | time=\"2023-03-01T10:12:43Z\" level=info msg=\"Using no notifications\"\nwatchtower  | time=\"2023-03-01T10:12:43Z\" level=info msg=\"Only checking containers which name matches \\\"massa-core\\\"\"\nwatchtower  | time=\"2023-03-01T10:12:43Z\" level=info msg=\"Scheduling first run: 2023-03-02 10:12:43 +0000 UTC\"\nwatchtower  | time=\"2023-03-01T10:12:43Z\" level=info msg=\"Note that the first check will be performed in 23 hours, 59 minutes, 59 seconds\"\nmassa-core  | \u001b[2m2023-03-01T10:22:31.028097Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H23][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H23][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H23][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H23][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H23][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:23:31.352067Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H24][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H24][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H24][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H24][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H24][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:24:31.677609Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H25][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H25][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H25][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H25][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H25][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:25:32.007615Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H26][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H26][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H26][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H26][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H26][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:26:32.303813Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H27][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H27][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H27][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H27][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H27][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:27:32.608016Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H28][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H28][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H28][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H28][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H28][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:28:32.937264Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H29][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H29][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H29][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H29][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H29][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:29:33.260773Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H30][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H30][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H30][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H30][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H30][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:30:33.620666Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H31][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H31][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H31][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H31][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H31][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:31:34.027146Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H32][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H32][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H32][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H32][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H32][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:32:34.324057Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H33][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H33][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H33][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H33][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H33][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:33:34.692374Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nmassa-core  | [20230301-10H34][INFO][LOAD]LOAD /massa_mount/config.toml as ref\nmassa-core  | [20230301-10H34][INFO][LOAD]LOAD /massa_mount/node_config.toml as ref\nmassa-core  | [20230301-10H34][INFO][LOAD]LOAD /massa_mount/wallet.dat as ref\nmassa-core  | [20230301-10H34][INFO][LOAD]LOAD /massa_mount/node_privkey.key as ref\nmassa-core  | [20230301-10H34][INFO][LOAD]LOAD /massa_mount/staking_wallet.dat as ref\nmassa-core  | \u001b[2m2023-03-01T10:34:35.019967Z\u001b[0m \u001b[32m INFO\u001b[0m \u001b[2mmassa_node\u001b[0m\u001b[2m:\u001b[0m Node version : TEST.19.3\nmassa-core  | thread 'main' panicked at 'This episode has come to an end, please get the latest testnet node version to continue', massa-node/src/main.rs:96:13\nmassa-core  | note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n"
+				},
+				{
+					"name": "node logs error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:64794/node_logs?id=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "64794",
+							"path": [
+								"node_logs"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:50:09 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "37"
+						}
+					],
+					"cookie": [],
+					"body": "dial tcp 192.168.1.36:22: i/o timeout"
+				}
+			]
+		}
+	]
+}
