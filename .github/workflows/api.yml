@@ -1,0 +1,27 @@
+name: API
+
+on:
+  push:
+    # paths:
+    #   - 'node_manager_plugin.postman_collection.json'
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project directory
+        uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.19.2
+      - name: Build
+        run: |
+          mkdir cmd/node_manager_server/static
+          touch cmd/node_manager_server/static/nothing # don't waste time to build the whole react frontend
+          go build ./cmd/node_manager_server/main.go
+      - name: Run plugin API
+        run: ./main 1 --standalone &
+      - name: Test plugin API
+        uses: matt-ball/newman-action@master
+        with:
+          collection: node_manager_plugin.postman_collection.json
