@@ -24,4 +24,4 @@ jobs:
       - name: Test plugin API
         uses: matt-ball/newman-action@master
         with:
-          collection: node_manager_plugin.postman_collection.json
+          collection: postman/node_manager_plugin.postman_collection.json

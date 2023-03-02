@@ -1,30 +1,38 @@
 {
 	"info": {
-		"_postman_id": "a1844dca-4f6b-434b-8bf8-4364b1f9f1e7",
+		"_postman_id": "d6e6ff9e-dd72-47b5-a4d1-7f86ef108e5b",
 		"name": "thyra node manager plugin",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7885963"
 	},
 	"item": [
 		{
-			"name": "install lan",
+			"name": "install",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201 and good message\", () => {",
+							"    pm.response.to.have.status(201);",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.message).to.eql('Massa Node installation started');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "FILE",
-						"value": "-----BEGIN OPENSSH PRIVATE KEY-----\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n-----END OPENSSH PRIVATE KEY-----\n",
-						"type": "text",
-						"disabled": true
-					}
-				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/Users/user/dev/thyra-node-manager-plugin/ssh-private-keys/lan.priv"
+							"src": "./postman/id_ed25519"
 						},
 						{
 							"key": "id",
@@ -49,8 +57,8 @@
 						{
 							"key": "docker-compose",
 							"type": "file",
-							"src": "/Users/user/dev/thyra-node-manager-plugin/pkg/node_manager/embedFiles/docker-compose copy.yml",
-							"disabled": true
+							"src": "./pkg/node_manager/embedFiles/docker-compose.yml",
+							"disabled": false
 						}
 					]
 				},
@@ -68,24 +76,16 @@
 			},
 			"response": [
 				{
-					"name": "install lan",
+					"name": "install",
 					"originalRequest": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "FILE",
-								"value": "-----BEGIN OPENSSH PRIVATE KEY-----\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n-----END OPENSSH PRIVATE KEY-----\n",
-								"type": "text",
-								"disabled": true
-							}
-						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/user/dev/thyra-node-manager-plugin/ssh-private-keys/lan.priv"
+									"src": "./postman/id_ed25519"
 								},
 								{
 									"key": "id",
@@ -110,8 +110,8 @@
 								{
 									"key": "docker-compose",
 									"type": "file",
-									"src": "/Users/user/dev/thyra-node-manager-plugin/pkg/node_manager/embedFiles/docker-compose copy.yml",
-									"disabled": true
+									"src": "./pkg/node_manager/embedFiles/docker-compose.yml",
+									"disabled": false
 								}
 							]
 						},
@@ -152,24 +152,16 @@
 					"body": "{\n    \"message\": \"Massa Node installation started\"\n}"
 				},
 				{
-					"name": "install lan error",
+					"name": "install error",
 					"originalRequest": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "FILE",
-								"value": "-----BEGIN OPENSSH PRIVATE KEY-----\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n-----END OPENSSH PRIVATE KEY-----\n",
-								"type": "text",
-								"disabled": true
-							}
-						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/user/dev/thyra-node-manager-plugin/ssh-private-keys/lan.priv"
+									"src": "./postman/id_ed25519"
 								},
 								{
 									"key": "id",
@@ -194,8 +186,8 @@
 								{
 									"key": "docker-compose",
 									"type": "file",
-									"src": "/Users/user/dev/thyra-node-manager-plugin/pkg/node_manager/embedFiles/docker-compose copy.yml",
-									"disabled": true
+									"src": "./pkg/node_manager/embedFiles/docker-compose.yml",
+									"disabled": false
 								}
 							]
 						},
