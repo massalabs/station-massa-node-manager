@@ -1,7 +1,7 @@
 name: Build and publish
 
 on:
-  push:
+  workflow_dispatch:
   workflow_call:
     inputs:
       tag_name:
@@ -14,12 +14,7 @@ on:
         type: string
 
 jobs:
-
-  lint:
-    uses: ./.github/workflows/lint.yml
-
   build:
-    needs: [lint]
     name: build and upload artifacts
     strategy:
       matrix:
