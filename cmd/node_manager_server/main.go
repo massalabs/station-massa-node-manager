@@ -49,6 +49,7 @@ func installMassaNode(c *gin.Context) {
 
 	var input node_manager.InstallNodeInput
 	if err := c.ShouldBind(&input); err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -56,16 +57,19 @@ func installMassaNode(c *gin.Context) {
 	node := input.CreateNode()
 
 	if err := node_manager.CreateDirIfNotExists(path.Dir(node.GetSSHKeyPath())); err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Creating ssh key dir:" + err.Error()})
 		return
 	}
 
 	if err := node_manager.CreateDirIfNotExists(path.Dir(node.GetDockerComposePath())); err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Creating docker compose dir:" + err.Error()})
 		return
 	}
 
 	if err := c.SaveUploadedFile(input.SshKeyFile, node.GetSSHKeyPath()); err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "saving ssh key file:" + err.Error()})
 		return
 	}
@@ -74,6 +78,7 @@ func installMassaNode(c *gin.Context) {
 
 	if isDockerComposePresent {
 		if err := c.SaveUploadedFile(input.DockerComposeFile, node.GetDockerComposePath()); err != nil {
+			fmt.Println(err.Error())
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "saving docker compose file:" + err.Error()})
 			return
 		}
@@ -88,12 +93,14 @@ func installMassaNode(c *gin.Context) {
 func startNode(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
 	output, err := node.StartNode()
 	if err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -104,12 +111,14 @@ func startNode(c *gin.Context) {
 func stopNode(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
 	output, err := node.StopNode()
 	if err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -120,12 +129,14 @@ func stopNode(c *gin.Context) {
 func getNodeLogs(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
+		fmt.Println(err.Error())
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	output, err := node.GetLogs()
 	if err != nil {
+		fmt.Println(err.Error())
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -136,12 +147,14 @@ func getNodeLogs(c *gin.Context) {
 func backupWallet(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
 	filePath, err := node.BackupWallet()
 	if err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -163,10 +176,12 @@ func handleManageNodeRequest(c *gin.Context) (*node_manager.Node, error) {
 
 	node, err := node_manager.GetNodeById(nodeId)
 	if err != nil {
+		fmt.Println(err.Error())
 		return nil, err
 	}
 
 	if node == nil {
+		fmt.Println(err.Error())
 		return nil, fmt.Errorf("node not found")
 	}
 
@@ -176,6 +191,7 @@ func handleManageNodeRequest(c *gin.Context) (*node_manager.Node, error) {
 func getNodes(c *gin.Context) {
 	nodes, err := node_manager.GetNodes()
 	if err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
@@ -185,6 +201,7 @@ func getNodes(c *gin.Context) {
 func getNodeStatus(c *gin.Context) {
 	node, err := handleManageNodeRequest(c)
 	if err != nil {
+		fmt.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
