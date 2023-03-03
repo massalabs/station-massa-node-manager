@@ -26,6 +26,8 @@ Start the backend API:
 
     go run cmd/node_manager_server/main.go 1 --standalone
 
+Access to the plugin: <http://localhost:8080>.
+
 Start the frontend development server:
 
     cd front
