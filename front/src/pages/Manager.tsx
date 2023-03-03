@@ -13,13 +13,17 @@ import NodeActions from "../components/NodeActions";
 import {NodeMonitor} from "../types/NodeMonitor";
 import NodeStatus from "../types/NodeStatus";
 import Node from "../types/Node";
+import NodeStakingInfoCard from "../components/cards/NodeStakingInfoCard";
+import LogsCard from "../components/cards/LogsCard";
 
 interface Props {
     selectedNode: Node;
     nodeStatus: NodeStatus | undefined;
     nodeMonitor: NodeMonitor | undefined
+    nodeLogs: string | undefined;
     fetchNodeStatus: () => any;
     fetchMonitoring: () => any;
+    fetchNodeLogs: () => any;
 }
 
 const Manager: React.FC<Props> = (props: Props) => {
@@ -33,28 +37,40 @@ const Manager: React.FC<Props> = (props: Props) => {
                 fetchMonitoring={props.fetchMonitoring}
             />
             <Grid container spacing={4} sx={{ mt: "8px" }}>
-                <Grid item xs={12} sm={12} md={8}>
+                <Grid item xs={12} sm={5} md={5} lg={2} xl={1.5}>
+                    <NodeStatusCard nodeMonitor={props.nodeMonitor} />
+                </Grid>
+                <Grid item xs={12} sm={7} md={7} lg={3.9} xl={3.9}>
                     <NodeInfoCard
                         selectedNode={props.selectedNode}
                         nodeStatus={props.nodeStatus}
+                        nodeMonitor={props.nodeMonitor}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <NodeStatusCard nodeMonitor={props.nodeMonitor} />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <NetworkStatsCard
-                        selectedNode={props.selectedNode}
-                        nodeStatus={props.nodeStatus}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={6} lg={3} xl={3}>
                     <RessourcesMonirotingCard 
                         nodeMonitor={props.nodeMonitor}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={6} lg={3} xl={3}>
+                    <NodeStakingInfoCard
+                        nodeStatus={props.nodeStatus}
+                        nodeMonitor={props.nodeMonitor}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={12} md={8} lg={8} xl={8} sx={{pl:4,pt:4}}>
+                    <LogsCard
+                    fetchNodeLogs={props.fetchNodeLogs}
+                    nodeLogs={props.nodeLogs} 
+                        // nodeMonitor={props.nodeMonitor}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={12} md={3.5} lg={3.5} xl={3.9}>
                     <ConsensusStatsCard
+                        selectedNode={props.selectedNode}
+                        nodeStatus={props.nodeStatus}
+                    />
+                    <NetworkStatsCard
                         selectedNode={props.selectedNode}
                         nodeStatus={props.nodeStatus}
                     />

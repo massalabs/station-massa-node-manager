@@ -19,11 +19,17 @@ const RessourcesMonirotingCard: React.FC<Props> = (props: Props) => {
     return (
         <React.Fragment>
             <Typography variant="subtitle2" sx={{ ml: 2, mt: 1 }}>
-                Ressources monitoring
+                Hardware
             </Typography>
             <Card
                 sx={{
-                    height: "256px",
+                    height: {
+                        xs: "350px",
+                        sm: "250px",
+                        md: "250px",
+                        lg: "200px",
+                        xl: "200px",
+                    },
                     borderRadius: 4,
                 }}
             >

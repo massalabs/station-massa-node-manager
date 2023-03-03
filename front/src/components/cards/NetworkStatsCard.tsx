@@ -18,7 +18,7 @@ const NetworkStatsCard: React.FC<Props> = (props: Props) => {
             </Typography>
             <Card
                 sx={{
-                    height: "256px",
+                    height: "150px",
                     borderRadius: 4,
                     display: "flex",
                     alignItems: "center",
@@ -31,7 +31,6 @@ const NetworkStatsCard: React.FC<Props> = (props: Props) => {
                             <Typography variant="h6">Total</Typography>
                             <Typography variant="h3">
                                 {props.nodeStatus?.network_stats?.active_node_count ?? <Skeleton />}
-
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={6} md={6}>

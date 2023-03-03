@@ -1,9 +1,18 @@
 import React from "react";
 
-import { Card, CardContent, Grid, Skeleton, Typography } from "@mui/material";
+import {
+    Box,
+    Card,
+    CardContent,
+    Divider,
+    Grid,
+    Skeleton,
+    Typography,
+} from "@mui/material";
 
 import NodeStatus from "../../types/NodeStatus";
 import Node from "../../types/Node";
+import { Directions } from "@mui/icons-material";
 
 interface Props {
     selectedNode: Node | undefined;
@@ -14,11 +23,11 @@ const ConsensusStatsCard: React.FC<Props> = (props: Props) => {
     return (
         <React.Fragment>
             <Typography variant="subtitle2" sx={{ ml: 2, mt: 1 }}>
-                Consensus Stats
+                Consensus
             </Typography>
             <Card
                 sx={{
-                    height: "256px",
+                    height: "150px",
                     borderRadius: 4,
                     display: "flex",
                     alignItems: "center",
@@ -26,38 +35,90 @@ const ConsensusStatsCard: React.FC<Props> = (props: Props) => {
                 }}
             >
                 <CardContent sx={{ textAlign: "center" }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={12}>
-                            <Typography variant="h6">Total blocks</Typography>
-                            <Typography variant="h3">
-                                {props.nodeStatus ? (
-                                    props.nodeStatus?.consensus_stats?.stale_block_count
-                                    +
-                                    props.nodeStatus?.consensus_stats?.final_block_count
-
-                                ) : (
-                                    <Skeleton />
-                                )}
-                            </Typography>
+                    <Grid container spacing={0}>
+                        <Grid
+                            item
+                            xs={12}
+                            md={12}
+                            sx={{
+                                display: "flex",
+                                direction: "row",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <Box sx={{mx:"auto"}}>
+                                <Typography variant="h6">
+                                    Total blocks
+                                </Typography>
+                                <Typography variant="h3">
+                                    {props.nodeStatus ? (
+                                        props.nodeStatus?.consensus_stats
+                                            ?.stale_block_count +
+                                        props.nodeStatus?.consensus_stats
+                                            ?.final_block_count
+                                    ) : (
+                                        <Skeleton />
+                                    )}
+                                </Typography>
+                            </Box>
+                            {/* <Box sx={{mx:"auto"}}>
+                                <Typography variant="h6">Total Connections</Typography>
+                                <Typography variant="h3">
+                                    {props.nodeStatus?.network_stats
+                                        ?.active_node_count ?? <Skeleton />}
+                                </Typography>
+                            </Box> */}
                         </Grid>
-                        <Grid item xs={12} sm={6} md={6}>
-                            <Typography variant="h6">
-                                {props.nodeStatus?.consensus_stats?.stale_block_count
-                                    ?? <Skeleton />}
-                            </Typography>
-                            <Typography variant="body2">
-                                Stale Blocks
-                            </Typography>
+                        <Grid item xs={12} sm={6} md={12}>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Typography variant="h6">
+                                        {props.nodeStatus?.consensus_stats
+                                            ?.stale_block_count ?? <Skeleton />}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Stale Blocks
+                                    </Typography>
+                                </Grid>
+                                <Divider orientation="vertical" flexItem />
+                                <Grid item xs>
+                                    <Typography variant="h6">
+                                        {props.nodeStatus?.consensus_stats
+                                            ?.final_block_count ?? <Skeleton />}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Final Blocks
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={6}>
-                            <Typography variant="h6">
-                                {props.nodeStatus?.consensus_stats?.final_block_count ?? <Skeleton />}
-
-                            </Typography>
-                            <Typography variant="body2">
-                                Final Blocks
-                            </Typography>
-                        </Grid>
+                        {/* <Grid item xs={12} sm={6} md={6}>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Typography variant="h6">
+                                        {props.nodeStatus?.network_stats
+                                            ?.in_connection_count ?? (
+                                            <Skeleton />
+                                        )}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Incoming
+                                    </Typography>
+                                </Grid>
+                                <Divider orientation="vertical" flexItem />
+                                <Grid item xs>
+                                    <Typography variant="h6">
+                                        {props.nodeStatus?.network_stats
+                                            ?.out_connection_count ?? (
+                                            <Skeleton />
+                                        )}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Outgoing
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid> */}
                     </Grid>
                 </CardContent>
             </Card>

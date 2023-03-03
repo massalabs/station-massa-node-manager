@@ -14,8 +14,8 @@ const AddressDiplay: React.FC<Props> = (props: Props) => {
     };
 
     return (
-        <Box sx={{ display: "inline-flex", alignItems: "center" }}>
-            <Typography variant="h6">
+        <Box sx={{ display: "inline-flex", alignItems: "center" , ml: 5.25 }}>
+            <Typography variant="subtitle2">
                 {props.address ? formatNodeID(props.address) : <Skeleton />}
             </Typography>
             {props.address && (

@@ -9,7 +9,7 @@ import HelpIcon from "@mui/icons-material/Help";
 import { NodeMonitor } from "../../types/NodeMonitor";
 
 interface Props {
-    nodeMonitor: NodeMonitor | undefined
+    nodeMonitor: NodeMonitor | undefined;
 }
 
 const NodeStatusCard: React.FC<Props> = (props: Props) => {
@@ -19,7 +19,6 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
                 return "green";
             case "Down":
             case "Unknown":
-
                 return "error";
             default:
                 return "yellow";
@@ -50,7 +49,16 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
             </Typography>
             <Card
                 sx={{
-                    height: "350px",
+                    height: {xs:"150px",
+                    sm: "250px",
+                    md: "250px",
+                    lg: "200px",
+                    xl: "150px",},
+                    width: {xs:"150px",
+                    sm: "250px",
+                    md: "250px",
+                    lg: "200px",
+                    xl: "150px",},
                     borderRadius: 4,
                     display: "flex",
                     alignItems: "center",
@@ -60,8 +68,14 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
                 <CardContent sx={{ textAlign: "center" }}>
                     {getStatusIcon(props.nodeMonitor?.status)}
                     <Typography
-                        variant="h4"
+                        variant={
+                            props.nodeMonitor?.status == "Up" ??
+                            props.nodeMonitor?.status == "Down"
+                                ? "h4"
+                                : "h6"
+                        }
                         color={getStatusColor(props.nodeMonitor?.status)}
+                        sx={{ fontWeight: "bold" }}
                     >
                         {props.nodeMonitor?.status ?? <Skeleton />}
                     </Typography>

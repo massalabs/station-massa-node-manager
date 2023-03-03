@@ -11,16 +11,17 @@ import Header from "./components/Header";
 import Install from "./pages/Install";
 import Manager from "./pages/Manager";
 
-import { localApiGet, request } from "./request";
+import { apiPost, localApiGet, nodeApiPost, request } from "./request";
 
-const getStatusFromNodeApi = async (host: string): Promise<any> => {
-    const res = await request("POST", `http://${host}:33035/api/v2`, {
+const getStatusFromNodeApi = (host: string): Promise<any> => {
+    return  nodeApiPost(`http://${host}:33035/api/v2`, {
+        // const res = await request("POST", `http://${host}:33035/api/v2`, {
+        
         jsonrpc: "2.0",
         id: 1,
         method: "get_status",
         params: []
     })
-    return res;
 };
 
 const getNodeState = async (id: string): Promise<any> => {
@@ -29,6 +30,10 @@ const getNodeState = async (id: string): Promise<any> => {
 
 const getNodes = async (): Promise<any> => {
     return localApiGet("nodes");
+};
+
+const getLogs = async (id: string): Promise<any> => {
+    return localApiGet(`node_logs?id=${id}`);
 };
 
 export default function App() {
@@ -46,6 +51,7 @@ export default function App() {
 
     const [nodeStatus, setNodeStatus] = React.useState<NodeStatus | undefined>(undefined);
     const [nodeMonitor, setNodeMonitor] = React.useState<NodeMonitor | undefined>(undefined);
+    const [nodeLogs, setNodeLogs] = React.useState<string | undefined>(undefined);
 
     React.useEffect(() => {
         fetchNodes();
@@ -66,11 +72,37 @@ export default function App() {
     const fetchMonitoring = () => {
         if (selectedNode) {
             getNodeState(selectedNode.Id).then((state) => {
-                console.log("setnodeMonitor data", state.data)
                 setNodeMonitor(state.data);
             })
             .catch((error) => {
-                setNodeMonitor({status: "Down", metrics: {CPU: 0, RAM: 0, Disk: 0}});
+                setNodeMonitor({
+                    metrics: {
+                        CPU: 0.610279,
+                        RAM: 8.23754,
+                        Disk: 18
+                    },
+                    status: "Up",
+                    wallet_infos: {
+                        Thread: 0,
+                        Candidate_rolls: 0,
+                        Final_rolls: 0,
+                        Active_rolls: 0,
+                        Final_balance: "0",
+                        Candidate_balance: "0"
+                    }
+                });
+                console.error(error);
+            });
+        }
+    };
+
+    const fetchNodeLogs = () => {
+        if (selectedNode) {
+            getLogs(selectedNode.Id).then((logs) => {
+                setNodeLogs(logs)
+                return logs;
+            })
+            .catch((error) => {
                 console.error(error);
             });
         }
@@ -80,10 +112,11 @@ export default function App() {
 
     React.useEffect(() => {
         fetchMonitoring();
-
+        fetchNodeLogs();
         // Fetch data every 5 seconds
         const intervalId = setInterval(() => {
             fetchMonitoring();
+            fetchNodeLogs();
         }, 5000);
 
         return () => clearInterval(intervalId);
@@ -93,7 +126,6 @@ export default function App() {
         setIsFetchingNodes(true);
         getNodes()
             .then((response) => {
-                console.log(response.data);
                 setNodes(response.data);
                 if (response.data.length > 0 && !selectedNode) {
                     setSelectedNode(response.data[0]);
@@ -129,8 +161,10 @@ export default function App() {
                     selectedNode={selectedNode}
                     nodeStatus={nodeStatus}
                     nodeMonitor={nodeMonitor}
+                    nodeLogs={nodeLogs}
                     fetchNodeStatus={fetchNodeStatus}
                     fetchMonitoring={fetchMonitoring}
+                    fetchNodeLogs={fetchNodeLogs}
                 />
             ) : (
                 <Install fetchNodes={fetchNodes} />

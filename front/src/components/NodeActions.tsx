@@ -5,16 +5,16 @@ import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import NodeStatus from "../types/NodeStatus";
 import Node from "../types/Node";
 
-import { request } from "../request";
+import { apiPost, request } from "../request";
 import { NodeMonitor } from "../types/NodeMonitor";
 import axios from "axios";
 
 const startNodeRequest = (id: string): Promise<any> => {
-    return request("POST", `start_node?id=${id}`, {});
+    return apiPost( `start_node?id=${id}`, {});
 };
 
 const stopNodeRequest = (id: string): Promise<any> => {
-    return request("POST", `stop_node?id=${id}`, {});
+    return apiPost(`stop_node?id=${id}`, {});
 };
 
 interface Props {
@@ -85,32 +85,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                 console.error("Error downloading wallet_backup.zip:", error);
             });
     };
-    const handleExportLogs = () => {
-        axios({
-            url: `export_logs?id=${props.selectedNode.Id}`,
-            method: "GET",
-            responseType: "blob",
-        })
-            .then((response) => {
-                // create a blob with the response data
-                const blob = new Blob([response.data], { type: "text/plain" });
-                // create a URL for the blob
-                const url = window.URL.createObjectURL(blob);
-                // create a link to download the file
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = "logs.txt";
-                // add the link to the document
-                document.body.appendChild(link);
-                // click the link to start the download
-                link.click();
-                // remove the link from the document
-                document.body.removeChild(link);
-            })
-            .catch((error) => {
-                console.error("Error exporting logs:", error);
-            });
-    };
+
 
     return (
         <Grid
@@ -170,20 +145,6 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                         <CircularProgress size={24} />
                     ) : (
                         <Typography variant="h6">Update</Typography>
-                    )}
-                </Button>
-            </Grid>
-            <Grid item sx={{ textAlign: "center" ,  marginTop:{xs:"15px" , sm:"15px" , md:"15px" , lg:"0px" } }} >
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleExportLogs()}
-                    sx={{ borderRadius: 8, width: "256px", height: "64px" }}
-                >
-                    {isStartingNode ? (
-                        <CircularProgress size={24} />
-                    ) : (
-                        <Typography variant="h6">Export Logs</Typography>
                     )}
                 </Button>
             </Grid>
