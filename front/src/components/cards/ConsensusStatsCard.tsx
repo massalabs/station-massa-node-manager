@@ -27,7 +27,7 @@ const ConsensusStatsCard: React.FC<Props> = (props: Props) => {
             </Typography>
             <Card
                 sx={{
-                    height: "150px",
+                    height: "160px",
                     borderRadius: 4,
                     display: "flex",
                     alignItems: "center",
@@ -61,13 +61,6 @@ const ConsensusStatsCard: React.FC<Props> = (props: Props) => {
                                     )}
                                 </Typography>
                             </Box>
-                            {/* <Box sx={{mx:"auto"}}>
-                                <Typography variant="h6">Total Connections</Typography>
-                                <Typography variant="h3">
-                                    {props.nodeStatus?.network_stats
-                                        ?.active_node_count ?? <Skeleton />}
-                                </Typography>
-                            </Box> */}
                         </Grid>
                         <Grid item xs={12} sm={6} md={12}>
                             <Grid container>

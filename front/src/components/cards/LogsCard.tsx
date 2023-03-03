@@ -1,32 +1,29 @@
 import React from "react";
 import { TextareaAutosize } from "@mui/base";
-import { Card, Typography } from "@mui/material";
+import { Button, Card, Typography } from "@mui/material";
 import { apiGet } from "../../request";
+import { Scrollbar } from 'react-scrollbars-custom';
 type Props = {
   fetchNodeLogs: () => Promise<Response>;
-  nodeLogs: string | undefined;
+  nodeLogs: string;
 };
 
 function LogsCard(props: Props) {
 
-    const exportLogs = () => {
-
+  const handleExportLogs = async () => {
+    try {
+      const blob = new Blob([props.nodeLogs], { type: "text/plain" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url; 
+      link.download = "logs.txt";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error exporting logs:", error);
     }
-    const handleExportLogs = async () => {
-      try {
-        const response = await props.fetchNodeLogs();
-        const blob = new Blob([await response.text()], { type: "text/plain" });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "logs.txt";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (error) {
-        console.error("Error exporting logs:", error);
-      }
-    };
+  };
     return (<>
                   <Typography variant="subtitle2" sx={{ ml: 2, mt: 1 }}>
                 Logs
@@ -34,44 +31,32 @@ function LogsCard(props: Props) {
         <Card
             sx={{
                 borderRadius: 4,
-                maxWidth: 950,
                 minHeight: 350,
                 maxHeight: 350,
                 height: 350,
-                width: {
-                    xs: "400px",
-                    sm: "600px",
-                    md: "600px",
-                    lg: "800px",
-                    xl: "900px",
-                },
+                width: "auto",
                 backgroundColor: "#172329",
                 p: 2,
             }}
         >
+          <Scrollbar style={{}}>
+
             <Typography
                 variant="body2"
                 sx={{
-                    maxWidth: 918,
-                    minHeight: 318,
-                    maxHeight: 318,
-                    height: 318,
-                    width: {
-                        xs: "368px",
-                        sm: "568px",
-                        md: "568px",
-                        lg: "768px",
-                        xl: "868px",
-                    },
                     color: "#ffffff",
-                    backgroundColor: "#172329",
-                    borderRadius: 4,
+                    // backgroundColor: "#172329",
+                    borderRadius: 2,
+                    whiteSpace: "pre-wrap",
                 }}
-            />
+            >
+                {props.nodeLogs}
+            </Typography>
+                </Scrollbar>
         </Card>
-            <a onClick={handleExportLogs}>
+            <Button onClick={handleExportLogs}>
               Export Logs              
-            </a> 
+            </Button> 
     </>
     );
 }

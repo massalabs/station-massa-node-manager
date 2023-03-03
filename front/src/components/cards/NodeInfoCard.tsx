@@ -26,7 +26,6 @@ interface Props {
 }
 
 const NodeInfoCard: React.FC<Props> = (props: Props) => {
-    console.log("NodeInfoCard nodeStatus", props.nodeStatus);
     return (
         <React.Fragment>
             <Typography variant="subtitle2" sx={{ ml: 2, mt: 1 }}>
@@ -35,11 +34,8 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
             <Card
                 sx={{
                     height: {
-                        xs: "350px",
-                        sm: "250px",
-                        md: "250px",
-                        lg: "200px",
-                        xl: "200px",
+                        xs: "300px",
+                        sm: "200px",
                     },
                     borderRadius: 4,
                     overflow: "auto",
@@ -80,6 +76,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                             <Box
                                 sx={{
                                     display: "flex",
+                                    justifyContent: "space-between",
                                 }}
                             >
                                 <Typography variant="subtitle2" width="40%">
@@ -92,13 +89,15 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                             <Box
                                 sx={{
                                     display: "flex",
+                                    justifyContent: "space-between",
                                 }}
                             >
                                 <Typography variant="subtitle2" width="40%">
                                     ID:
                                 </Typography>
+
                                 {props.nodeStatus ? (
-                                    <div style={{paddingLeft:5}}>
+                                    <div style={{}}>
                                         <AddressDisplay
                                             address={props.nodeStatus?.node_id}
                                         />
@@ -110,6 +109,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                             <Box
                                 sx={{
                                     display: "flex",
+                                    justifyContent: "space-between",
                                 }}
                             >
                                 <Typography variant="subtitle2" width="40%">
@@ -120,36 +120,50 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                                 </Typography>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} sm={4.5} md={4.5} sx={{ ml: 4 }}>
+                        <Grid item xs={12} sm={4.5} md={4.5} sx={{ ml: 0 }}>
                             <Typography variant="h6" sx={{ width: "auto" }}>
                                 Massa info
                             </Typography>
                             <Box
                                 sx={{
                                     display: "flex",
-                                    wrap: "nowrap",
+                                    justifyContent: "space-between",
                                 }}
                             >
-                                <Typography variant="subtitle2" width="35%">
+                                <Typography variant="subtitle2" width="auto">
                                     Cycle:
                                 </Typography>
-                                <Typography variant="subtitle2">
-                                    {props.nodeStatus?.current_cycle ?? (
-                                        <Skeleton />
-                                    )}
-                                </Typography>
+                                <Box
+                                    sx={{
+                                        display: "inline-flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <Typography variant="subtitle2">
+                                        {props.nodeStatus?.current_cycle ?? (
+                                            <Skeleton />
+                                        )}
+                                    </Typography>
+                                    <Tooltip title="The period is the time between two slots of a same thread. It is approximately 16 seconds.">
+                                        <IconButton sx={{ p: 0, ml: 1 }}>
+                                            <HelpOutline fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
                             </Box>
                             <Box
                                 sx={{
                                     display: "flex",
+                                    justifyContent: "space-between",
                                 }}
                             >
-                                <Typography variant="subtitle2" width="35%">
+                                <Typography variant="subtitle2" width="auto">
                                     Period:
                                 </Typography>
                                 <Box
                                     sx={{
                                         display: "inline-flex",
+                                        justifyContent: "space-between",
                                     }}
                                 >
                                     <Typography variant="subtitle2">
@@ -168,6 +182,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                             <Box
                                 sx={{
                                     display: "flex",
+                                    justifyContent: "space-between",
                                 }}
                             >
                                 <Typography variant="subtitle2" width="35%">
@@ -176,6 +191,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                                 <Box
                                     sx={{
                                         display: "inline-flex",
+                                        justifyContent: "space-between",
                                     }}
                                 >
                                     <Typography variant="subtitle2">

@@ -13,6 +13,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-scripts": "latest",
+    "react-scrollbars-custom": "^4.1.1",
     "typescript": "latest"
   },
   "scripts": {

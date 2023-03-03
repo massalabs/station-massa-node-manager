@@ -24,9 +24,9 @@ const RessourcesMonirotingCard: React.FC<Props> = (props: Props) => {
             <Card
                 sx={{
                     height: {
-                        xs: "350px",
-                        sm: "250px",
-                        md: "250px",
+                        xs: "200px",
+                        sm: "200px",
+                        md: "200px",
                         lg: "200px",
                         xl: "200px",
                     },

@@ -16,6 +16,8 @@ import { NodeMonitor } from "../../types/NodeMonitor";
 import NodeStatus from "../../types/NodeStatus";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 import wallet from "../../assets/wallet.svg";
+import coins from "../../assets/coins.svg";
+import coinsSwap from "../../assets/coins-swap.svg";
 import { width } from "@mui/system";
 type Props = {
     nodeStatus: NodeStatus | undefined;
@@ -29,19 +31,14 @@ const NodeStakingInfoCard = (props: Props) => {
             </Typography>
             <Card
                 sx={{
-                    height: {
-                        xs: "350px",
-                        sm: "250px",
-                        md: "250px",
-                        lg: "200px",
-                        xl: "200px",
-                    },
+                    height: "200px",
                     borderRadius: 4,
                     overflow: "auto",
+                    
                 }}
             >
                 <CardContent>
-                    <Grid container spacing={2} sx={{ mx: "0" }}>
+                    <Grid container sx={{ mx: "0" }}>
                         <Grid
                             item
                             sx={{
@@ -63,6 +60,7 @@ const NodeStakingInfoCard = (props: Props) => {
                                         display: "inline-flex",
                                         alignItems: "center",
                                         width: "100%",
+                                        
                                     }}
                                 >
                                     <img
@@ -101,10 +99,11 @@ const NodeStakingInfoCard = (props: Props) => {
                                         display: "inline-flex",
                                         alignItems: "center",
                                         width: "100%",
-                                    }}
+                                        marginTop: 2,
+                                    }}  
                                 >
                                     <img
-                                        src={wallet}
+                                        src={coinsSwap}
                                         width="40"
                                         alt="React Logo"
                                         style={{ marginLeft: 3 }}
@@ -139,10 +138,11 @@ const NodeStakingInfoCard = (props: Props) => {
                                         display: "inline-flex",
                                         alignItems: "center",
                                         width: "100%",
+                                        marginTop: 2,
                                     }}
                                 >
                                     <img
-                                        src={wallet}
+                                        src={coins}
                                         width="40"
                                         alt="React Logo"
                                         style={{ marginLeft: 3 }}

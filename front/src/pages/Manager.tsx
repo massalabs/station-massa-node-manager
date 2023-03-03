@@ -20,7 +20,7 @@ interface Props {
     selectedNode: Node;
     nodeStatus: NodeStatus | undefined;
     nodeMonitor: NodeMonitor | undefined
-    nodeLogs: string | undefined;
+    nodeLogs: string
     fetchNodeStatus: () => any;
     fetchMonitoring: () => any;
     fetchNodeLogs: () => any;
@@ -58,14 +58,14 @@ const Manager: React.FC<Props> = (props: Props) => {
                         nodeMonitor={props.nodeMonitor}
                     />
                 </Grid>
-                <Grid item xs={12} sm={12} md={8} lg={8} xl={8} sx={{pl:4,pt:4}}>
+                <Grid item xs={12} sm={12} md={8} lg={8.9} xl={8.4} sx={{pl:4,pt:4}}>
                     <LogsCard
                     fetchNodeLogs={props.fetchNodeLogs}
                     nodeLogs={props.nodeLogs} 
                         // nodeMonitor={props.nodeMonitor}
                     />
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.5} lg={3.5} xl={3.9}>
+                <Grid item xs={12} sm={12} md={3.5} lg={2.5} xl={3}>
                     <ConsensusStatsCard
                         selectedNode={props.selectedNode}
                         nodeStatus={props.nodeStatus}

@@ -51,7 +51,7 @@ export default function App() {
 
     const [nodeStatus, setNodeStatus] = React.useState<NodeStatus | undefined>(undefined);
     const [nodeMonitor, setNodeMonitor] = React.useState<NodeMonitor | undefined>(undefined);
-    const [nodeLogs, setNodeLogs] = React.useState<string | undefined>(undefined);
+    const [nodeLogs, setNodeLogs] = React.useState<string>("");
 
     React.useEffect(() => {
         fetchNodes();
@@ -99,7 +99,7 @@ export default function App() {
     const fetchNodeLogs = () => {
         if (selectedNode) {
             getLogs(selectedNode.Id).then((logs) => {
-                setNodeLogs(logs)
+                setNodeLogs(logs.data)
                 return logs;
             })
             .catch((error) => {
