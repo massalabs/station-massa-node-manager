@@ -1,30 +1,38 @@
 {
 	"info": {
-		"_postman_id": "a1844dca-4f6b-434b-8bf8-4364b1f9f1e7",
+		"_postman_id": "d6e6ff9e-dd72-47b5-a4d1-7f86ef108e5b",
 		"name": "thyra node manager plugin",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7885963"
 	},
 	"item": [
 		{
-			"name": "install lan",
+			"name": "install",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201 and good message\", () => {",
+							"    pm.response.to.have.status(201);",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.message).to.eql('Massa Node installation started');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "FILE",
-						"value": "-----BEGIN OPENSSH PRIVATE KEY-----\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n-----END OPENSSH PRIVATE KEY-----\n",
-						"type": "text",
-						"disabled": true
-					}
-				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/Users/user/dev/thyra-node-manager-plugin/ssh-private-keys/lan.priv"
+							"src": "./postman/id_ed25519"
 						},
 						{
 							"key": "id",
@@ -49,18 +57,18 @@
 						{
 							"key": "docker-compose",
 							"type": "file",
-							"src": "/Users/user/dev/thyra-node-manager-plugin/pkg/node_manager/embedFiles/docker-compose copy.yml",
-							"disabled": true
+							"src": "./pkg/node_manager/embedFiles/docker-compose.yml",
+							"disabled": false
 						}
 					]
 				},
 				"url": {
-					"raw": "http://localhost:54730/install",
+					"raw": "http://localhost:8080/install",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "54730",
+					"port": "8080",
 					"path": [
 						"install"
 					]
@@ -68,24 +76,16 @@
 			},
 			"response": [
 				{
-					"name": "install lan",
+					"name": "install",
 					"originalRequest": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "FILE",
-								"value": "-----BEGIN OPENSSH PRIVATE KEY-----\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n-----END OPENSSH PRIVATE KEY-----\n",
-								"type": "text",
-								"disabled": true
-							}
-						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/user/dev/thyra-node-manager-plugin/ssh-private-keys/lan.priv"
+									"src": "./postman/id_ed25519"
 								},
 								{
 									"key": "id",
@@ -110,18 +110,18 @@
 								{
 									"key": "docker-compose",
 									"type": "file",
-									"src": "/Users/user/dev/thyra-node-manager-plugin/pkg/node_manager/embedFiles/docker-compose copy.yml",
-									"disabled": true
+									"src": "./pkg/node_manager/embedFiles/docker-compose.yml",
+									"disabled": false
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:54730/install",
+							"raw": "http://localhost:8080/install",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "54730",
+							"port": "8080",
 							"path": [
 								"install"
 							]
@@ -152,24 +152,16 @@
 					"body": "{\n    \"message\": \"Massa Node installation started\"\n}"
 				},
 				{
-					"name": "install lan error",
+					"name": "install error",
 					"originalRequest": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "FILE",
-								"value": "-----BEGIN OPENSSH PRIVATE KEY-----\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n-----END OPENSSH PRIVATE KEY-----\n",
-								"type": "text",
-								"disabled": true
-							}
-						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/user/dev/thyra-node-manager-plugin/ssh-private-keys/lan.priv"
+									"src": "./postman/id_ed25519"
 								},
 								{
 									"key": "id",
@@ -194,18 +186,18 @@
 								{
 									"key": "docker-compose",
 									"type": "file",
-									"src": "/Users/user/dev/thyra-node-manager-plugin/pkg/node_manager/embedFiles/docker-compose copy.yml",
-									"disabled": true
+									"src": "./pkg/node_manager/embedFiles/docker-compose.yml",
+									"disabled": false
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:54730/install",
+							"raw": "http://localhost:8080/install",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "54730",
+							"port": "8080",
 							"path": [
 								"install"
 							]
@@ -252,12 +244,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:54730/start_node?id=lan",
+					"raw": "http://localhost:8080/start_node?id=lan",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "54730",
+					"port": "8080",
 					"path": [
 						"start_node"
 					],
@@ -285,12 +277,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:55014/start_node?id=lan",
+							"raw": "http://localhost:8080/start_node?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "55014",
+							"port": "8080",
 							"path": [
 								"start_node"
 							],
@@ -341,12 +333,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:55014/start_node?id=lan",
+							"raw": "http://localhost:8080/start_node?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "55014",
+							"port": "8080",
 							"path": [
 								"start_node"
 							],
@@ -397,12 +389,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:64794/start_node?id=lan",
+							"raw": "http://localhost:8080/start_node?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "64794",
+							"port": "8080",
 							"path": [
 								"start_node"
 							],
@@ -455,12 +447,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:64794/stop_node?id=lan",
+					"raw": "http://localhost:8080/stop_node?id=lan",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "64794",
+					"port": "8080",
 					"path": [
 						"stop_node"
 					],
@@ -488,12 +480,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:56266/stop_node?id=lan",
+							"raw": "http://localhost:8080/stop_node?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "56266",
+							"port": "8080",
 							"path": [
 								"stop_node"
 							],
@@ -544,12 +536,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:64794/stop_node?id=lan",
+							"raw": "http://localhost:8080/stop_node?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "64794",
+							"port": "8080",
 							"path": [
 								"stop_node"
 							],
@@ -605,12 +597,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:50967/nodes",
+					"raw": "http://localhost:8080/nodes",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "50967",
+					"port": "8080",
 					"path": [
 						"nodes"
 					]
@@ -623,12 +615,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:55014/nodes",
+							"raw": "http://localhost:8080/nodes",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "55014",
+							"port": "8080",
 							"path": [
 								"nodes"
 							]
@@ -678,12 +670,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:54730/node_status?id=lan",
+					"raw": "http://localhost:8080/node_status?id=lan",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "54730",
+					"port": "8080",
 					"path": [
 						"node_status"
 					],
@@ -702,12 +694,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:55014/node_status?id=lan",
+							"raw": "http://localhost:8080/node_status?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "55014",
+							"port": "8080",
 							"path": [
 								"node_status"
 							],
@@ -749,12 +741,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:56266/node_status?id=lan",
+							"raw": "http://localhost:8080/node_status?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "56266",
+							"port": "8080",
 							"path": [
 								"node_status"
 							],
@@ -796,12 +788,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:64794/node_status?id=lan",
+							"raw": "http://localhost:8080/node_status?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "64794",
+							"port": "8080",
 							"path": [
 								"node_status"
 							],
@@ -857,12 +849,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:64794/node_logs?id=lan",
+					"raw": "http://localhost:8080/node_logs?id=lan",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "64794",
+					"port": "8080",
 					"path": [
 						"node_logs"
 					],
@@ -881,12 +873,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:55014/node_logs?id=lan",
+							"raw": "http://localhost:8080/node_logs?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "55014",
+							"port": "8080",
 							"path": [
 								"node_logs"
 							],
@@ -928,12 +920,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:64794/node_logs?id=lan",
+							"raw": "http://localhost:8080/node_logs?id=lan",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "64794",
+							"port": "8080",
 							"path": [
 								"node_logs"
 							],

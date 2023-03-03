@@ -44,7 +44,7 @@ func (node *Node) GetSSHKeyPath() string {
 }
 
 func (node *Node) GetDockerComposePath() string {
-	return path.Join(GetSshKeysDir(), node.Id+".yml")
+	return path.Join(GetDockerComposeDir(), node.Id+".yml")
 }
 
 func (input *InstallNodeInput) CreateNode() Node {
