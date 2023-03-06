@@ -49,16 +49,8 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
             </Typography>
             <Card
                 sx={{
-                    height: {                        xs: "auto",
-                    sm: "200px",
-                    md: "200px",
-                    lg: "200px",
-                    xl: "200px",},
-                    width: {xs:"auto",
-                    sm: "auto",
-                    md: "auto",
-                    lg: "auto",
-                    xl: "auto",},
+                    height: { xs: "auto", sm: "200px" },
+                    width: "auto",
                     borderRadius: 4,
                     display: "flex",
                     alignItems: "center",

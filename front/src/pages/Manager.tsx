@@ -37,10 +37,10 @@ const Manager: React.FC<Props> = (props: Props) => {
                 fetchMonitoring={props.fetchMonitoring}
             />
             <Grid container spacing={4} sx={{ mt: "8px" }}>
-                <Grid item xs={12} sm={5} md={5} lg={2} xl={1.5}>
+                <Grid item xs={12} sm={6} md={5} lg={2} xl={1.5}>
                     <NodeStatusCard nodeMonitor={props.nodeMonitor} />
                 </Grid>
-                <Grid item xs={12} sm={7} md={7} lg={3.9} xl={3.9}>
+                <Grid item xs={12} sm={6} md={7} lg={3.9} xl={3.9}>
                     <NodeInfoCard
                         selectedNode={props.selectedNode}
                         nodeStatus={props.nodeStatus}
@@ -65,7 +65,7 @@ const Manager: React.FC<Props> = (props: Props) => {
                         // nodeMonitor={props.nodeMonitor}
                     />
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.5} lg={2.5} xl={3}>
+                <Grid item xs={12} sm={12} md={3.5} lg={3} xl={3}>
                     <ConsensusStatsCard
                         selectedNode={props.selectedNode}
                         nodeStatus={props.nodeStatus}

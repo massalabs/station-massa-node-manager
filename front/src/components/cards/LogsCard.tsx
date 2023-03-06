@@ -45,7 +45,6 @@ function LogsCard(props: Props) {
                 variant="body2"
                 sx={{
                     color: "#ffffff",
-                    // backgroundColor: "#172329",
                     borderRadius: 2,
                     whiteSpace: "pre-wrap",
                 }}

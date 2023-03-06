@@ -8,17 +8,13 @@ import {
     IconButton,
     CardContent,
     Card,
-    Icon,
-    SvgIcon,
 } from "@mui/material";
 import React from "react";
 import { NodeMonitor } from "../../types/NodeMonitor";
 import NodeStatus from "../../types/NodeStatus";
-import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 import wallet from "../../assets/wallet.svg";
 import coins from "../../assets/coins.svg";
 import coinsSwap from "../../assets/coins-swap.svg";
-import { width } from "@mui/system";
 type Props = {
     nodeStatus: NodeStatus | undefined;
     nodeMonitor: NodeMonitor | undefined;

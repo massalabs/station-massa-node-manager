@@ -55,7 +55,7 @@ const NetworkStatsCard: React.FC<Props> = (props: Props) => {
                                 </Typography>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={12}>
+                        <Grid item xs={12} sm={12} md={12}>
                             <Grid container>
                                 <Grid item xs>
                                     <Typography variant="h6">

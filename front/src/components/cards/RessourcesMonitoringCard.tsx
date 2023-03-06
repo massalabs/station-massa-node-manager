@@ -23,13 +23,7 @@ const RessourcesMonirotingCard: React.FC<Props> = (props: Props) => {
             </Typography>
             <Card
                 sx={{
-                    height: {
-                        xs: "200px",
-                        sm: "200px",
-                        md: "200px",
-                        lg: "200px",
-                        xl: "200px",
-                    },
+                    height: "200px",                 
                     borderRadius: 4,
                 }}
             >

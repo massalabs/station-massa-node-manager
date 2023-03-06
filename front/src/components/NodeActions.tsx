@@ -102,8 +102,6 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     textAlign: "center",
                     marginTop: {
                         xs: "15px",
-                        sm: "15px",
-                        md: "15px",
                         lg: "0px",
                     },
                 }}
@@ -128,8 +126,6 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     textAlign: "center",
                     marginTop: {
                         xs: "15px",
-                        sm: "15px",
-                        md: "15px",
                         lg: "0px",
                     },
                 }}
@@ -154,8 +150,6 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     textAlign: "center",
                     marginTop: {
                         xs: "15px",
-                        sm: "15px",
-                        md: "15px",
                         lg: "0px",
                     },
                 }}
@@ -179,8 +173,6 @@ const NodeActions: React.FC<Props> = (props: Props) => {
                     textAlign: "center",
                     marginTop: {
                         xs: "15px",
-                        sm: "15px",
-                        md: "15px",
                         lg: "0px",
                     },
                 }}

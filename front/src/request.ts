@@ -25,7 +25,7 @@ export const request = async (
 //Production mode
 const localPrefixUrl = window.location.pathname;
 //Uncomment to work and test front and put the port of the back in local
-// const localPrefixUrl = "http://localhost:61411/";
+//const localPrefixUrl = "http://localhost:57460/";
 
 export const nodeApiPost = async (path: string, data?:{} , headers?:AxiosRequestConfig<{}>) => {
     return apiPost(path,data , headers)

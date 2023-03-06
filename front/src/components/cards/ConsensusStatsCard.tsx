@@ -12,7 +12,6 @@ import {
 
 import NodeStatus from "../../types/NodeStatus";
 import Node from "../../types/Node";
-import { Directions } from "@mui/icons-material";
 
 interface Props {
     selectedNode: Node | undefined;
@@ -62,7 +61,7 @@ const ConsensusStatsCard: React.FC<Props> = (props: Props) => {
                                 </Typography>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={12}>
+                        <Grid item xs={12} sm={12} md={12}>
                             <Grid container>
                                 <Grid item xs>
                                     <Typography variant="h6">
