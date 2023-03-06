@@ -27,15 +27,15 @@ const localPrefixUrl = window.location.pathname;
 //Uncomment to work and test front and put the port of the back in local
 //const localPrefixUrl = "http://localhost:57460/";
 
-export const nodeApiPost = async (path: string, data?:{} , headers?:AxiosRequestConfig) => {
+export const nodeApiPost = async (path: string, data?:object, headers?:AxiosRequestConfig) => {
     return apiPost(path,data , headers)
 }
 
-export const localApiPost = async (path: string, data?:{} , headers?:AxiosRequestConfig) => {
+export const localApiPost = async (path: string, data?:object , headers?:AxiosRequestConfig) => {
     apiPost(localPrefixUrl+path,data , headers)
 } 
 
-export const apiPost = async (url: string , data?:{} , headers?:AxiosRequestConfig) => {
+export const apiPost = async (url: string , data?:object , headers?:AxiosRequestConfig) => {
     return axios
         .post(url,data , headers)
         .then((response) => {
