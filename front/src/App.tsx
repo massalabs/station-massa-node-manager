@@ -14,9 +14,7 @@ import Manager from "./pages/Manager";
 import { apiPost, localApiGet, nodeApiPost, request } from "./request";
 
 const getStatusFromNodeApi = (host: string): Promise<any> => {
-    return  nodeApiPost(`http://${host}:33035/api/v2`, {
-        // const res = await request("POST", `http://${host}:33035/api/v2`, {
-        
+    return  nodeApiPost(`http://${host}:33035/api/v2`, {    
         jsonrpc: "2.0",
         id: 1,
         method: "get_status",
@@ -77,11 +75,11 @@ export default function App() {
             .catch((error) => {
                 setNodeMonitor({
                     metrics: {
-                        CPU: 0.610279,
-                        RAM: 8.23754,
-                        Disk: 18
+                        CPU: 0,
+                        RAM: 0,
+                        Disk: 0
                     },
-                    status: "Up",
+                    status: "Down",
                     wallet_infos: {
                         Thread: 0,
                         Candidate_rolls: 0,

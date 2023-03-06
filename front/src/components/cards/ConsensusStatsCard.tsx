@@ -85,33 +85,6 @@ const ConsensusStatsCard: React.FC<Props> = (props: Props) => {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        {/* <Grid item xs={12} sm={6} md={6}>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Typography variant="h6">
-                                        {props.nodeStatus?.network_stats
-                                            ?.in_connection_count ?? (
-                                            <Skeleton />
-                                        )}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        Incoming
-                                    </Typography>
-                                </Grid>
-                                <Divider orientation="vertical" flexItem />
-                                <Grid item xs>
-                                    <Typography variant="h6">
-                                        {props.nodeStatus?.network_stats
-                                            ?.out_connection_count ?? (
-                                            <Skeleton />
-                                        )}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        Outgoing
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                        </Grid> */}
                     </Grid>
                 </CardContent>
             </Card>
