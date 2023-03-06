@@ -94,9 +94,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
     return (
         <Grid
             container
-            // spacing={2}
             justifyContent="space-evenly"
-            // sx={{ mx: 2 }}
         >
             <Grid
                 item
