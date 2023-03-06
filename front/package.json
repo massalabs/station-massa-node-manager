@@ -21,7 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --write **/*.{js,jsx,ts,tsx,css,scss}"
   },
   "homepage": ".",
   "browserslist": {
@@ -37,9 +38,11 @@
     ]
   },
   "devDependencies": {
+    "@massalabs/prettier-config-as": "^0.0.2",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "eslint": "^8.35.0",
     "eslint-plugin-react": "^7.32.2"
-  }
+  },
+  "prettier": "@massalabs/prettier-config-as"
 }
