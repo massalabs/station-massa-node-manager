@@ -3,6 +3,7 @@ import { TextareaAutosize } from "@mui/base";
 import { Button, Card, Typography } from "@mui/material";
 import { apiGet } from "../../request";
 import { Scrollbar } from 'react-scrollbars-custom';
+import {downloadFile} from  "../../utils/shared";
 type Props = {
   fetchNodeLogs: () => Promise<Response>;
   nodeLogs: string;
@@ -11,18 +12,7 @@ type Props = {
 function LogsCard(props: Props) {
 
   const handleExportLogs = async () => {
-    try {
-      const blob = new Blob([props.nodeLogs], { type: "text/plain" });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url; 
-      link.download = "logs.txt";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error exporting logs:", error);
-    }
+    return downloadFile(props.nodeLogs, "logs.txt", "Error exporting logs:");
   };
     return (<>
                   <Typography variant="subtitle2" sx={{ ml: 2, mt: 1 }}>

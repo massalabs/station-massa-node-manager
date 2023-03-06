@@ -8,6 +8,7 @@ import Node from "../types/Node";
 import { apiPost, localApiGet, localApiPost, request } from "../request";
 import { NodeMonitor } from "../types/NodeMonitor";
 import axios from "axios";
+import {downloadFile} from  "../utils/shared";
 
 const startNodeRequest = (id: string): Promise<any> => {
     return localApiPost(`start_node?id=${id}`, {});
@@ -74,13 +75,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
         if (canStop()) {
             backupWalletRequest(props.selectedNode.Id)
                 .then((response) => {
-                    const blob = new Blob([response.data]);
-                    const url = window.URL.createObjectURL(blob);
-                    const link = document.createElement("a");
-                    link.href = url;
-                    link.setAttribute("download", "wallet_backup.zip");
-                    document.body.appendChild(link);
-                    link.click();
+                   downloadFile(response.data, "wallet_backup.zip","Error downloading wallet_backup.zip:");
                 })
                 .catch((error) => {
                     console.error(

@@ -144,7 +144,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                                             <Skeleton />
                                         )}
                                     </Typography>
-                                    <Tooltip title="The period is the time between two slots of a same thread. It is approximately 16 seconds.">
+                                    <Tooltip title="The current cycle">
                                         <IconButton sx={{ p: 0, ml: 1 }}>
                                             <HelpOutline fontSize="small" />
                                         </IconButton>

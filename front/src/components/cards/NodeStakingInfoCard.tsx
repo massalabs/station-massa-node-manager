@@ -74,11 +74,11 @@ const NodeStakingInfoCard = (props: Props) => {
                                         marginLeft={5}
                                     >
                                         {props.nodeMonitor?.wallet_infos
-                                            ?.Final_rolls ?? (
+                                            ?.Final_balance ?? (
                                             <Skeleton />
                                         )}
                                     </Typography>
-                                    <Tooltip title="The Massa blockchain is divided in 32 Threads that are running in parallel.">
+                                    <Tooltip title="The actual balance of your wallet">
                                         <IconButton sx={{ p: 0, ml: 5 }}>
                                             <HelpOutline fontSize="small" />
                                         </IconButton>
@@ -113,11 +113,11 @@ const NodeStakingInfoCard = (props: Props) => {
                                         marginLeft={5}
                                     >
                                         {props.nodeMonitor?.wallet_infos
-                                            ?.Final_rolls ?? (
+                                            ?.Active_rolls ?? (
                                             <Skeleton />
                                         )}
                                     </Typography>
-                                    <Tooltip title="The Massa blockchain is divided in 32 Threads that are running in parallel.">
+                                    <Tooltip title="The current active rolls">
                                         <IconButton sx={{ p: 0, ml: 5 }}>
                                             <HelpOutline fontSize="small" />
                                         </IconButton>
@@ -156,7 +156,7 @@ const NodeStakingInfoCard = (props: Props) => {
                                             <Skeleton />
                                         )}
                                     </Typography>
-                                    <Tooltip title="The Massa blockchain is divided in 32 Threads that are running in parallel.">
+                                    <Tooltip title="The balance of your Rolls">
                                         <IconButton sx={{ p: 0, ml: 5 }}>
                                             <HelpOutline fontSize="small" />
                                         </IconButton>
