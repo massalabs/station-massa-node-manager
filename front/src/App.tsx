@@ -120,7 +120,6 @@ export default function App() {
   };
 
   const switchIsUpdating = () => {
-    console.log("aaa",isUpdating)
     setIsUpdating(!isUpdating);
   };
 
