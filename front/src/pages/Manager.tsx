@@ -22,6 +22,7 @@ interface Props {
   nodeLogs: string;
   fetchMonitoring: () => any;
   fetchNodeLogs: () => any;
+  switchIsUpdating: () => any;
 }
 
 const Manager: React.FC<Props> = (props: Props) => {
@@ -31,12 +32,13 @@ const Manager: React.FC<Props> = (props: Props) => {
         nodeMonitor={props.nodeMonitor}
         selectedNode={props.selectedNode}
         fetchMonitoring={props.fetchMonitoring}
+        switchIsUpdating={props.switchIsUpdating}
       />
       <Grid container spacing={4} sx={{ mt: '8px' }}>
-        <Grid item xs={12} sm={6} md={5} lg={2} xl={1.5}>
+        <Grid item xs={12} sm={6} md={6} lg={2} xl={1.5}>
           <NodeStatusCard nodeMonitor={props.nodeMonitor} />
         </Grid>
-        <Grid item xs={12} sm={6} md={7} lg={3.9} xl={3.9}>
+        <Grid item xs={12} sm={6} md={6} lg={3.9} xl={3.9}>
           <NodeInfoCard
             selectedNode={props.selectedNode}
             nodeMonitor={props.nodeMonitor}

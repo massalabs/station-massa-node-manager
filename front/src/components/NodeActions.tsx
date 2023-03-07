@@ -4,6 +4,8 @@ import Node from '../types/Node';
 import { localApiGet, localApiPost } from '../request';
 import { NodeMonitor } from '../types/NodeMonitor';
 import { downloadFile } from '../utils/shared';
+import leftArrow from '../assets/left-arrow.svg';
+
 
 const startNodeRequest = (id: string): Promise<any> => {
   return localApiPost(`start_node?id=${id}`, {});
@@ -17,9 +19,14 @@ const backupWalletRequest = (id: string): Promise<any> => {
   return localApiGet(`backup_wallet?id=${id}`);
 };
 
+const removeNodeRequest = (id: string): Promise<any> => {
+  return localApiPost(`remove_node?id=${id}`, {});
+};
+
 interface Props {
   nodeMonitor: NodeMonitor | undefined;
   fetchMonitoring: () => any;
+  switchIsUpdating: () => any;
   selectedNode: Node;
 }
 
@@ -86,7 +93,30 @@ const NodeActions: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <Grid container justifyContent="space-evenly">
+    <Grid container justifyContent={"center"}>
+    <Grid
+        item
+        sx={{
+          textAlign: 'center',
+          marginBottom: {
+            xs: '20px',
+            lg: '0px',
+          },
+          justifySelf: 'start',
+          width: '64px', height: '64px',
+          // marginRight: '5px'
+        }}
+        onClick={() => props.switchIsUpdating}
+        >
+                            <img
+                    src={leftArrow}
+                    width="40"
+                    alt="React Logo"
+                    style={{ borderRadius: 4 }}
+                   
+                  />
+          <Typography fontSize={"0.7rem"}>Edit Settings</Typography>
+        </Grid>
       <Grid
         item
         sx={{
@@ -95,6 +125,8 @@ const NodeActions: React.FC<Props> = (props: Props) => {
             xs: '15px',
             lg: '0px',
           },
+          marginLeft: {xs:"auto", sm:"30px", md:"auto"},
+          marginRight: "auto"
         }}
       >
         <Button
@@ -118,6 +150,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
           marginTop: {
             xs: '15px',
             lg: '0px',
+            mx: "auto"
           },
         }}
       >
@@ -127,12 +160,12 @@ const NodeActions: React.FC<Props> = (props: Props) => {
           onClick={handleStop}
           disabled={!canStop()}
           sx={{ borderRadius: 8, width: '256px', height: '64px' }}
-        >
+          >
           {isStoppingNode ? (
             <CircularProgress size={24} />
-          ) : (
-            <Typography variant="h6">Stop</Typography>
-          )}
+            ) : (
+              <Typography variant="h6">Stop</Typography>
+              )}
         </Button>
       </Grid>
       <Grid
@@ -143,6 +176,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
             xs: '15px',
             lg: '0px',
           },
+          mx: "auto"
         }}
       >
         <Button
@@ -155,7 +189,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
             <CircularProgress size={24} />
           ) : (
             <Typography variant="h6">Update</Typography>
-          )}
+            )}
         </Button>
       </Grid>
       <Grid
@@ -166,6 +200,8 @@ const NodeActions: React.FC<Props> = (props: Props) => {
             xs: '15px',
             lg: '0px',
           },
+          mx: "auto",
+          marginLeft:"20px"
         }}
       >
         <Button

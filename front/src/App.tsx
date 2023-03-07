@@ -43,6 +43,8 @@ export default function App() {
   );
   const [nodeLogs, setNodeLogs] = React.useState('');
 
+  const [isUpdating, setIsUpdating] = React.useState<boolean>(false);
+
   React.useEffect(() => {
     fetchNodes();
   }, []);
@@ -62,6 +64,7 @@ export default function App() {
             },
             status: 'Down',
             wallet_infos: {
+              Address: "",
               Thread: 0,
               Candidate_rolls: 0,
               Final_rolls: 0,
@@ -95,7 +98,7 @@ export default function App() {
     const intervalId = setInterval(() => {
       fetchMonitoring();
       fetchNodeLogs();
-    }, 5000);
+    }, 2000);
 
     return () => clearInterval(intervalId);
   }, [selectedNode]);
@@ -116,6 +119,10 @@ export default function App() {
       });
   };
 
+  const switchIsUpdating = () => {
+    setIsUpdating(!isUpdating);
+  };
+
   return (
     <React.Fragment>
       <Header />
@@ -130,16 +137,20 @@ export default function App() {
             transform: 'translate(-50%, -50%)',
           }}
         />
-      ) : selectedNode ? (
+      ) : selectedNode && !isUpdating ? (
         <Manager
           selectedNode={selectedNode}
           nodeMonitor={nodeMonitor}
           nodeLogs={nodeLogs}
           fetchMonitoring={fetchMonitoring}
           fetchNodeLogs={fetchNodeLogs}
+          switchIsUpdating={switchIsUpdating}
         />
       ) : (
-        <Install fetchNodes={fetchNodes} />
+        <Install fetchNodes={fetchNodes} 
+        selectedNode={selectedNode}
+        isUpdating={isUpdating}
+        switchIsUpdating={switchIsUpdating}/>
       )}
     </React.Fragment>
   );

@@ -5,13 +5,18 @@ import {
   CircularProgress,
   Typography,
   Container,
+  Link,
 } from '@mui/material';
 import axios from 'axios';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { apiPost, localApiPost } from '../request';
+import Node from '../types/Node';
 
 interface Props {
   fetchNodes: () => void;
+  selectedNode: Node | undefined;
+  isUpdating: boolean;
+  switchIsUpdating: () => void;
 }
 
 const Install: React.FC<Props> = (props: Props) => {
@@ -38,14 +43,19 @@ const Install: React.FC<Props> = (props: Props) => {
     formData.append('wallet-password', password);
     formData.append('discord-id', discordId);
     formData.append('file', selectedFile);
-
-    localApiPost(`install`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    localApiPost(
+      props.isUpdating ? `install` : `install?update=` + props.selectedNode?.Id,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       },
-    })
+    )
       .then((response) => {
         setIsLoading(false);
+        if (props.isUpdating) props.switchIsUpdating();
+
         props.fetchNodes();
       })
       .catch((error) => {
@@ -69,7 +79,6 @@ const Install: React.FC<Props> = (props: Props) => {
 
   return (
     <Container
-      maxWidth="md"
       sx={{
         textAlign: 'center',
         display: 'flex',
@@ -108,7 +117,6 @@ const Install: React.FC<Props> = (props: Props) => {
         onChange={(e) => setUser(e.target.value)}
       />
       <TextField
-        required
         sx={{ marginTop: '8px' }}
         label="Discord token"
         id="discordId"
@@ -146,7 +154,7 @@ const Install: React.FC<Props> = (props: Props) => {
         onClick={installNode}
         sx={{
           borderRadius: 8,
-          width: '65%',
+          width: { xs: '100%', sm: '100%', md: '450px', lg: '550px' },
           height: '96px',
           marginTop: '16px',
         }}
@@ -163,13 +171,20 @@ const Install: React.FC<Props> = (props: Props) => {
       </Typography>
 
       <Typography variant="h5" sx={{ mt: 4 }}>
-        A new area begins here.
+        Install and manage your node in 1-click,
       </Typography>
       <Typography variant="h5">
-        Forget about complex installation instructions.
+        You simply need a VPS{' '}
+        <Link
+          underline="hover"
+          href="https://github.com/massalabs/thyra-node-manager-plugin/wiki/Get-your-VPS"
+        >
+          <b>click here</b>
+        </Link>{' '}
+        and you can start
       </Typography>
-      <Typography variant="h5">
-        Install, run and manager your node with a single click !
+      <Typography variant="h4" sx={{ mt: 4 }}>
+        Don't wait, become an actor of the decentralisation <b>now! </b>
       </Typography>
     </Container>
   );

@@ -51,9 +51,6 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
               <Typography variant="h6" sx={{ ml: 1, fontWeight: 'bold' }}>
                 {props.selectedNode.Id}
               </Typography>
-              <IconButton>
-                <Edit />
-              </IconButton>
             </Box>
           }
         />
