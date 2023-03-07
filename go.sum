@@ -64,6 +64,8 @@ github.com/leodido/go-urn v1.2.1 h1:BqpAaACuzVSgi/VLzGZIobT2z4v53pjosyNd9Yv6n/w=
 github.com/leodido/go-urn v1.2.1/go.mod h1:zt4jvISO2HfUBqxjfIshjdMTYS56ZS/qv49ictyFfxY=
 github.com/massalabs/thyra v0.0.12 h1:9Lj7jFglZlOp2YH54oujfGsEmL/sXNiBXp7xs6rikqY=
 github.com/massalabs/thyra v0.0.12/go.mod h1:MPVOLPN/6t5O8NVTlJKzdtyrn+N9L3CrFAh1M94XGBc=
+github.com/massalabs/thyra v0.1.10 h1:3F2UzW8gM/omn2//fmhGn+d2gRIgG4Yh4NJKYssplfU=
+github.com/massalabs/thyra v0.1.10/go.mod h1:MytbGk6/b+k708xH9DTWFoaa5sfJ+EQBFaGcsBTR76M=
 github.com/mattn/go-isatty v0.0.12/go.mod h1:cbi8OIDigv2wuxKPP5vlRcQ1OAZbq2CE4Kysco4FUpU=
 github.com/mattn/go-isatty v0.0.14 h1:yVuAays6BHfxijgZPzw+3Zlu5yQgKGP2/hcQbHb7S9Y=
 github.com/mattn/go-isatty v0.0.14/go.mod h1:7GGIvUiUoEMVVmxf/4nioHXj79iQHKdU27kJ6hsGG94=
@@ -91,6 +93,8 @@ github.com/rs/cors/wrapper/gin v0.0.0-20221003140808-fcebdb403f4d h1:xKonGHdG2Wh
 github.com/rs/cors/wrapper/gin v0.0.0-20221003140808-fcebdb403f4d/go.mod h1:IqFyM9uAsle0Bd4h2u+28E+Ma2884FPhOsrREy4dj80=
 github.com/sfreiberg/simplessh v0.0.0-20220719182921-185eafd40485 h1:ZMBZ2DKX1sScUSo9ZUwGI7jCMukslPNQNfZaw9vVyfY=
 github.com/sfreiberg/simplessh v0.0.0-20220719182921-185eafd40485/go.mod h1:9qeq2P58+4+LyuncL3waJDG+giOfXgowfrRZZF9XdWk=
+github.com/shopspring/decimal v1.3.1 h1:2Usl1nmF/WZucqkFZhnfFYxxxu8LG21F6nPQBE5gKV8=
+github.com/shopspring/decimal v1.3.1/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=

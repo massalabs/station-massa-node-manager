@@ -90,7 +90,9 @@ export default function App() {
         });
     }
   };
-
+  const HandleInstallNewNode = (node :Node) => {
+    setSelectedNode(node)
+  }
   React.useEffect(() => {
     fetchMonitoring();
     fetchNodeLogs();
@@ -151,7 +153,7 @@ export default function App() {
           fetchNodes={fetchNodes}
         />
       ) : (
-        <Install fetchNodes={fetchNodes} 
+        <Install SetNewNode={HandleInstallNewNode} 
         selectedNode={selectedNode}
         isUpdating={isUpdating}
         switchIsUpdating={switchIsUpdating}/>
