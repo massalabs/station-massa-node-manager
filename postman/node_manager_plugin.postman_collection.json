@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d6e6ff9e-dd72-47b5-a4d1-7f86ef108e5b",
+		"_postman_id": "3565d806-7f57-4c25-8c93-4a2140398262",
 		"name": "thyra node manager plugin",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "7885963"
+		"_exporter_id": "20144701"
 	},
 	"item": [
 		{
@@ -26,6 +26,7 @@
 			],
 			"request": {
 				"method": "POST",
+				"header": [],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
@@ -57,8 +58,7 @@
 						{
 							"key": "docker-compose",
 							"type": "file",
-							"src": "./pkg/node_manager/embedFiles/docker-compose.yml",
-							"disabled": false
+							"src": "./pkg/node_manager/embedFiles/docker-compose.yml"
 						}
 					]
 				},
@@ -79,6 +79,7 @@
 					"name": "install",
 					"originalRequest": {
 						"method": "POST",
+						"header": [],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
@@ -110,8 +111,7 @@
 								{
 									"key": "docker-compose",
 									"type": "file",
-									"src": "./pkg/node_manager/embedFiles/docker-compose.yml",
-									"disabled": false
+									"src": "./pkg/node_manager/embedFiles/docker-compose.yml"
 								}
 							]
 						},
@@ -152,9 +152,10 @@
 					"body": "{\n    \"message\": \"Massa Node installation started\"\n}"
 				},
 				{
-					"name": "install error",
+					"name": "install with update",
 					"originalRequest": {
 						"method": "POST",
+						"header": [],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
@@ -186,8 +187,89 @@
 								{
 									"key": "docker-compose",
 									"type": "file",
-									"src": "./pkg/node_manager/embedFiles/docker-compose.yml",
-									"disabled": false
+									"src": "./pkg/node_manager/embedFiles/docker-compose.yml"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/install?update=lan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"install"
+							],
+							"query": [
+								{
+									"key": "update",
+									"value": "lan"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 01 Mar 2023 10:56:31 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "45"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Massa Node installation started\"\n}"
+				},
+				{
+					"name": "install error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "./postman/id_ed25519"
+								},
+								{
+									"key": "id",
+									"value": "lan",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "massa-ssh",
+									"type": "text"
+								},
+								{
+									"key": "wallet-password",
+									"value": "2deMoonB",
+									"type": "text"
+								},
+								{
+									"key": "host",
+									"value": "192.168.1.36",
+									"type": "text"
+								},
+								{
+									"key": "docker-compose",
+									"type": "file",
+									"src": "./pkg/node_manager/embedFiles/docker-compose.yml"
 								}
 							]
 						},
