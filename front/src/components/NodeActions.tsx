@@ -1,13 +1,8 @@
 import React from 'react';
-
 import { Button, CircularProgress, Grid, Typography } from '@mui/material';
-
-import NodeStatus from '../types/NodeStatus';
 import Node from '../types/Node';
-
-import { apiPost, localApiGet, localApiPost, request } from '../request';
+import { localApiGet, localApiPost } from '../request';
 import { NodeMonitor } from '../types/NodeMonitor';
-import axios from 'axios';
 import { downloadFile } from '../utils/shared';
 
 const startNodeRequest = (id: string): Promise<any> => {
@@ -23,9 +18,7 @@ const backupWalletRequest = (id: string): Promise<any> => {
 };
 
 interface Props {
-  nodeStatus: NodeStatus | undefined;
   nodeMonitor: NodeMonitor | undefined;
-  fetchNodeStatus: () => any;
   fetchMonitoring: () => any;
   selectedNode: Node;
 }

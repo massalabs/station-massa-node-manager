@@ -11,12 +11,10 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { NodeMonitor } from '../../types/NodeMonitor';
-import NodeStatus from '../../types/NodeStatus';
 import wallet from '../../assets/wallet.svg';
 import coins from '../../assets/coins.svg';
 import coinsSwap from '../../assets/coins-swap.svg';
 type Props = {
-  nodeStatus: NodeStatus | undefined;
   nodeMonitor: NodeMonitor | undefined;
 };
 const NodeStakingInfoCard = (props: Props) => {
