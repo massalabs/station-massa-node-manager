@@ -13,7 +13,7 @@ import { apiPost, localApiPost } from '../request';
 import Node from '../types/Node';
 
 interface Props {
-  fetchNodes: () => void;
+  SetNewNode: ({}:Node) => void;
   selectedNode: Node | undefined;
   isUpdating: boolean;
   switchIsUpdating: () => void;
@@ -22,11 +22,11 @@ interface Props {
 const Install: React.FC<Props> = (props: Props) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [name, setName] = React.useState('');
-  const [host, setHost] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [username, setUser] = React.useState('');
-  const [discordId, setDiscord] = React.useState('');
+  const [name, setName] = React.useState(props.selectedNode?.Id ? props.selectedNode?.Id : '');
+  const [host, setHost] = React.useState(props.selectedNode?.Host ? props.selectedNode?.Host : '');
+  const [password, setPassword] = React.useState(props.selectedNode?.WalletPassword ? props.selectedNode?.WalletPassword : '');
+  const [username, setUser] = React.useState(props.selectedNode?.Username ? props.selectedNode?.Username : '');
+  const [discordId, setDiscord] = React.useState(props.selectedNode?.DiscordId ? props.selectedNode?.DiscordId : '');
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
 
   const installNode = () => {
@@ -56,7 +56,15 @@ const Install: React.FC<Props> = (props: Props) => {
         setIsLoading(false);
         if (props.isUpdating) props.switchIsUpdating();
         console.log("Updated node")
-        props.fetchNodes();
+        const newNode : Node = {
+          Id: name,
+          Host: host,
+          Username: username,
+          WalletPassword: password,
+          DiscordId: discordId,
+          Status: "Installing",
+        }
+        props.SetNewNode(newNode);
       })
       .catch((error) => {
         console.error(error);

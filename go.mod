@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.8.1
-	github.com/massalabs/thyra v0.0.12
+	github.com/massalabs/thyra v0.1.10
 	github.com/rs/cors/wrapper/gin v0.0.0-20221003140808-fcebdb403f4d
 )
 
@@ -29,6 +29,7 @@ require (
 	github.com/pkg/sftp v1.13.4 // indirect
 	github.com/rs/cors v1.8.2 // indirect
 	github.com/sfreiberg/simplessh v0.0.0-20220719182921-185eafd40485 // indirect
+	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/ybbus/jsonrpc/v3 v3.1.0 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
