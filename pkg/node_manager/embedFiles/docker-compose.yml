@@ -6,16 +6,8 @@ services:
     container_name: massa-core
     restart: always
     environment:
-      - MASSAGUARD=1
       - DISCORD=${DISCORD_ID}
-      - DYNIP=0
       - WALLETPWD=${WALLETPWD}
-      # RAM max for node in percent - If RAM is over NODE_MAX_RAM value, node will restrat to purge RAM allocation
-      - NODE_MAX_RAM=90
-      # Set if node registered with massabot - Set with OK if node registrered with massabot or KO if you want to check and use registration process
-      - NODE_TESTNET_REGISTRATION=KO
-      - TARGET_ROLL_AMOUNT=NULL
-
     ports:
       - "31244:31244"
       - "31245:31245"
@@ -32,7 +24,7 @@ services:
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --stop-timeout 360s massa-core
+    command: --stop-timeout 360s --interval 360 massa-core
 
 volumes:
   massa-core:
