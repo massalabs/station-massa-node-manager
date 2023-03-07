@@ -94,6 +94,7 @@ const Install: React.FC<Props> = (props: Props) => {
         label="Node Name"
         id="name"
         onChange={(e) => setName(e.target.value)}
+        defaultValue={props.selectedNode?.Id}
       />
       <TextField
         required
