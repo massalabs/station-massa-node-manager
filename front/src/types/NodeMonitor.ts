@@ -5,6 +5,7 @@ export type NodeMonitor = {
   metrics: { CPU: number; RAM: number; Disk: number };
   wallet_infos: {
     Active_rolls: number;
+    Address: string;
     Candidate_balance: string;
     Candidate_rolls: number;
     Final_balance: string;

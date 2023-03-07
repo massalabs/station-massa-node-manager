@@ -62,6 +62,34 @@ const NodeStakingInfoCard = (props: Props) => {
                     style={{ marginLeft: 3 }}
                   />
                   <Typography variant="subtitle2" width="30%" marginLeft={3}>
+                    Wallet Address:
+                  </Typography>
+
+                  <Typography variant="h6" marginLeft={5}>
+                    {props.nodeMonitor?.wallet_infos?.Address ?? (
+                      <Skeleton />
+                    )}
+                  </Typography>
+                  <Tooltip title="The Address of your Wallet">
+                    <IconButton sx={{ p: 0, ml: 5 }}>
+                      <HelpOutline fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    width: '100%',
+                  }}
+                >
+                  <img
+                    src={wallet}
+                    width="40"
+                    alt="React Logo"
+                    style={{ marginLeft: 3 }}
+                  />
+                  <Typography variant="subtitle2" width="30%" marginLeft={3}>
                     Wallet Balance:
                   </Typography>
 
