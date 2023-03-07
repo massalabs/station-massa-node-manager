@@ -2,6 +2,7 @@ package node_manager
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -158,18 +159,49 @@ func (node *Node) addOrUpdateNode() error {
 
 	exists := false
 
-	for i := 0; i < len(nodes); i++ {
+	for i, n := range nodes {
 		// check if the node already exists
-		if nodes[i].Id == node.Id {
+		if n.Id == node.Id {
 			// return nil // no nothing
 			// or let's update it
 			nodes[i] = *node
 			exists = true
+			break
 		}
 	}
 
 	if !exists {
 		nodes = append(nodes, *node)
+	}
+
+	content, err := json.Marshal(nodes)
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(GetNodesListFile(), content, 0644)
+}
+
+func RemoveNode(nodeId string) error {
+	nodes, err := GetNodes()
+	if err != nil {
+		return err
+	}
+
+	exists := false
+
+	for i, n := range nodes {
+		// check if the node already exists
+		if n.Id == nodeId {
+			// delete the node by slicing it out of the slice
+			nodes = append(nodes[:i], nodes[i+1:]...)
+			exists = true
+			break
+		}
+	}
+
+	if !exists {
+		return fmt.Errorf("removing node %s: unable to find %s", nodeId, nodeId)
 	}
 
 	content, err := json.Marshal(nodes)
