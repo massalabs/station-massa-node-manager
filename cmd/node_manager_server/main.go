@@ -54,6 +54,14 @@ func installMassaNode(c *gin.Context) {
 		return
 	}
 
+	nodeId := c.Query("update")
+	if nodeId != "" {
+		err := node_manager.RemoveNode(nodeId)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		}
+	}
+
 	node := input.CreateNode()
 
 	if err := node_manager.CreateDirIfNotExists(path.Dir(node.GetSSHKeyPath())); err != nil {
