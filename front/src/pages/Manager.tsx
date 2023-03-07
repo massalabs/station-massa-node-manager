@@ -23,6 +23,7 @@ interface Props {
   fetchMonitoring: () => any;
   fetchNodeLogs: () => any;
   switchIsUpdating: () => any;
+  fetchNodes: () => any;
 }
 
 const Manager: React.FC<Props> = (props: Props) => {
@@ -33,6 +34,7 @@ const Manager: React.FC<Props> = (props: Props) => {
         selectedNode={props.selectedNode}
         fetchMonitoring={props.fetchMonitoring}
         switchIsUpdating={props.switchIsUpdating}
+        fetchNodes={props.fetchNodes}
       />
       <Grid container spacing={4} sx={{ mt: '8px' }}>
         <Grid item xs={12} sm={6} md={6} lg={2} xl={1.5}>

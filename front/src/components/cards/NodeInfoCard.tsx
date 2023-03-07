@@ -30,7 +30,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
         sx={{
           height: {
             xs: '300px',
-            sm: '200px',
+            sm: '250px',
           },
           borderRadius: 4,
           overflow: 'auto',

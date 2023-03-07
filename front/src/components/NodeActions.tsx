@@ -27,6 +27,7 @@ interface Props {
   nodeMonitor: NodeMonitor | undefined;
   fetchMonitoring: () => any;
   switchIsUpdating: () => any;
+  fetchNodes: () => any;
   selectedNode: Node;
 }
 
@@ -92,6 +93,11 @@ const NodeActions: React.FC<Props> = (props: Props) => {
     }
   };
 
+  const handleEditSettings = () => {
+    props.switchIsUpdating();
+    props.fetchNodes();
+  };
+
   return (
     <Grid container justifyContent={"center"}>
     <Grid
@@ -104,17 +110,18 @@ const NodeActions: React.FC<Props> = (props: Props) => {
           },
           justifySelf: 'start',
           width: '64px', height: '64px',
-          // marginRight: '5px'
         }}
-        onClick={() => props.switchIsUpdating}
         >
+          <Button onClick={() => handleEditSettings()}>
+
                             <img
                     src={leftArrow}
                     width="40"
                     alt="React Logo"
                     style={{ borderRadius: 4 }}
-                   
-                  />
+                    
+                    />
+                    </Button>
           <Typography fontSize={"0.7rem"}>Edit Settings</Typography>
         </Grid>
       <Grid

@@ -14,6 +14,7 @@ import { NodeMonitor } from '../../types/NodeMonitor';
 import wallet from '../../assets/wallet.svg';
 import coins from '../../assets/coins.svg';
 import coinsSwap from '../../assets/coins-swap.svg';
+import AddressDisplay from '../AddressDisplay';
 type Props = {
   nodeMonitor: NodeMonitor | undefined;
 };
@@ -25,7 +26,7 @@ const NodeStakingInfoCard = (props: Props) => {
       </Typography>
       <Card
         sx={{
-          height: '200px',
+          height: '250px',
           borderRadius: 4,
           overflow: 'auto',
         }}
@@ -66,21 +67,27 @@ const NodeStakingInfoCard = (props: Props) => {
                   </Typography>
 
                   <Typography variant="h6" marginLeft={5}>
-                    {props.nodeMonitor?.wallet_infos?.Address ?? (
-                      <Skeleton />
-                    )}
+                                    {props.nodeMonitor?.wallet_infos?.Address ? (
+                  <div style={{}}>
+                    <AddressDisplay  address={props.nodeMonitor?.wallet_infos?.Address} />
+                  </div>
+                ) : (
+                  <Skeleton />
+                )}
                   </Typography>
-                  <Tooltip title="The Address of your Wallet">
-                    <IconButton sx={{ p: 0, ml: 5 }}>
-                      <HelpOutline fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
                 </Box>
+                </Box>
+                <Box
+                sx={{
+                  display: 'flex',
+                }}
+              >
                 <Box
                   sx={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     width: '100%',
+                    marginTop: 1.5,
                   }}
                 >
                   <img
@@ -115,7 +122,7 @@ const NodeStakingInfoCard = (props: Props) => {
                     display: 'inline-flex',
                     alignItems: 'center',
                     width: '100%',
-                    marginTop: 2,
+                    marginTop: 1.5,
                   }}
                 >
                   <img
@@ -150,7 +157,7 @@ const NodeStakingInfoCard = (props: Props) => {
                     display: 'inline-flex',
                     alignItems: 'center',
                     width: '100%',
-                    marginTop: 2,
+                    marginTop: 1.5,
                   }}
                 >
                   <img
