@@ -47,7 +47,7 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
       </Typography>
       <Card
         sx={{
-          height: { xs: 'auto', sm: '200px' },
+          height: { xs: 'auto', sm: '250px' },
           width: 'auto',
           borderRadius: 4,
           display: 'flex',

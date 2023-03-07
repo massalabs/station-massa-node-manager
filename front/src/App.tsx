@@ -120,8 +120,12 @@ export default function App() {
   };
 
   const switchIsUpdating = () => {
+    console.log("aaa",isUpdating)
     setIsUpdating(!isUpdating);
   };
+
+
+  
 
   return (
     <React.Fragment>
@@ -137,7 +141,7 @@ export default function App() {
             transform: 'translate(-50%, -50%)',
           }}
         />
-      ) : selectedNode && !isUpdating ? (
+      ) : (!isUpdating && selectedNode) ? (
         <Manager
           selectedNode={selectedNode}
           nodeMonitor={nodeMonitor}
@@ -145,6 +149,7 @@ export default function App() {
           fetchMonitoring={fetchMonitoring}
           fetchNodeLogs={fetchNodeLogs}
           switchIsUpdating={switchIsUpdating}
+          fetchNodes={fetchNodes}
         />
       ) : (
         <Install fetchNodes={fetchNodes} 

@@ -44,7 +44,7 @@ const Install: React.FC<Props> = (props: Props) => {
     formData.append('discord-id', discordId);
     formData.append('file', selectedFile);
     localApiPost(
-      props.isUpdating ? `install` : `install?update=` + props.selectedNode?.Id,
+      props.isUpdating ? `install?update=` + props.selectedNode?.Id : `install`,
       formData,
       {
         headers: {
@@ -55,7 +55,7 @@ const Install: React.FC<Props> = (props: Props) => {
       .then((response) => {
         setIsLoading(false);
         if (props.isUpdating) props.switchIsUpdating();
-
+        console.log("Updated node")
         props.fetchNodes();
       })
       .catch((error) => {
@@ -94,6 +94,7 @@ const Install: React.FC<Props> = (props: Props) => {
         label="Node Name"
         id="name"
         onChange={(e) => setName(e.target.value)}
+        defaultValue={props.selectedNode?.Id}
       />
       <TextField
         required
@@ -101,6 +102,7 @@ const Install: React.FC<Props> = (props: Props) => {
         label="Host IP"
         id="host"
         onChange={(e) => setHost(e.target.value)}
+        defaultValue={props.selectedNode?.Host}
       />
       <TextField
         required
@@ -108,6 +110,7 @@ const Install: React.FC<Props> = (props: Props) => {
         label="Wallet password"
         id="password"
         onChange={(e) => setPassword(e.target.value)}
+        defaultValue={props.selectedNode?.WalletPassword}
       />
       <TextField
         required
@@ -115,12 +118,14 @@ const Install: React.FC<Props> = (props: Props) => {
         label="SSH user"
         id="username"
         onChange={(e) => setUser(e.target.value)}
+        defaultValue={props.selectedNode?.Username}
       />
       <TextField
         sx={{ marginTop: '8px' }}
         label="Discord token"
         id="discordId"
         onChange={(e) => setDiscord(e.target.value)}
+        defaultValue={props.selectedNode?.DiscordId}
       />
       <Button
         variant="contained"
