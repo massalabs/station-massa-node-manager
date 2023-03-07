@@ -25,27 +25,35 @@ type WalletInfo struct {
 	Candidate_balance string
 }
 
-func (node *Node) UpdateStatus() (string, error) {
-	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status | jq '.version'")
+func (node *Node) UpdateStatus() (string, State, error) {
+	var nodeInfos State
+
+	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status")
 	if err != nil {
-		return Unknown.String(), err
+		return Unknown.String(), nodeInfos, err
 	}
 
 	content := strings.TrimSpace(string(output))
 
-	if strings.HasPrefix(content, "null") {
+	if strings.HasPrefix(content, "\"error") {
 		node.Status = Bootstrapping
 	} else if strings.HasSuffix(content, "is restarting, wait until the container is running") {
 		node.Status = Installing
 	} else if strings.HasSuffix(content, "not running") {
 		node.Status = Down
-	} else if strings.HasPrefix(content, "\"TEST") {
-		node.Status = Up
+	} else if strings.HasPrefix(content, "{\"node_id") {
+		err := json.Unmarshal([]byte(content), &nodeInfos)
+		if err != nil {
+			fmt.Println(fmt.Errorf("unmarshal node status json: %w", err))
+			node.Status = Down
+		} else {
+			node.Status = Up
+		}
 	} else {
 		node.Status = Down
 	}
 
-	return node.Status.String(), node.addOrUpdateNode()
+	return node.Status.String(), nodeInfos, node.addOrUpdateNode()
 }
 
 func (node *Node) WalletInfo() (*WalletInfo, error) {

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
   Box,
   Card,
@@ -12,16 +11,12 @@ import {
   Typography,
 } from '@mui/material';
 import { Edit, HelpOutline } from '@mui/icons-material';
-
 import Node from '../../types/Node';
-import NodeStatus from '../../types/NodeStatus';
 import { NodeMonitor } from '../../types/NodeMonitor';
-
 import AddressDisplay from '../AddressDisplay';
 
 interface Props {
   selectedNode: Node;
-  nodeStatus: NodeStatus | undefined;
   nodeMonitor: NodeMonitor | undefined;
 }
 
@@ -93,9 +88,9 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                   ID:
                 </Typography>
 
-                {props.nodeStatus ? (
+                {props.nodeMonitor?.node_infos ? (
                   <div style={{}}>
-                    <AddressDisplay address={props.nodeStatus?.node_id} />
+                    <AddressDisplay address={props.nodeMonitor.node_infos.node_id} />
                   </div>
                 ) : (
                   <Skeleton />
@@ -111,7 +106,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                   Version:
                 </Typography>
                 <Typography variant="subtitle2">
-                  {props.nodeStatus?.version ?? <Skeleton />}
+                  {props.nodeMonitor?.node_infos?.version ?? <Skeleton />}
                 </Typography>
               </Box>
             </Grid>
@@ -135,7 +130,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                   }}
                 >
                   <Typography variant="subtitle2">
-                    {props.nodeStatus?.current_cycle ?? <Skeleton />}
+                    {props.nodeMonitor?.node_infos?.current_cycle ?? <Skeleton />}
                   </Typography>
                   <Tooltip title="The current cycle">
                     <IconButton sx={{ p: 0, ml: 1 }}>
@@ -160,7 +155,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                   }}
                 >
                   <Typography variant="subtitle2">
-                    {props.nodeStatus?.execution_stats?.active_cursor
+                    {props.nodeMonitor?.node_infos?.execution_stats?.active_cursor
                       .period ?? <Skeleton />}
                   </Typography>
                   <Tooltip title="The period is the time between two slots of a same thread. It is approximately 16 seconds.">
@@ -186,7 +181,7 @@ const NodeInfoCard: React.FC<Props> = (props: Props) => {
                   }}
                 >
                   <Typography variant="subtitle2">
-                    {props.nodeStatus?.execution_stats?.active_cursor
+                    {props.nodeMonitor?.node_infos?.execution_stats?.active_cursor
                       .thread ?? <Skeleton />}
                   </Typography>
                   <Tooltip title="The Massa blockchain is divided in 32 Threads that are running in parallel.">

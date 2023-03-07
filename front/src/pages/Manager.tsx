@@ -18,10 +18,8 @@ import LogsCard from '../components/cards/LogsCard';
 
 interface Props {
   selectedNode: Node;
-  nodeStatus: NodeStatus | undefined;
   nodeMonitor: NodeMonitor | undefined;
   nodeLogs: string;
-  fetchNodeStatus: () => any;
   fetchMonitoring: () => any;
   fetchNodeLogs: () => any;
 }
@@ -30,10 +28,8 @@ const Manager: React.FC<Props> = (props: Props) => {
   return (
     <Container maxWidth="xl" sx={{ my: 4 }}>
       <NodeActions
-        nodeStatus={props.nodeStatus}
         nodeMonitor={props.nodeMonitor}
         selectedNode={props.selectedNode}
-        fetchNodeStatus={props.fetchNodeStatus}
         fetchMonitoring={props.fetchMonitoring}
       />
       <Grid container spacing={4} sx={{ mt: '8px' }}>
@@ -43,7 +39,6 @@ const Manager: React.FC<Props> = (props: Props) => {
         <Grid item xs={12} sm={6} md={7} lg={3.9} xl={3.9}>
           <NodeInfoCard
             selectedNode={props.selectedNode}
-            nodeStatus={props.nodeStatus}
             nodeMonitor={props.nodeMonitor}
           />
         </Grid>
@@ -52,7 +47,6 @@ const Manager: React.FC<Props> = (props: Props) => {
         </Grid>
         <Grid item xs={12} sm={6} md={6} lg={3} xl={3}>
           <NodeStakingInfoCard
-            nodeStatus={props.nodeStatus}
             nodeMonitor={props.nodeMonitor}
           />
         </Grid>
@@ -74,11 +68,11 @@ const Manager: React.FC<Props> = (props: Props) => {
         <Grid item xs={12} sm={12} md={3.5} lg={3} xl={3}>
           <ConsensusStatsCard
             selectedNode={props.selectedNode}
-            nodeStatus={props.nodeStatus}
+            nodeStatus={props.nodeMonitor?.node_infos}
           />
           <NetworkStatsCard
             selectedNode={props.selectedNode}
-            nodeStatus={props.nodeStatus}
+            nodeStatus={props.nodeMonitor?.node_infos}
           />
         </Grid>
       </Grid>

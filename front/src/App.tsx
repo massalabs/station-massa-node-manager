@@ -11,16 +11,7 @@ import Header from './components/Header';
 import Install from './pages/Install';
 import Manager from './pages/Manager';
 
-import { localApiGet, nodeApiPost } from './request';
-
-const getStatusFromNodeApi = (host: string): Promise<any> => {
-  return nodeApiPost(`http://${host}:33035/api/v2`, {
-    jsonrpc: '2.0',
-    id: 1,
-    method: 'get_status',
-    params: [],
-  });
-};
+import { localApiGet } from './request';
 
 const getNodeState = async (id: string): Promise<any> => {
   return localApiGet(`node_status?id=${id}`);
@@ -46,9 +37,7 @@ export default function App() {
     })(),
   );
 
-  const [nodeStatus, setNodeStatus] = React.useState<NodeStatus | undefined>(
-    undefined,
-  );
+
   const [nodeMonitor, setNodeMonitor] = React.useState<NodeMonitor | undefined>(
     undefined,
   );
@@ -57,18 +46,6 @@ export default function App() {
   React.useEffect(() => {
     fetchNodes();
   }, []);
-
-  const fetchNodeStatus = () => {
-    if (selectedNode) {
-      getStatusFromNodeApi(selectedNode.Host)
-        .then((status) => {
-          setNodeStatus(status.data.result);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
 
   const fetchMonitoring = () => {
     if (selectedNode) {
@@ -92,6 +69,7 @@ export default function App() {
               Final_balance: '0',
               Candidate_balance: '0',
             },
+            node_infos: {} as NodeStatus
           });
           console.error(error);
         });
@@ -109,8 +87,6 @@ export default function App() {
         });
     }
   };
-
-  React.useEffect(() => fetchNodeStatus(), [selectedNode]);
 
   React.useEffect(() => {
     fetchMonitoring();
@@ -157,10 +133,8 @@ export default function App() {
       ) : selectedNode ? (
         <Manager
           selectedNode={selectedNode}
-          nodeStatus={nodeStatus}
           nodeMonitor={nodeMonitor}
           nodeLogs={nodeLogs}
-          fetchNodeStatus={fetchNodeStatus}
           fetchMonitoring={fetchMonitoring}
           fetchNodeLogs={fetchNodeLogs}
         />

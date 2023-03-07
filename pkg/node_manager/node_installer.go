@@ -106,7 +106,7 @@ echo "Node installation completed"
 		return
 	}
 
-	status, err := node.UpdateStatus()
+	status, _, err := node.UpdateStatus()
 	if err != nil {
 		return
 	}
