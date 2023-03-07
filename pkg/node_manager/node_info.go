@@ -16,6 +16,7 @@ type SystemMetrics struct {
 }
 
 type WalletInfo struct {
+	Address           string
 	Thread            float64
 	Candidate_rolls   float64
 	Final_rolls       float64
@@ -69,7 +70,9 @@ func (node *Node) WalletInfo() (*WalletInfo, error) {
 
 	address_info := wallet_info["address_info"].(map[string]interface{})
 
-	return &WalletInfo{address_info["thread"].(float64),
+	return &WalletInfo{
+			address_info["address"].(string),
+			address_info["thread"].(float64),
 			address_info["candidate_rolls"].(float64),
 			address_info["final_rolls"].(float64),
 			address_info["final_rolls"].(float64),
