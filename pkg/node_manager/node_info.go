@@ -27,19 +27,21 @@ type WalletInfo struct {
 func (node *Node) UpdateStatus() (string, error) {
 	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status | jq '.version'")
 	if err != nil {
-		return Down.String(), err
+		return Unknown.String(), err
 	}
 
 	content := strings.TrimSpace(string(output))
 
 	if strings.HasPrefix(content, "null") {
 		node.Status = Bootstrapping
-	} else if strings.HasSuffix(content, "not running") || strings.HasSuffix(content, "is restarting, wait until the container is running") {
+	} else if strings.HasSuffix(content, "is restarting, wait until the container is running") {
+		node.Status = Installing
+	} else if strings.HasSuffix(content, "not running") {
 		node.Status = Down
 	} else if strings.HasPrefix(content, "\"TEST") {
 		node.Status = Up
 	} else {
-		node.Status = Unknown
+		node.Status = Down
 	}
 
 	return node.Status.String(), node.addOrUpdateNode()

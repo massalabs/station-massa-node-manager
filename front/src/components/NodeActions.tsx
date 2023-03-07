@@ -35,7 +35,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
   const [isStoppingNode, setIsStoppingNode] = React.useState<boolean>(false);
 
   const canStart = () => {
-    return props.nodeMonitor?.status !== 'Up';
+    return props.nodeMonitor?.status === 'Down';
   };
 
   const handleStart = (force = false) => {
@@ -54,7 +54,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
 
   const canStop = () => {
     const status = props.nodeMonitor?.status;
-    return status === 'Up' || status === 'Bootstrapping';
+    return status === 'Up' || status === 'Bootstrapping' || status === 'Installing';
   };
 
   const handleStop = () => {
@@ -71,8 +71,13 @@ const NodeActions: React.FC<Props> = (props: Props) => {
     }
   };
 
+  const canUpdate = () => {
+    const status = props.nodeMonitor?.status;
+    return status !== 'Unknown';
+  };
+
   const handleBackup = () => {
-    if (canStop()) {
+    if (canUpdate()) {
       backupWalletRequest(props.selectedNode.Id)
         .then((response) => {
           downloadFile(
