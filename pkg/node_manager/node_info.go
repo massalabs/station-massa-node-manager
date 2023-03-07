@@ -174,12 +174,7 @@ func (node *Node) addOrUpdateNode() error {
 		nodes = append(nodes, *node)
 	}
 
-	content, err := json.Marshal(nodes)
-	if err != nil {
-		return err
-	}
-
-	return os.WriteFile(GetNodesListFile(), content, 0644)
+	return writeNodeList(nodes)
 }
 
 func RemoveNode(nodeId string) error {
@@ -204,6 +199,10 @@ func RemoveNode(nodeId string) error {
 		return fmt.Errorf("removing node %s: unable to find %s", nodeId, nodeId)
 	}
 
+	return writeNodeList(nodes)
+}
+
+func writeNodeList(nodes []Node) error {
 	content, err := json.Marshal(nodes)
 	if err != nil {
 		return err
