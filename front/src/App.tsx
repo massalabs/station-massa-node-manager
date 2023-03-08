@@ -1,16 +1,11 @@
 import * as React from 'react';
-
 import { CircularProgress } from '@mui/material';
-
 import Node from './types/Node';
 import NodeStatus from './types/NodeStatus';
 import { NodeMonitor } from './types/NodeMonitor';
-
 import Header from './components/Header';
-
 import Install from './pages/Install';
 import Manager from './pages/Manager';
-
 import { localApiGet } from './request';
 
 const getNodeState = async (id: string): Promise<any> => {
@@ -90,19 +85,27 @@ export default function App() {
         });
     }
   };
+
   const HandleInstallNewNode = (node :Node) => {
     setSelectedNode(node)
   }
+
   React.useEffect(() => {
     fetchMonitoring();
     fetchNodeLogs();
-    // Fetch data every 2 seconds
-    const intervalId = setInterval(() => {
-      fetchMonitoring();
+
+    const fetchNodeInt = setInterval(() => {
       fetchNodeLogs();
+    }, 30000);
+
+    const monitorInt = setInterval(() => {
+      fetchMonitoring();
     }, 2000);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(fetchNodeInt)
+      clearInterval(monitorInt)
+    };
   }, [selectedNode]);
 
   const fetchNodes = () => {
@@ -119,10 +122,6 @@ export default function App() {
         console.error(error);
         setIsFetchingNodes(false);
       });
-  };
-
-  const forceIsUpdating = (val : boolean) : any => {
-    setIsUpdating(val);
   };
 
   return (
@@ -146,14 +145,14 @@ export default function App() {
           nodeLogs={nodeLogs}
           fetchMonitoring={fetchMonitoring}
           fetchNodeLogs={fetchNodeLogs}
-          forceIsUpdating={forceIsUpdating(isUpdating)}
+          forceIsUpdating={setIsUpdating}
           fetchNodes={fetchNodes}
         />
       ) : (
         <Install SetNewNode={HandleInstallNewNode} 
         selectedNode={selectedNode}
         isUpdating={isUpdating}
-        forceIsUpdating={forceIsUpdating}/>
+        forceIsUpdating={setIsUpdating}/>
       )}
     </React.Fragment>
   );

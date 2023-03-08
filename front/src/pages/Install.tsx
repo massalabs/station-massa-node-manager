@@ -7,16 +7,15 @@ import {
   Container,
   Link,
 } from '@mui/material';
-import axios from 'axios';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { apiPost, localApiPost } from '../request';
+import { localApiPost } from '../request';
 import Node from '../types/Node';
 
 interface Props {
   SetNewNode: ({}:Node) => void;
   selectedNode: Node | undefined;
   isUpdating: boolean;
-  forceIsUpdating: (val:boolean) => void;
+  forceIsUpdating: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Install: React.FC<Props> = (props: Props) => {
@@ -102,6 +101,7 @@ const Install: React.FC<Props> = (props: Props) => {
         label="Node Name"
         id="name"
         onChange={(e) => setName(e.target.value)}
+        defaultValue={props.selectedNode?.Id}
       />
       <TextField
         required
@@ -109,6 +109,7 @@ const Install: React.FC<Props> = (props: Props) => {
         label="Host IP"
         id="host"
         onChange={(e) => setHost(e.target.value)}
+        defaultValue={props.selectedNode?.Host}
       />
       <TextField
         required
@@ -116,6 +117,7 @@ const Install: React.FC<Props> = (props: Props) => {
         label="Wallet password"
         id="password"
         onChange={(e) => setPassword(e.target.value)}
+        defaultValue={props.selectedNode?.WalletPassword}
       />
       <TextField
         required
@@ -123,12 +125,14 @@ const Install: React.FC<Props> = (props: Props) => {
         label="SSH user"
         id="username"
         onChange={(e) => setUser(e.target.value)}
+        defaultValue={props.selectedNode?.Username}
       />
       <TextField
         sx={{ marginTop: '8px' }}
         label="Discord token"
         id="discordId"
         onChange={(e) => setDiscord(e.target.value)}
+        defaultValue={props.selectedNode?.DiscordId}
       />
       <Button
         variant="contained"

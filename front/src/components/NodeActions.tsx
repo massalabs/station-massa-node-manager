@@ -19,14 +19,10 @@ const backupWalletRequest = (id: string): Promise<any> => {
   return localApiGet(`backup_wallet?id=${id}`);
 };
 
-const removeNodeRequest = (id: string): Promise<any> => {
-  return localApiPost(`remove_node?id=${id}`, {});
-};
-
 interface Props {
   nodeMonitor: NodeMonitor | undefined;
   fetchMonitoring: () => any;
-  forceIsUpdating: (val:boolean) => void;
+  forceIsUpdating: React.Dispatch<React.SetStateAction<boolean>>;
   fetchNodes: () => any;
   selectedNode: Node;
 }
@@ -95,7 +91,6 @@ const NodeActions: React.FC<Props> = (props: Props) => {
 
   const handleEditSettings = () => {
     props.forceIsUpdating(true);
-    props.fetchNodes();
   };
 
   return (
