@@ -71,15 +71,21 @@ func (node *Node) WalletInfo() (*WalletInfo, error) {
 	}
 
 	var wallet_info map[string]interface{}
-	for _, infos := range data {
-		wallet_info = infos.(map[string]interface{})
+	var address string
+	for walletAddr, walletInfo := range data {
+		wallet_info = walletInfo.(map[string]interface{})
+		address = walletAddr
 		break
+	}
+
+	if wallet_info["address_info"] == nil {
+		return &WalletInfo{Address: address}, nil
 	}
 
 	address_info := wallet_info["address_info"].(map[string]interface{})
 
 	return &WalletInfo{
-			address_info["address"].(string),
+			address,
 			address_info["thread"].(float64),
 			address_info["candidate_rolls"].(float64),
 			address_info["final_rolls"].(float64),
