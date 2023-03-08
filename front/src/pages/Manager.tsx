@@ -7,11 +7,8 @@ import NetworkStatsCard from '../components/cards/NetworkStatsCard';
 import NodeInfoCard from '../components/cards/NodeInfoCard';
 import NodeStatusCard from '../components/cards/NodeStatusCard';
 import RessourcesMonirotingCard from '../components/cards/RessourcesMonitoringCard';
-
 import NodeActions from '../components/NodeActions';
-
 import { NodeMonitor } from '../types/NodeMonitor';
-import NodeStatus from '../types/NodeStatus';
 import Node from '../types/Node';
 import NodeStakingInfoCard from '../components/cards/NodeStakingInfoCard';
 import LogsCard from '../components/cards/LogsCard';
@@ -22,7 +19,7 @@ interface Props {
   nodeLogs: string;
   fetchMonitoring: () => any;
   fetchNodeLogs: () => any;
-  forceIsUpdating: (val:boolean) => (val:boolean) => void;
+  forceIsUpdating: React.Dispatch<React.SetStateAction<boolean>>;
   fetchNodes: () => any;
 }
 
@@ -33,7 +30,7 @@ const Manager: React.FC<Props> = (props: Props) => {
         nodeMonitor={props.nodeMonitor}
         selectedNode={props.selectedNode}
         fetchMonitoring={props.fetchMonitoring}
-        forceIsUpdating={props.forceIsUpdating(props.forceIsUpdating.arguments[0])}
+        forceIsUpdating={props.forceIsUpdating}
         fetchNodes={props.fetchNodes}
       />
       <Grid container spacing={4} sx={{ mt: '8px' }}>
