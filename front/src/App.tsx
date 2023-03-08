@@ -125,9 +125,6 @@ export default function App() {
     setIsUpdating(val);
   };
 
-
-  
-
   return (
     <React.Fragment>
       <Header />
