@@ -16,17 +16,17 @@ interface Props {
   SetNewNode: ({}:Node) => void;
   selectedNode: Node | undefined;
   isUpdating: boolean;
-  switchIsUpdating: () => void;
+  forceIsUpdating: (val:boolean) => void;
 }
 
 const Install: React.FC<Props> = (props: Props) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [name, setName] = React.useState(props.selectedNode?.Id ? props.selectedNode?.Id : '');
-  const [host, setHost] = React.useState(props.selectedNode?.Host ? props.selectedNode?.Host : '');
-  const [password, setPassword] = React.useState(props.selectedNode?.WalletPassword ? props.selectedNode?.WalletPassword : '');
-  const [username, setUser] = React.useState(props.selectedNode?.Username ? props.selectedNode?.Username : '');
-  const [discordId, setDiscord] = React.useState(props.selectedNode?.DiscordId ? props.selectedNode?.DiscordId : '');
+  const [name, setName] = React.useState(props.selectedNode?.Id ?? '');
+  const [host, setHost] = React.useState(props.selectedNode?.Host ?? '');
+  const [password, setPassword] = React.useState(props.selectedNode?.WalletPassword ?? '');
+  const [username, setUser] = React.useState(props.selectedNode?.Username ?? '');
+  const [discordId, setDiscord] = React.useState(props.selectedNode?.DiscordId ?? '');
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
 
   const installNode = () => {
@@ -54,7 +54,7 @@ const Install: React.FC<Props> = (props: Props) => {
     )
       .then((response) => {
         setIsLoading(false);
-        if (props.isUpdating) props.switchIsUpdating();
+        if (props.isUpdating) props.forceIsUpdating(false);
         console.log("Updated node")
         const newNode : Node = {
           Id: name,
@@ -102,7 +102,6 @@ const Install: React.FC<Props> = (props: Props) => {
         label="Node Name"
         id="name"
         onChange={(e) => setName(e.target.value)}
-        defaultValue={props.selectedNode?.Id}
       />
       <TextField
         required
@@ -110,7 +109,6 @@ const Install: React.FC<Props> = (props: Props) => {
         label="Host IP"
         id="host"
         onChange={(e) => setHost(e.target.value)}
-        defaultValue={props.selectedNode?.Host}
       />
       <TextField
         required
@@ -118,7 +116,6 @@ const Install: React.FC<Props> = (props: Props) => {
         label="Wallet password"
         id="password"
         onChange={(e) => setPassword(e.target.value)}
-        defaultValue={props.selectedNode?.WalletPassword}
       />
       <TextField
         required
@@ -126,14 +123,12 @@ const Install: React.FC<Props> = (props: Props) => {
         label="SSH user"
         id="username"
         onChange={(e) => setUser(e.target.value)}
-        defaultValue={props.selectedNode?.Username}
       />
       <TextField
         sx={{ marginTop: '8px' }}
         label="Discord token"
         id="discordId"
         onChange={(e) => setDiscord(e.target.value)}
-        defaultValue={props.selectedNode?.DiscordId}
       />
       <Button
         variant="contained"

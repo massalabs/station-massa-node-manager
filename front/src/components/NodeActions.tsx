@@ -26,7 +26,7 @@ const removeNodeRequest = (id: string): Promise<any> => {
 interface Props {
   nodeMonitor: NodeMonitor | undefined;
   fetchMonitoring: () => any;
-  switchIsUpdating: () => any;
+  forceIsUpdating: (val:boolean) => void;
   fetchNodes: () => any;
   selectedNode: Node;
 }
@@ -94,7 +94,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
   };
 
   const handleEditSettings = () => {
-    props.switchIsUpdating();
+    props.forceIsUpdating(true);
     props.fetchNodes();
   };
 

@@ -96,7 +96,7 @@ export default function App() {
   React.useEffect(() => {
     fetchMonitoring();
     fetchNodeLogs();
-    // Fetch data every 5 seconds
+    // Fetch data every 2 seconds
     const intervalId = setInterval(() => {
       fetchMonitoring();
       fetchNodeLogs();
@@ -121,8 +121,8 @@ export default function App() {
       });
   };
 
-  const switchIsUpdating = () => {
-    setIsUpdating(!isUpdating);
+  const forceIsUpdating = (val : boolean) : any => {
+    setIsUpdating(val);
   };
 
 
@@ -149,14 +149,14 @@ export default function App() {
           nodeLogs={nodeLogs}
           fetchMonitoring={fetchMonitoring}
           fetchNodeLogs={fetchNodeLogs}
-          switchIsUpdating={switchIsUpdating}
+          forceIsUpdating={forceIsUpdating(isUpdating)}
           fetchNodes={fetchNodes}
         />
       ) : (
         <Install SetNewNode={HandleInstallNewNode} 
         selectedNode={selectedNode}
         isUpdating={isUpdating}
-        switchIsUpdating={switchIsUpdating}/>
+        forceIsUpdating={forceIsUpdating}/>
       )}
     </React.Fragment>
   );
