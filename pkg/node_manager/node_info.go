@@ -30,17 +30,13 @@ func (node *Node) UpdateStatus() (string, State, error) {
 
 	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status")
 	if err != nil {
-		return Unknown.String(), nodeInfos, err
+		return Down.String(), nodeInfos, err
 	}
 
 	content := strings.TrimSpace(string(output))
 
 	if strings.HasPrefix(content, "{\"error") {
 		node.Status = Bootstrapping
-	} else if strings.HasSuffix(content, "is restarting, wait until the container is running") {
-		node.Status = Installing
-	} else if strings.HasSuffix(content, "not running") {
-		node.Status = Down
 	} else if strings.HasPrefix(content, "{\"node_id") {
 		err := json.Unmarshal([]byte(content), &nodeInfos)
 		if err != nil {
@@ -103,12 +99,12 @@ func (node *Node) WalletInfo() (*WalletInfo, error) {
 func (node *Node) GetSystemMetrics() (*SystemMetrics, error) {
 	result, err := node.runCommandSSH("grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage}'")
 	if err != nil {
-		return &SystemMetrics{0, 0, 0}, err
+		return &SystemMetrics{}, err
 	}
 
 	cpu, err := strconv.ParseFloat(strings.TrimSpace((string(result))), 64)
 	if err != nil {
-		return &SystemMetrics{0, 0, 0}, err
+		return &SystemMetrics{}, err
 	}
 
 	result, err = node.runCommandSSH("free | awk 'FNR == 2 {print $3/$2 * 100.0}'")
