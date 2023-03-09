@@ -92,7 +92,6 @@ func installMassaNode(c *gin.Context) {
 		}
 	}
 
-	node.Status = node_manager.Installing
 	go node_manager.Install(node, isDockerComposePresent)
 
 	c.JSON(http.StatusCreated, gin.H{"message": "Massa Node installation started"})
@@ -225,10 +224,10 @@ func getNodeStatus(c *gin.Context) {
 	metrics, _ := node.GetSystemMetrics()
 	if metrics == nil {
 		// If server is not responding, force status to Unknown
-		status = node_manager.Unknown.String()
+		status = node_manager.Unknown
 	}
 
-	c.JSON(200, gin.H{"status": status, "metrics": metrics, "wallet_infos": wallet_infos, "node_infos": nodeInfos})
+	c.JSON(200, gin.H{"status": status.String(), "metrics": metrics, "wallet_infos": wallet_infos, "node_infos": nodeInfos})
 }
 
 func main() {

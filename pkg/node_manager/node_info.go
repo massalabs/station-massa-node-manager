@@ -25,12 +25,18 @@ type WalletInfo struct {
 	Candidate_balance string
 }
 
-func (node *Node) UpdateStatus() (string, State, error) {
+func (node *Node) UpdateStatus() (NodeStatus, State, error) {
+
 	var nodeInfos State
+
+	status := getStatus(*node)
+	if status == Installing {
+		return Installing, nodeInfos, nil
+	}
 
 	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status")
 	if err != nil {
-		return Down.String(), nodeInfos, err
+		return Down, nodeInfos, err
 	}
 
 	content := strings.TrimSpace(string(output))
@@ -49,7 +55,7 @@ func (node *Node) UpdateStatus() (string, State, error) {
 		node.Status = Down
 	}
 
-	return node.Status.String(), nodeInfos, node.addOrUpdateNode()
+	return node.Status, nodeInfos, node.addOrUpdateNode()
 }
 
 func (node *Node) WalletInfo() (*WalletInfo, error) {
@@ -223,6 +229,9 @@ func RemoveNode(nodeId string) error {
 }
 
 func writeNodeList(nodes []Node) error {
+	statusLock.Lock()
+	defer statusLock.Unlock()
+
 	content, err := json.Marshal(nodes)
 	if err != nil {
 		return err

@@ -15,17 +15,6 @@ type InstallNodeInput struct {
 	DockerComposeFile *multipart.FileHeader `form:"docker-compose"`
 }
 
-//go:generate stringer -type=NodeStatus
-type NodeStatus int
-
-const (
-	Unknown NodeStatus = iota
-	Up
-	Down
-	Installing
-	Bootstrapping
-)
-
 type ManageNodeInput struct {
 	Id string `json:"id" binding:"required"`
 }

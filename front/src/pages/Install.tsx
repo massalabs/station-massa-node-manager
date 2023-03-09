@@ -12,7 +12,7 @@ import { localApiPost } from '../request';
 import Node from '../types/Node';
 
 interface Props {
-  SetNewNode: ({}:Node) => void;
+  SetNode: (node: Node) => void;
   selectedNode: Node | undefined;
   isUpdating: boolean;
   forceIsUpdating: React.Dispatch<React.SetStateAction<boolean>>;
@@ -53,9 +53,10 @@ const Install: React.FC<Props> = (props: Props) => {
     )
       .then((response) => {
         setIsLoading(false);
-        if (props.isUpdating) props.forceIsUpdating(false);
-        console.log("Updated node")
-        const newNode : Node = {
+        if (props.isUpdating) {
+          props.forceIsUpdating(false);
+        }
+        const newNode: Node = {
           Id: name,
           Host: host,
           Username: username,
@@ -63,7 +64,7 @@ const Install: React.FC<Props> = (props: Props) => {
           DiscordId: discordId,
           Status: "Installing",
         }
-        props.SetNewNode(newNode);
+        props.SetNode(newNode);
       })
       .catch((error) => {
         console.error(error);
