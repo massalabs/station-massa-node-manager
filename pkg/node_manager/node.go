@@ -2,6 +2,7 @@ package node_manager
 
 import (
 	"mime/multipart"
+	"os"
 	"path"
 )
 
@@ -11,7 +12,7 @@ type InstallNodeInput struct {
 	Host              string                `form:"host" binding:"required"`
 	DiscordId         string                `form:"discord-id"`
 	WalletPassword    string                `form:"wallet-password" binding:"required"`
-	SshKeyFile        *multipart.FileHeader `form:"file" binding:"required"`
+	SshKeyFile        *multipart.FileHeader `form:"file"`
 	DockerComposeFile *multipart.FileHeader `form:"docker-compose"`
 }
 
@@ -30,6 +31,14 @@ type Node struct {
 
 func (node *Node) GetSSHKeyPath() string {
 	return path.Join(GetSshKeysDir(), node.Id+".priv")
+}
+
+func UpdateSshKeyName(oldNodeId string, newNodeId string) error {
+	err := os.Rename(path.Join(GetSshKeysDir(), oldNodeId+".priv"), path.Join(GetSshKeysDir(), newNodeId+".priv"))
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (node *Node) GetDockerComposePath() string {

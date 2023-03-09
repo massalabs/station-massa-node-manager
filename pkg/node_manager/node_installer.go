@@ -59,13 +59,13 @@ func Install(node Node, isDockerComposePresent bool) {
 
 	if os.Chmod(node.GetSSHKeyPath(), 0600) != nil {
 		fmt.Println("unable to set sshKey file permissions")
-		status = Unknown
+		return
 	}
 
 	err := node.addOrUpdateNode()
 	if err != nil {
 		fmt.Println(err.Error())
-		status = Unknown
+		return
 	}
 
 	if isDockerComposePresent {
@@ -109,12 +109,13 @@ echo "Node installation completed"
 	output, err := node.runCommandSSH(dockerInstallScript)
 	if err != nil || !strings.Contains(string(output), "Node installation completed") {
 		fmt.Printf("Installation failed: %s \n %s", err, string(output))
-		status = Unknown
 	}
 
-	status, _, _ = node.UpdateStatus()
-	fmt.Printf("Installation success:\n %s", string(output))
-	fmt.Printf("New status is: %s", status.String())
+	defer func() {
+		status, _, _ = node.UpdateStatus()
+		fmt.Printf("Installation success:\n %s", string(output))
+		fmt.Printf("New status is: %s", status.String())
+	}()
 }
 
 func CreateDirIfNotExists(dirname string) error {
