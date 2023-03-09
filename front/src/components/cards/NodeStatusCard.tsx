@@ -1,7 +1,5 @@
 import React from 'react';
-
-import { Card, CardContent, Skeleton, Typography } from '@mui/material';
-
+import { Card, CardContent, Skeleton, Tooltip, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PendingIcon from '@mui/icons-material/Pending';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -40,6 +38,21 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
     }
   };
 
+  const getTooltip = (status: string | undefined): string => {
+    switch (status) {
+      case 'Up':
+      case 'Bootstrapping':
+      case 'Installing':
+        return status;
+      case 'Down':
+        return "Server is up, but node is node running. Check the logs to identify the issue.";
+      case 'Unknown':
+        return "Server is not reachable. Check your connection settings and ssh access key.";
+      default:
+        return "";
+    }
+  };
+
   return (
     <React.Fragment>
       <Typography variant="subtitle2" sx={{ ml: 2, mt: 1 }}>
@@ -56,18 +69,22 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
         }}
       >
         <CardContent sx={{ textAlign: 'center' }}>
-          {getStatusIcon(props.nodeMonitor?.status)}
+          <Tooltip title={getTooltip(props.nodeMonitor?.status)}>
+            {getStatusIcon(props.nodeMonitor?.status)}
+          </Tooltip>
           <Typography
             variant={
               props.nodeMonitor?.status == 'Up' ??
-              props.nodeMonitor?.status == 'Down'
+                props.nodeMonitor?.status == 'Down'
                 ? 'h4'
                 : 'h6'
             }
             color={getStatusColor(props.nodeMonitor?.status)}
             sx={{ fontWeight: 'bold' }}
           >
-            {props.nodeMonitor?.status ?? <Skeleton />}
+            <Tooltip title={getTooltip(props.nodeMonitor?.status)}>
+            <span>{props.nodeMonitor?.status as any ?? <Skeleton />}</span>
+            </Tooltip>
           </Typography>
         </CardContent>
       </Card>

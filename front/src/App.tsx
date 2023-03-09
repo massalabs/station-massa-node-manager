@@ -78,7 +78,9 @@ export default function App() {
     if (selectedNode) {
       getLogs(selectedNode.Id)
         .then((logs) => {
-          setNodeLogs(logs.data);
+          if(logs?.data) {
+            setNodeLogs(logs.data);
+          }
         })
         .catch((error) => {
           console.error(error);
