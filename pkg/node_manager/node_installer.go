@@ -52,10 +52,10 @@ func (node *Node) uploadDefaultDockerComposeFile() error {
 
 func Install(node Node, isDockerComposePresent bool) {
 
-	setStatus(node, Installing)
+	node.SetStatus(Installing)
 
 	var status NodeStatus
-	defer setStatus(node, status)
+	defer node.SetStatus(status)
 
 	if os.Chmod(node.GetSSHKeyPath(), 0600) != nil {
 		fmt.Println("unable to set sshKey file permissions")

@@ -29,7 +29,7 @@ func (node *Node) UpdateStatus() (NodeStatus, State, error) {
 
 	var nodeInfos State
 
-	status := getStatus(*node)
+	status := node.GetStatus()
 	if status == Installing {
 		return Installing, nodeInfos, nil
 	}
@@ -42,20 +42,21 @@ func (node *Node) UpdateStatus() (NodeStatus, State, error) {
 	content := strings.TrimSpace(string(output))
 
 	if strings.HasPrefix(content, "{\"error") {
-		node.Status = Bootstrapping
+		status = Bootstrapping
 	} else if strings.HasPrefix(content, "{\"node_id") {
 		err := json.Unmarshal([]byte(content), &nodeInfos)
 		if err != nil {
 			fmt.Println(fmt.Errorf("unmarshal node status json: %w", err))
-			node.Status = Down
+			status = Down
 		} else {
-			node.Status = Up
+			status = Up
 		}
 	} else {
-		node.Status = Down
+		status = Down
 	}
 
-	return node.Status, nodeInfos, node.addOrUpdateNode()
+	node.SetStatus(status)
+	return status, nodeInfos, node.addOrUpdateNode()
 }
 
 func (node *Node) WalletInfo() (*WalletInfo, error) {

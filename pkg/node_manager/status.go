@@ -15,13 +15,13 @@ const (
 
 var statusLock sync.Mutex
 
-func setStatus(node Node, newState NodeStatus) {
+func (node *Node) SetStatus(newState NodeStatus) {
 	statusLock.Lock()
 	defer statusLock.Unlock()
 	node.Status = newState
 }
 
-func getStatus(node Node) NodeStatus {
+func (node *Node) GetStatus() NodeStatus {
 	statusLock.Lock()
 	defer statusLock.Unlock()
 	return node.Status

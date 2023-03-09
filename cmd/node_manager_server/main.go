@@ -211,6 +211,16 @@ func getNodeStatus(c *gin.Context) {
 		return
 	}
 
+	var status node_manager.NodeStatus
+	metrics, _ := node.GetSystemMetrics()
+	if metrics == nil {
+		// If server is not responding, force status to Unknown
+		status = node_manager.Unknown
+		node.SetStatus(status)
+		c.JSON(200, gin.H{"status": status.String(), "metrics": metrics, "wallet_infos": node_manager.WalletInfo{}, "node_infos": node_manager.State{}})
+		return
+	}
+
 	status, nodeInfos, err := node.UpdateStatus()
 	if err != nil {
 		fmt.Println(fmt.Errorf("updating status: %w", err))
@@ -219,12 +229,6 @@ func getNodeStatus(c *gin.Context) {
 	wallet_infos, err := node.WalletInfo()
 	if err != nil {
 		fmt.Println(fmt.Errorf("getting wallet info: %w", err))
-	}
-
-	metrics, _ := node.GetSystemMetrics()
-	if metrics == nil {
-		// If server is not responding, force status to Unknown
-		status = node_manager.Unknown
 	}
 
 	c.JSON(200, gin.H{"status": status.String(), "metrics": metrics, "wallet_infos": wallet_infos, "node_infos": nodeInfos})
@@ -269,7 +273,20 @@ func main() {
 		}
 	}
 
-	err := http.Serve(ln, router)
+	nodes, err := node_manager.GetNodes()
+	if err != nil {
+		log.Panicln(fmt.Errorf("getting nodes: %w", err))
+		return
+	}
+
+	for _, node := range nodes {
+		_, _, err := node.UpdateStatus()
+		if err != nil {
+			log.Println(fmt.Errorf("Error fetching status of not %s: %w", node.Id, err))
+		}
+	}
+
+	err = http.Serve(ln, router)
 	if err != nil {
 		log.Fatalln(err)
 	}
