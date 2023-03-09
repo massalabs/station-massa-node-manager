@@ -35,7 +35,7 @@ func (node *Node) UpdateStatus() (string, State, error) {
 
 	content := strings.TrimSpace(string(output))
 
-	if strings.HasPrefix(content, "\"error") {
+	if strings.HasPrefix(content, "{\"error") {
 		node.Status = Bootstrapping
 	} else if strings.HasSuffix(content, "is restarting, wait until the container is running") {
 		node.Status = Installing
@@ -67,7 +67,12 @@ func (node *Node) WalletInfo() (*WalletInfo, error) {
 	var data map[string]interface{}
 	err = json.Unmarshal([]byte(content), &data)
 	if err != nil {
-		return nil, err
+		var data []string
+		err = json.Unmarshal([]byte(content), &data)
+		if err != nil {
+			return &WalletInfo{}, nil
+		}
+		return &WalletInfo{Address: data[0]}, nil
 	}
 
 	var wallet_info map[string]interface{}
