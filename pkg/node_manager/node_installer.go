@@ -59,12 +59,14 @@ func Install(node Node, isDockerComposePresent bool) {
 
 	if os.Chmod(node.GetSSHKeyPath(), 0600) != nil {
 		fmt.Println("unable to set sshKey file permissions")
+		node.SetStatus(Unknown)
 		return
 	}
 
 	err := node.addOrUpdateNode()
 	if err != nil {
 		fmt.Println(err.Error())
+		node.SetStatus(Unknown)
 		return
 	}
 
@@ -110,6 +112,8 @@ echo "Node installation completed"
 	if err != nil || !strings.Contains(string(output), "Node installation completed") {
 		fmt.Printf("Installation failed: %s \n %s", err, string(output))
 	}
+
+	node.SetStatus(Up)
 
 	defer func() {
 		status, _, _ = node.UpdateStatus()
