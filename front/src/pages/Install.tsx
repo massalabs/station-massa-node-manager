@@ -16,6 +16,7 @@ interface Props {
   selectedNode: Node | undefined;
   isUpdating: boolean;
   forceIsUpdating: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchNodes: () => any;
 }
 
 const Install: React.FC<Props> = (props: Props) => {
@@ -29,10 +30,7 @@ const Install: React.FC<Props> = (props: Props) => {
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
 
   const installNode = () => {
-    if (!selectedFile) {
-      console.error('No file selected');
-      return;
-    }
+
     setIsLoading(true);
 
     const formData = new FormData();
@@ -41,7 +39,20 @@ const Install: React.FC<Props> = (props: Props) => {
     formData.append('username', username);
     formData.append('wallet-password', password);
     formData.append('discord-id', discordId);
-    formData.append('file', selectedFile);
+    if (selectedFile) {
+      formData.append('file', selectedFile);
+    }
+
+    const newNode: Node = {
+      Id: name,
+      Host: host,
+      Username: username,
+      WalletPassword: password,
+      DiscordId: discordId,
+      Status: "Installing",
+    }
+    props.SetNode(newNode);
+
     localApiPost(
       props.isUpdating ? `install?update=` + props.selectedNode?.Id : `install`,
       formData,
@@ -69,6 +80,7 @@ const Install: React.FC<Props> = (props: Props) => {
       .catch((error) => {
         console.error(error);
         setIsLoading(false);
+        props.fetchNodes()
       });
   };
 
@@ -153,7 +165,7 @@ const Install: React.FC<Props> = (props: Props) => {
         }}
         startIcon={<CloudUploadIcon />}
       >
-        {selectedFile ? selectedFile.name : 'Select SSH private key file'}
+        {selectedFile ? selectedFile.name : props.isUpdating ? `${props.selectedNode?.Id}-key.ssh` : 'Select SSH private key file'}
         <input
           type="file"
           style={{ display: 'none' }}

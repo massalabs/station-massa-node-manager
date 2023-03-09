@@ -78,7 +78,7 @@ export default function App() {
     if (selectedNode) {
       getLogs(selectedNode.Id)
         .then((logs) => {
-          if(logs?.data) {
+          if (logs?.data) {
             setNodeLogs(logs.data);
           }
         })
@@ -148,10 +148,12 @@ export default function App() {
         />
       ) : (
         <Install
-        SetNode={setSelectedNode}
-        selectedNode={selectedNode}
-        isUpdating={isUpdating}
-        forceIsUpdating={setIsUpdating}/>
+          SetNode={setSelectedNode}
+          selectedNode={selectedNode}
+          isUpdating={isUpdating}
+          forceIsUpdating={setIsUpdating}
+          fetchNodes={fetchNodes}
+        />
       )}
     </React.Fragment>
   );
