@@ -89,7 +89,7 @@ func Install(node Node, isDockerComposePresent bool) {
 
 	dockerInstallScript := fmt.Sprintf(`
 sudo apt-get update
-sudo apt-get install -y curl jq
+sudo apt-get install -y curl jq zip
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh ./get-docker.sh
 rm get-docker.sh
