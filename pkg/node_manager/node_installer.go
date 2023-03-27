@@ -80,6 +80,8 @@ func Install(node Node, isDockerComposePresent bool) {
 		fmt.Printf("failed to upload docker compose file: %s", err)
 	}
 
+	successMsg := "Node installation completed"
+
 	dockerInstallScript := fmt.Sprintf(`
 sudo apt-get update
 sudo apt-get install -y curl jq
@@ -105,11 +107,12 @@ cat << 'EOF' > docker-container-logrotate
 EOF
 sudo mv docker-container-logrotate /etc/logrotate.d/docker-container-logrotate
 sudo docker compose pull
-echo "Node installation completed"
-`, node.DiscordId, node.WalletPassword)
+sudo docker compose up -d
+echo %s
+`, node.DiscordId, node.WalletPassword, successMsg)
 
 	output, err := node.runCommandSSH(dockerInstallScript)
-	if err != nil || !strings.Contains(string(output), "Node installation completed") {
+	if err != nil || !strings.Contains(string(output), successMsg) {
 		fmt.Printf("Installation failed: %s \n %s", err, string(output))
 	}
 
