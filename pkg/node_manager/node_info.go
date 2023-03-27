@@ -75,7 +75,10 @@ func (node *Node) WalletInfo() (*WalletInfo, error) {
 		if err != nil {
 			return &WalletInfo{}, nil
 		}
-		return &WalletInfo{Address: data[0]}, nil
+		if len(data) > 0 {
+			return &WalletInfo{Address: data[0]}, nil
+		}
+		return &WalletInfo{}, nil
 	}
 
 	var wallet_info map[string]interface{}
