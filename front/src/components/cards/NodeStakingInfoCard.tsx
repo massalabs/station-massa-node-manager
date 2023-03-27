@@ -101,9 +101,10 @@ const NodeStakingInfoCard = (props: Props) => {
                   </Typography>
 
                   <Typography variant="h6" marginLeft={5}>
-                    {props.nodeMonitor?.wallet_infos?.Final_balance ?? (
-                      <Skeleton />
-                    )}
+                    {props.nodeMonitor?.wallet_infos?.Final_balance ?
+                    parseFloat(props.nodeMonitor.wallet_infos.Final_balance).toFixed(3) :
+                    (<Skeleton />)
+                    }
                   </Typography>
                   <Tooltip title="The actual balance of your wallet">
                     <IconButton sx={{ p: 0, ml: 5 }}>
