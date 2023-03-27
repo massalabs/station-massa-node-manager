@@ -37,7 +37,7 @@ func (node *Node) StopNode() (string, error) {
 }
 
 func (node *Node) GetLogs() (string, error) {
-	output, err := node.runCommandSSH("sudo docker compose logs -n 100")
+	output, err := node.runCommandSSH("sudo docker compose logs -n 100 massa-core")
 
 	if err != nil {
 		return "", err
