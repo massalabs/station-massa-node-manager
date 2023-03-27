@@ -52,10 +52,14 @@ func (node *Node) uploadDefaultDockerComposeFile() error {
 
 func Install(node Node, isDockerComposePresent bool) {
 
-	node.SetStatus(Installing)
+	status := node.GetStatus()
 
-	var status NodeStatus
-	defer node.SetStatus(status)
+	if status != Unknown {
+		// node is already installed
+		return
+	}
+
+	node.SetStatus(Installing)
 
 	if os.Chmod(node.GetSSHKeyPath(), 0600) != nil {
 		fmt.Println("unable to set sshKey file permissions")
@@ -78,6 +82,7 @@ func Install(node Node, isDockerComposePresent bool) {
 
 	if err != nil {
 		fmt.Printf("failed to upload docker compose file: %s", err)
+		return
 	}
 
 	successMsg := "Node installation completed"
@@ -114,14 +119,15 @@ echo %s
 	output, err := node.runCommandSSH(dockerInstallScript)
 	if err != nil || !strings.Contains(string(output), successMsg) {
 		fmt.Printf("Installation failed: %s \n %s", err, string(output))
+		return
 	}
 
 	node.SetStatus(Up)
 
 	defer func() {
-		status, _, _ = node.UpdateStatus()
-		fmt.Printf("Installation success:\n %s", string(output))
-		fmt.Printf("New status is: %s", status.String())
+		status, _, _ := node.UpdateStatus()
+		log.Println("Installation success:\n" + string(output))
+		log.Printf("New status is: " + status.String())
 	}()
 }
 
