@@ -56,28 +56,22 @@ const NodeStakingInfoCard = (props: Props) => {
                     width: '100%',
                   }}
                 >
-                  <img
-                    src={wallet}
-                    width="40"
-                    alt="React Logo"
-                    style={{ marginLeft: 3 }}
-                  />
-                  <Typography variant="subtitle2" width="30%" marginLeft={3}>
+                  <Typography variant="subtitle2" width="40%" marginLeft={3}>
                     Wallet Address:
                   </Typography>
 
                   <Typography variant="h6" marginLeft={5}>
-                                    {props.nodeMonitor?.wallet_infos?.Address ? (
-                  <div style={{}}>
-                    <AddressDisplay  address={props.nodeMonitor?.wallet_infos?.Address} />
-                  </div>
-                ) : (
-                  <Skeleton />
-                )}
+                    {props.nodeMonitor?.wallet_infos?.Address ? (
+                      <div style={{}}>
+                        <AddressDisplay address={props.nodeMonitor?.wallet_infos?.Address} />
+                      </div>
+                    ) : (
+                      <Skeleton />
+                    )}
                   </Typography>
                 </Box>
-                </Box>
-                <Box
+              </Box>
+              <Box
                 sx={{
                   display: 'flex',
                 }}
@@ -97,16 +91,16 @@ const NodeStakingInfoCard = (props: Props) => {
                     style={{ marginLeft: 3 }}
                   />
                   <Typography variant="subtitle2" width="30%" marginLeft={3}>
-                    Wallet Balance:
+                    Balance:
                   </Typography>
 
                   <Typography variant="h6" marginLeft={5}>
                     {props.nodeMonitor?.wallet_infos?.Final_balance ?
-                    parseFloat(props.nodeMonitor.wallet_infos.Final_balance).toFixed(3) :
-                    (<Skeleton />)
+                      parseFloat(props.nodeMonitor.wallet_infos.Final_balance).toFixed(3) :
+                      (<Skeleton />)
                     }
                   </Typography>
-                  <Tooltip title="The actual balance of your wallet">
+                  <Tooltip title="Balance of your wallet">
                     <IconButton sx={{ p: 0, ml: 5 }}>
                       <HelpOutline fontSize="small" />
                     </IconButton>
@@ -133,15 +127,15 @@ const NodeStakingInfoCard = (props: Props) => {
                     style={{ marginLeft: 3 }}
                   />
                   <Typography variant="subtitle2" width="30%" marginLeft={3}>
-                    Active Rolls:
+                    Final Rolls:
                   </Typography>
 
                   <Typography variant="h6" marginLeft={5}>
-                    {props.nodeMonitor?.wallet_infos?.Active_rolls ?? (
+                    {props.nodeMonitor?.wallet_infos?.Final_rolls ?? (
                       <Skeleton />
                     )}
                   </Typography>
-                  <Tooltip title="The current active rolls">
+                  <Tooltip title="Final rolls">
                     <IconButton sx={{ p: 0, ml: 5 }}>
                       <HelpOutline fontSize="small" />
                     </IconButton>
@@ -168,15 +162,15 @@ const NodeStakingInfoCard = (props: Props) => {
                     style={{ marginLeft: 3 }}
                   />
                   <Typography variant="subtitle2" width="30%" marginLeft={3}>
-                    Balance Rolls:
+                    Active Rolls:
                   </Typography>
 
                   <Typography variant="h6" marginLeft={5}>
-                    {props.nodeMonitor?.wallet_infos?.Final_rolls ?? (
+                    {props.nodeMonitor?.wallet_infos?.Active_rolls ?? (
                       <Skeleton />
                     )}
                   </Typography>
-                  <Tooltip title="The balance of your Rolls">
+                  <Tooltip title="Selected rolls for stacking">
                     <IconButton sx={{ p: 0, ml: 5 }}>
                       <HelpOutline fontSize="small" />
                     </IconButton>

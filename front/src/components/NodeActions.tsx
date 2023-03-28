@@ -68,13 +68,13 @@ const NodeActions: React.FC<Props> = (props: Props) => {
     }
   };
 
-  const canUpdate = () => {
+  const canBackup = () => {
     const status = props.nodeMonitor?.status;
     return status !== 'Unknown';
   };
 
   const handleBackup = () => {
-    if (canUpdate()) {
+    if (canBackup()) {
       backupWalletRequest(props.selectedNode.Id)
         .then((response) => {
           downloadFile(
@@ -190,7 +190,7 @@ const NodeActions: React.FC<Props> = (props: Props) => {
           {isStartingNode ? (
             <CircularProgress size={24} />
           ) : (
-            <Typography variant="h6">Update</Typography>
+            <Typography variant="h6">Restart</Typography>
             )}
         </Button>
       </Grid>
