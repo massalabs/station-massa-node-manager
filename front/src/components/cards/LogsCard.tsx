@@ -1,18 +1,16 @@
 import React from 'react';
-import { TextareaAutosize } from '@mui/base';
 import { Button, Card, Typography } from '@mui/material';
-import { apiGet } from '../../request';
 import { Scrollbar } from 'react-scrollbars-custom';
-import { downloadFile } from '../../utils/shared';
+import { saveAs } from "file-saver";
+
 type Props = {
   fetchNodeLogs: () => Promise<Response>;
   nodeLogs: string;
 };
 
 function LogsCard(props: Props) {
-  const handleExportLogs = async () => {
-    return downloadFile(props.nodeLogs, 'logs.txt', 'Error exporting logs:');
-  };
+  const handleExportLogs = async () => saveAs(new Blob([props.nodeLogs], { type: 'plain/text' }), 'logs.txt')
+
   return (
     <>
       <Typography variant="subtitle2" sx={{ ml: 2, mt: 1 }}>

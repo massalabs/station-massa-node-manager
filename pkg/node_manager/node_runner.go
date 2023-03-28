@@ -56,7 +56,8 @@ func (node *Node) BackupWallet() (string, error) {
 		return localFile, nil
 	}
 
-	output, err := node.runCommandSSH("zip -j " + backupFile + "massa_mount/node_privkey.key massa_mount/staking_wallet.dat massa_mount/wallet.dat")
+	output, err := node.runCommandSSH("zip -j " + backupFile +
+		" massa_mount/node_privkey.key massa_mount/staking_wallet.dat massa_mount/wallet.dat")
 
 	if err != nil {
 		return "", fmt.Errorf("creating backup zip archive: %s", err)

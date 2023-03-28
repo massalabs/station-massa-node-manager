@@ -10,6 +10,7 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "axios": "^1.2.1",
+    "file-saver": "^2.0.5",
     "react": "latest",
     "react-dom": "latest",
     "react-scripts": "latest",
@@ -37,7 +38,8 @@
     ]
   },
   "devDependencies": {
-    "@massalabs/prettier-config-as": "^0.0.2"
+    "@massalabs/prettier-config-as": "^0.0.2",
+    "@types/file-saver": "^2.0.5"
   },
   "prettier": "@massalabs/prettier-config-as"
 }

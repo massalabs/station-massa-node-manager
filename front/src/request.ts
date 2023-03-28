@@ -21,9 +21,9 @@ export const request = async (
 };
 
 //Production mode
-//const localPrefixUrl = window.location.pathname;
+const localPrefixUrl = window.location.pathname;
 //Uncomment to work and test front and put the port of the back in local
-const localPrefixUrl = "http://localhost:8080/";
+// const localPrefixUrl = "http://localhost:8080/";
 
 export const localApiPost = async (
   path: string,
@@ -47,14 +47,16 @@ export const apiPost = async (
       console.error(error);
     });
 };
+
 export const localApiGet = async (
   path: string,
+  options?: AxiosRequestConfig,
   // Change to personal port
-) => apiGet(`${localPrefixUrl}${path}`);
+) => apiGet(`${localPrefixUrl}${path}`,options);
 
-export const apiGet = async (url: string, headers?: AxiosRequestConfig) => {
+export const apiGet = async (url: string, options?: AxiosRequestConfig) => {
   return axios
-    .get(url, headers)
+    .get(url, options)
     .then((response) => {
       return response;
     })
