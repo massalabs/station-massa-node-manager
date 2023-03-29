@@ -9,13 +9,19 @@ import (
 )
 
 func (node *Node) getSSHClient() (*simplessh.Client, error) {
-
-	client, err := simplessh.ConnectWithKeyFile(node.Host, node.Username, node.GetSSHKeyPath())
-	if err != nil {
-		return nil, err
+	if node.SshPassword == "" {
+		client, err := simplessh.ConnectWithKeyFile(node.Host, node.Username, GetSSHKeyPath(node.Id))
+		if err != nil {
+			return nil, err
+		}
+		return client, nil
+	} else {
+		client, err := simplessh.ConnectWithPassword(node.Host, node.Username, node.SshPassword)
+		if err != nil {
+			return nil, err
+		}
+		return client, nil
 	}
-
-	return client, nil
 }
 
 func (node *Node) StartNode() (string, error) {

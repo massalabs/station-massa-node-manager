@@ -5,6 +5,7 @@ interface Node {
   Status: string;
   Username: string;
   WalletPassword: string;
+  SshPassword: string;
 }
 
 export default Node;

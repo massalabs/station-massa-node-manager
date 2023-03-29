@@ -16,10 +16,6 @@ const getNodes = async (): Promise<any> => {
   return localApiGet('nodes');
 };
 
-const getLogs = async (id: string): Promise<any> => {
-  return localApiGet(`node_logs?id=${id}`);
-};
-
 export default function App() {
   const [isFetchingNodes, setIsFetchingNodes] = React.useState<boolean>(false);
   const [nodes, setNodes] = React.useState<Node[]>([]);
@@ -43,6 +39,12 @@ export default function App() {
   React.useEffect(() => {
     fetchNodes();
   }, []);
+
+  const getLogs = async (id: string): Promise<any> => {
+    if (nodeMonitor?.status && nodeMonitor?.status != 'Unknown') {
+      return localApiGet(`node_logs?id=${id}`);
+    }
+  };
 
   const fetchMonitoring = () => {
     if (selectedNode) {

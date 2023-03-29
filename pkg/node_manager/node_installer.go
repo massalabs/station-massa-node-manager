@@ -3,6 +3,7 @@ package node_manager
 import (
 	"embed"
 	"fmt"
+	"log"
 	"os"
 	"path"
 	"strings"
@@ -52,28 +53,25 @@ func (node *Node) uploadDefaultDockerComposeFile() error {
 
 func Install(node Node, isDockerComposePresent bool) {
 
-	status := node.GetStatus()
+	if node.SshPassword == "" {
+		if os.Chmod(GetSSHKeyPath(node.Id), 0600) != nil {
+			fmt.Println("unable to set sshKey file permissions")
+			node.SetStatus(Unknown)
+			return
+		}
+	}
 
-	if status != Unknown {
-		// node is already installed
+	status, _ := node.UpdateStatus()
+
+	if status == Up {
+		fmt.Println("node is already installed")
 		return
 	}
 
+	fmt.Println("Installation started")
 	node.SetStatus(Installing)
 
-	if os.Chmod(node.GetSSHKeyPath(), 0600) != nil {
-		fmt.Println("unable to set sshKey file permissions")
-		node.SetStatus(Unknown)
-		return
-	}
-
-	err := node.addOrUpdateNode()
-	if err != nil {
-		fmt.Println(err.Error())
-		node.SetStatus(Unknown)
-		return
-	}
-
+	var err error
 	if isDockerComposePresent {
 		err = node.uploadCustomDockerComposeFile()
 	} else {
@@ -125,7 +123,7 @@ echo %s
 	node.SetStatus(Up)
 
 	defer func() {
-		status, _, _ := node.UpdateStatus()
+		status, _ := node.UpdateStatus()
 		log.Println("Installation success:\n" + string(output))
 		log.Printf("New status is: " + status.String())
 	}()

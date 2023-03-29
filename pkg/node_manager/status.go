@@ -1,6 +1,9 @@
 package node_manager
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 //go:generate stringer -type=NodeStatus
 type NodeStatus int
@@ -16,9 +19,11 @@ const (
 var statusLock sync.Mutex
 
 func (node *Node) SetStatus(newState NodeStatus) {
-	statusLock.Lock()
-	defer statusLock.Unlock()
 	node.Status = newState
+	err := node.addOrUpdateNode()
+	if err != nil {
+		fmt.Printf("error while updating status %s", err)
+	}
 }
 
 func (node *Node) GetStatus() NodeStatus {

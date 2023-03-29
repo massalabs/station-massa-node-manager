@@ -31,21 +31,21 @@ const RessourcesMonirotingCard: React.FC<Props> = (props: Props) => {
           <Typography variant="h6">
             CPU
             <LinearProgressWithLabel
-              value={props.nodeMonitor?.metrics.CPU ?? 0}
+              value={props.nodeMonitor?.metrics?.CPU ?? 0}
               color="success"
             />
           </Typography>
           <Typography variant="h6">
             RAM
             <LinearProgressWithLabel
-              value={props.nodeMonitor?.metrics.RAM ?? 0}
+              value={props.nodeMonitor?.metrics?.RAM ?? 0}
               color="success"
             />
           </Typography>
           <Typography variant="h6">
             Disk
             <LinearProgressWithLabel
-              value={props.nodeMonitor?.metrics.Disk ?? 0}
+              value={props.nodeMonitor?.metrics?.Disk ?? 0}
               color="warning"
             />
           </Typography>

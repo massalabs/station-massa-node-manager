@@ -6,6 +6,11 @@ import {
   Typography,
   Container,
   Link,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { localApiPost } from '../request';
@@ -25,19 +30,23 @@ const Install: React.FC<Props> = (props: Props) => {
   const [name, setName] = React.useState(props.selectedNode?.Id ?? '');
   const [host, setHost] = React.useState(props.selectedNode?.Host ?? '');
   const [password, setPassword] = React.useState(props.selectedNode?.WalletPassword ?? '');
+  const [sshPassword, setSshPassword] = React.useState(props.selectedNode?.SshPassword ?? '');
   const [username, setUser] = React.useState(props.selectedNode?.Username ?? '');
   const [discordId, setDiscord] = React.useState(props.selectedNode?.DiscordId ?? '');
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+  const [sshType, setSshType] = React.useState((props.selectedNode && props.selectedNode?.SshPassword != '') ? 'password' : 'key');
 
   const installNode = () => {
 
     setIsLoading(true);
 
+    const sshPwd = sshType === "key" ? "" : sshPassword
     const formData = new FormData();
     formData.append('id', name);
     formData.append('host', host);
     formData.append('username', username);
     formData.append('wallet-password', password);
+    formData.append('ssh-password', sshPwd);
     formData.append('discord-id', discordId);
     if (selectedFile) {
       formData.append('file', selectedFile);
@@ -48,6 +57,7 @@ const Install: React.FC<Props> = (props: Props) => {
       Host: host,
       Username: username,
       WalletPassword: password,
+      SshPassword: sshPwd,
       DiscordId: discordId,
       Status: "Installing",
     }
@@ -72,6 +82,7 @@ const Install: React.FC<Props> = (props: Props) => {
           Host: host,
           Username: username,
           WalletPassword: password,
+          SshPassword: sshPassword,
           DiscordId: discordId,
           Status: "Installing",
         }
@@ -133,6 +144,13 @@ const Install: React.FC<Props> = (props: Props) => {
         defaultValue={props.selectedNode?.WalletPassword}
       />
       <TextField
+        sx={{ marginTop: '8px' }}
+        label="Discord token"
+        id="discordId"
+        onChange={(e) => setDiscord(e.target.value)}
+        defaultValue={props.selectedNode?.DiscordId}
+      />
+      <TextField
         required
         sx={{ marginTop: '8px' }}
         label="SSH user"
@@ -140,39 +158,60 @@ const Install: React.FC<Props> = (props: Props) => {
         onChange={(e) => setUser(e.target.value)}
         defaultValue={props.selectedNode?.Username}
       />
-      <TextField
-        sx={{ marginTop: '8px' }}
-        label="Discord token"
-        id="discordId"
-        onChange={(e) => setDiscord(e.target.value)}
-        defaultValue={props.selectedNode?.DiscordId}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleClick}
-        sx={{
-          padding: '16px 24px',
-          borderRadius: '8px',
-          border: '1px solid #ccc',
-          textTransform: 'none',
-          '&:hover': {
-            boxShadow: 'none',
-            backgroundColor: '#1976d2',
-            borderColor: '#1976d2',
-          },
-          marginTop: '16px',
-        }}
-        startIcon={<CloudUploadIcon />}
-      >
-        {selectedFile ? selectedFile.name : props.isUpdating ? `${props.selectedNode?.Id}-key.ssh` : 'Select SSH private key file'}
-        <input
-          type="file"
-          style={{ display: 'none' }}
-          ref={fileInputRef}
-          onChange={handleFileSelect}
+      <FormControl component="fieldset" sx={{ marginTop: '8px' }}>
+        <FormLabel component="legend">SSH Authentication</FormLabel>
+        <RadioGroup
+          row
+          aria-label="ssh-authentication"
+          defaultValue="key"
+          value={sshType}
+          onChange={(e) => setSshType(e.target.value)}
+        >
+          <FormControlLabel value="key" control={<Radio />} label="Ssh key file" />
+          <FormControlLabel value="password" control={<Radio />} label="Password" />
+        </RadioGroup>
+      </FormControl>
+      {sshType === 'password' ? (
+        <TextField
+          required
+          sx={{ marginTop: '8px' }}
+          label="SSH password"
+          id="password"
+          type="password"
+          onChange={(e) => setSshPassword(e.target.value)}
+          defaultValue={props.selectedNode?.SshPassword}
         />
-      </Button>
+      ) : (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleClick}
+          sx={{
+            padding: '16px 24px',
+            borderRadius: '8px',
+            border: '1px solid #ccc',
+            textTransform: 'none',
+            '&:hover': {
+              boxShadow: 'none',
+              backgroundColor: '#1976d2',
+              borderColor: '#1976d2',
+            },
+            marginTop: '16px',
+          }}
+          startIcon={<CloudUploadIcon />}
+        >
+          {selectedFile ? selectedFile.name :
+            (props.isUpdating && props.selectedNode?.SshPassword == '') ?
+              `${props.selectedNode?.Id}-key.ssh` :
+              'Select SSH private key file'}
+          <input
+            type="file"
+            style={{ display: 'none' }}
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+          />
+        </Button>
+      )}
       <Button
         variant="contained"
         color="primary"
@@ -187,7 +226,7 @@ const Install: React.FC<Props> = (props: Props) => {
         {isLoading ? (
           <CircularProgress size={24} />
         ) : (
-          <Typography variant="h6">Setup your node</Typography>
+          <Typography variant="h6">{props.isUpdating ? "Update node" : "Setup node"}</Typography>
         )}
       </Button>
 

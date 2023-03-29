@@ -25,18 +25,25 @@ type WalletInfo struct {
 	Candidate_balance string
 }
 
-func (node *Node) UpdateStatus() (NodeStatus, State, error) {
+func (node *Node) UpdateStatus() (NodeStatus, State) {
 
 	var nodeInfos State
 
 	status := node.GetStatus()
+
 	if status == Installing {
-		return Installing, nodeInfos, nil
+		return Installing, nodeInfos
 	}
 
 	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status")
 	if err != nil {
-		return Down, nodeInfos, err
+		if strings.HasPrefix(err.Error(), "ssh: ") {
+			status = Unknown
+		} else {
+			status = Down
+		}
+		node.SetStatus(status)
+		return status, nodeInfos
 	}
 
 	content := strings.TrimSpace(string(output))
@@ -56,7 +63,7 @@ func (node *Node) UpdateStatus() (NodeStatus, State, error) {
 	}
 
 	node.SetStatus(status)
-	return status, nodeInfos, node.addOrUpdateNode()
+	return status, nodeInfos
 }
 
 func (node *Node) WalletInfo() (*WalletInfo, error) {
@@ -109,7 +116,7 @@ func (node *Node) WalletInfo() (*WalletInfo, error) {
 func (node *Node) GetSystemMetrics() (*SystemMetrics, error) {
 	result, err := node.runCommandSSH("grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage}'")
 	if err != nil {
-		return &SystemMetrics{}, err
+		return nil, err
 	}
 
 	cpu, err := strconv.ParseFloat(strings.TrimSpace((string(result))), 64)
@@ -204,7 +211,7 @@ func (node *Node) addOrUpdateNode() error {
 		nodes = append(nodes, *node)
 	}
 
-	return writeNodeList(nodes)
+	return WriteNodeList(nodes)
 }
 
 func RemoveNode(nodeId string) error {
@@ -229,10 +236,10 @@ func RemoveNode(nodeId string) error {
 		return fmt.Errorf("removing node %s: unable to find %s", nodeId, nodeId)
 	}
 
-	return writeNodeList(nodes)
+	return WriteNodeList(nodes)
 }
 
-func writeNodeList(nodes []Node) error {
+func WriteNodeList(nodes []Node) error {
 	statusLock.Lock()
 	defer statusLock.Unlock()
 

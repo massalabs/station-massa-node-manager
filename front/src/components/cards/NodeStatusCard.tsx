@@ -43,13 +43,25 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
       case 'Up':
       case 'Bootstrapping':
       case 'Installing':
-        return status;
+        return 'Installation in progress. Please wait for the node status to be updated';
       case 'Down':
         return "Server is up, but node is node running. Check the logs to identify the issue.";
       case 'Unknown':
         return "Server is not reachable. Check your connection settings and ssh access key.";
       default:
         return "";
+    }
+  };
+
+  const getStatusStr = (status: string | undefined): string | undefined => {
+    if(!status) {
+      return undefined
+    }
+    switch (status) {
+      case 'Unknown':
+        return "Unreachable";
+      default:
+        return status;
     }
   };
 
@@ -73,17 +85,12 @@ const NodeStatusCard: React.FC<Props> = (props: Props) => {
             {getStatusIcon(props.nodeMonitor?.status)}
           </Tooltip>
           <Typography
-            variant={
-              props.nodeMonitor?.status == 'Up' ??
-                props.nodeMonitor?.status == 'Down'
-                ? 'h4'
-                : 'h6'
-            }
+            variant='h5'
             color={getStatusColor(props.nodeMonitor?.status)}
             sx={{ fontWeight: 'bold' }}
           >
             <Tooltip title={getTooltip(props.nodeMonitor?.status)}>
-            <span>{props.nodeMonitor?.status as any ?? <Skeleton />}</span>
+            <span>{getStatusStr(props.nodeMonitor?.status) ?? <Skeleton />}</span>
             </Tooltip>
           </Typography>
         </CardContent>

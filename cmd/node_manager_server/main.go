@@ -54,32 +54,48 @@ func installMassaNode(c *gin.Context) {
 		return
 	}
 
-	newSshKey := true
-	nodeId := c.Query("update")
-	if nodeId != "" {
-		err := node_manager.RemoveNode(nodeId)
+	needSshKey := true
+	if input.SshPassword != "" {
+		needSshKey = false
+	}
+
+	nodeToUpdate := c.Query("update")
+
+	isUpdate := nodeToUpdate != ""
+	if isUpdate {
+		err := node_manager.RemoveNode(nodeToUpdate)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, err.Error())
 			return
 		}
-		// If new key file has not been provided, use the previous one
-		if input.SshKeyFile == nil {
-			err = node_manager.UpdateSshKeyName(nodeId, input.Id)
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, err.Error())
-				return
-			}
 
-			newSshKey = false
+		_, err = os.Stat(node_manager.GetSSHKeyPath(nodeToUpdate))
+		if err == nil { // old key file exists
+
+			if needSshKey { //rename ssh key file
+				err = node_manager.UpdateSshKeyName(nodeToUpdate, input.Id)
+				if err != nil {
+					c.JSON(http.StatusInternalServerError, err.Error())
+					return
+				}
+				needSshKey = false
+			} else { // password has been provided, delete previous ssh key file
+				err = node_manager.RemoveSshKeyIfExist(nodeToUpdate)
+				if err != nil {
+					fmt.Printf("unable to remove old key file: %s", err)
+				}
+			}
 		}
-	} else if input.SshKeyFile == nil {
-		c.JSON(http.StatusInternalServerError, "Ssh key file is missing")
+	}
+
+	if needSshKey && input.SshKeyFile == nil {
+		c.JSON(http.StatusInternalServerError, "Ssh key file or password is missing")
 		return
 	}
 
 	node := input.CreateNode()
 
-	if err := node_manager.CreateDirIfNotExists(path.Dir(node.GetSSHKeyPath())); err != nil {
+	if err := node_manager.CreateDirIfNotExists(path.Dir(node_manager.GetSSHKeyPath(node.Id))); err != nil {
 		fmt.Println(fmt.Errorf("creating dir: %w", err))
 		c.JSON(http.StatusInternalServerError, fmt.Sprintf("creating ssh key dir: %s", err.Error()))
 		return
@@ -91,8 +107,8 @@ func installMassaNode(c *gin.Context) {
 		return
 	}
 
-	if newSshKey {
-		if err := c.SaveUploadedFile(input.SshKeyFile, node.GetSSHKeyPath()); err != nil {
+	if needSshKey {
+		if err := c.SaveUploadedFile(input.SshKeyFile, node_manager.GetSSHKeyPath(node.Id)); err != nil {
 			fmt.Println(fmt.Errorf("saving file: %w", err))
 			c.JSON(http.StatusInternalServerError, fmt.Sprintf("saving ssh key file: %s", err.Error()))
 			return
@@ -230,6 +246,7 @@ func getNodeStatus(c *gin.Context) {
 
 	var status node_manager.NodeStatus
 	metrics, _ := node.GetSystemMetrics()
+
 	if metrics == nil {
 		// If server is not responding, force status to Unknown
 		status = node_manager.Unknown
@@ -238,10 +255,7 @@ func getNodeStatus(c *gin.Context) {
 		return
 	}
 
-	status, nodeInfos, err := node.UpdateStatus()
-	if err != nil {
-		fmt.Println(fmt.Errorf("updating status: %w", err))
-	}
+	status, nodeInfos := node.UpdateStatus()
 
 	wallet_infos, err := node.WalletInfo()
 	if err != nil {
@@ -298,10 +312,7 @@ func main() {
 
 	for _, node := range nodes {
 		node.SetStatus(node_manager.Unknown)
-		_, _, err := node.UpdateStatus()
-		if err != nil {
-			log.Println(fmt.Errorf("Error fetching status of not %s: %w", node.Id, err))
-		}
+		node.UpdateStatus()
 	}
 
 	err = http.Serve(ln, router)
