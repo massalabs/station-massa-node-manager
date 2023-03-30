@@ -61,7 +61,6 @@ const Manager: React.FC<Props> = (props: Props) => {
           sx={{ pl: 4, pt: 4 }}
         >
           <LogsCard
-            fetchNodeLogs={props.fetchNodeLogs}
             nodeLogs={props.nodeLogs}
           />
         </Grid>

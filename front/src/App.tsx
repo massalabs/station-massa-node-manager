@@ -106,7 +106,7 @@ export default function App() {
       clearInterval(fetchNodeInt)
       clearInterval(monitorInt)
     };
-  }, [selectedNode]);
+  }, [selectedNode, nodeMonitor]);
 
   const fetchNodes = () => {
     setIsFetchingNodes(true);

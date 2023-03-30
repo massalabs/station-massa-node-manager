@@ -4,7 +4,6 @@ import { Scrollbar } from 'react-scrollbars-custom';
 import { saveAs } from "file-saver";
 
 type Props = {
-  fetchNodeLogs: () => Promise<Response>;
   nodeLogs: string;
 };
 
