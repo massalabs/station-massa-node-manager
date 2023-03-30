@@ -94,6 +94,7 @@ func installMassaNode(c *gin.Context) {
 	}
 
 	node := input.CreateNode()
+	node.SetStatus(node_manager.Installing)
 
 	if err := node_manager.CreateDirIfNotExists(path.Dir(node_manager.GetSSHKeyPath(node.Id))); err != nil {
 		fmt.Println(fmt.Errorf("creating dir: %w", err))
@@ -248,14 +249,13 @@ func getNodeStatus(c *gin.Context) {
 	metrics, _ := node.GetSystemMetrics()
 
 	if metrics == nil {
-		// If server is not responding, force status to Unknown
+		// Server is not responding
 		status = node_manager.Unknown
-		node.SetStatus(status)
 		c.JSON(200, gin.H{"status": status.String(), "metrics": metrics, "wallet_infos": node_manager.WalletInfo{}, "node_infos": node_manager.State{}})
 		return
 	}
 
-	status, nodeInfos := node.UpdateStatus()
+	status, nodeInfos := node.UpdateStatus(false)
 
 	wallet_infos, err := node.WalletInfo()
 	if err != nil {
@@ -312,7 +312,7 @@ func main() {
 
 	for _, node := range nodes {
 		node.SetStatus(node_manager.Unknown)
-		node.UpdateStatus()
+		node.UpdateStatus(true)
 	}
 
 	err = http.Serve(ln, router)

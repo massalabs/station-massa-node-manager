@@ -61,7 +61,7 @@ func Install(node Node, isDockerComposePresent bool) {
 		}
 	}
 
-	status, _ := node.UpdateStatus()
+	status, _ := node.UpdateStatus(true)
 
 	if status == Up {
 		fmt.Println("node is already installed")
@@ -69,7 +69,6 @@ func Install(node Node, isDockerComposePresent bool) {
 	}
 
 	fmt.Println("Installation started")
-	node.SetStatus(Installing)
 
 	var err error
 	if isDockerComposePresent {
@@ -123,7 +122,7 @@ echo %s
 	node.SetStatus(Up)
 
 	defer func() {
-		status, _ := node.UpdateStatus()
+		status, _ := node.UpdateStatus(false)
 		log.Println("Installation success:\n" + string(output))
 		log.Printf("New status is: " + status.String())
 	}()

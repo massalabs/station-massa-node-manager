@@ -25,13 +25,13 @@ type WalletInfo struct {
 	Candidate_balance string
 }
 
-func (node *Node) UpdateStatus() (NodeStatus, State) {
+func (node *Node) UpdateStatus(force bool) (NodeStatus, State) {
 
 	var nodeInfos State
 
 	status := node.GetStatus()
 
-	if status == Installing {
+	if status == Installing && !force {
 		return Installing, nodeInfos
 	}
 
