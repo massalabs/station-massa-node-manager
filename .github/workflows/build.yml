@@ -39,7 +39,6 @@ jobs:
       - name: Build front end
         run: ./build-frontend.sh
       - name: Build binary
-        shell: bash
         run: GOOS=${{ matrix.target }} GOARCH=${{ matrix.arch }} go build -o $TARGET_NAME${{ matrix.ext }} ./cmd/node_manager_server
       - name: Upload artifacts
         if: ${{ inputs.tag_name == '' && github.ref_name == 'main' }}
@@ -50,6 +49,9 @@ jobs:
       - name: Zip binary
         if: ${{ inputs.tag_name != '' }}
         run: zip $TARGET_NAME.zip $TARGET_NAME${{ matrix.ext }}
+      - name: Print archive hash
+        if: ${{ inputs.tag_name != '' }}
+        run: md5sum $TARGET_NAME.zip
       - name: Create release and upload binaries
         if: ${{ inputs.tag_name != '' }}
         uses: softprops/action-gh-release@v1
