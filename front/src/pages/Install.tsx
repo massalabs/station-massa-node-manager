@@ -140,6 +140,7 @@ const Install: React.FC<Props> = (props: Props) => {
         sx={{ marginTop: '8px' }}
         label="Wallet password"
         id="password"
+        type="password"
         onChange={(e) => setPassword(e.target.value)}
         defaultValue={props.selectedNode?.WalletPassword}
       />
