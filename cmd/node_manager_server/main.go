@@ -255,13 +255,19 @@ func getNodeStatus(c *gin.Context) {
 		return
 	}
 
-	status, nodeInfos := node.UpdateStatus(false)
+	status = node.GetStatus()
+	var nodeInfos node_manager.State
+	var wallet_infos *node_manager.WalletInfo
 
-	wallet_infos, err := node.WalletInfo()
-	if err != nil {
-		fmt.Println(fmt.Errorf("getting wallet info: %w", err))
+	if status != node_manager.Installing {
+		status, nodeInfos = node.FetchStatus()
+		node.SetStatus(status)
+
+		wallet_infos, err = node.WalletInfo()
+		if err != nil {
+			fmt.Println(fmt.Errorf("getting wallet info: %w", err))
+		}
 	}
-
 	c.JSON(200, gin.H{"status": status.String(), "metrics": metrics, "wallet_infos": wallet_infos, "node_infos": nodeInfos})
 }
 
@@ -311,8 +317,8 @@ func main() {
 	}
 
 	for _, node := range nodes {
-		node.SetStatus(node_manager.Unknown)
-		node.UpdateStatus(true)
+		status, _ := node.FetchStatus()
+		node.SetStatus(status)
 	}
 
 	err = http.Serve(ln, router)

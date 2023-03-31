@@ -25,15 +25,10 @@ type WalletInfo struct {
 	Candidate_balance string
 }
 
-func (node *Node) UpdateStatus(force bool) (NodeStatus, State) {
+func (node *Node) FetchStatus() (NodeStatus, State) {
 
 	var nodeInfos State
-
-	status := node.GetStatus()
-
-	if status == Installing && !force {
-		return Installing, nodeInfos
-	}
+	var status NodeStatus
 
 	output, err := node.runCommandSSH("sudo docker exec massa-core massa-cli -j get_status")
 	if err != nil {
@@ -42,7 +37,6 @@ func (node *Node) UpdateStatus(force bool) (NodeStatus, State) {
 		} else {
 			status = Down
 		}
-		node.SetStatus(status)
 		return status, nodeInfos
 	}
 
@@ -62,7 +56,6 @@ func (node *Node) UpdateStatus(force bool) (NodeStatus, State) {
 		status = Down
 	}
 
-	node.SetStatus(status)
 	return status, nodeInfos
 }
 
