@@ -174,7 +174,7 @@ const Install: React.FC<Props> = (props: Props) => {
           defaultValue={props.selectedNode?.WalletPassword}
         />
       </Tooltip>
-      <Tooltip title="This token is used to send you a notification on Discord when your node has an issue.">
+      <Tooltip title="This token is used to log into a Discord account to perfom some actions such as asking coins to the faucet.">
         <TextField
           sx={{ mt: '8px' }}
           label="Discord token"
