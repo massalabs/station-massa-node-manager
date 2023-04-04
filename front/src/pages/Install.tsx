@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Button,
   TextField,
@@ -11,8 +12,11 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Tooltip,
 } from '@mui/material';
+
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
 import { localApiPost } from '../request';
 import Node from '../types/Node';
 
@@ -29,18 +33,29 @@ const Install: React.FC<Props> = (props: Props) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [name, setName] = React.useState(props.selectedNode?.Id ?? '');
   const [host, setHost] = React.useState(props.selectedNode?.Host ?? '');
-  const [password, setPassword] = React.useState(props.selectedNode?.WalletPassword ?? '');
-  const [sshPassword, setSshPassword] = React.useState(props.selectedNode?.SshPassword ?? '');
-  const [username, setUser] = React.useState(props.selectedNode?.Username ?? '');
-  const [discordId, setDiscord] = React.useState(props.selectedNode?.DiscordId ?? '');
+  const [password, setPassword] = React.useState(
+    props.selectedNode?.WalletPassword ?? '',
+  );
+  const [sshPassword, setSshPassword] = React.useState(
+    props.selectedNode?.SshPassword ?? '',
+  );
+  const [username, setUser] = React.useState(
+    props.selectedNode?.Username ?? '',
+  );
+  const [discordId, setDiscord] = React.useState(
+    props.selectedNode?.DiscordId ?? '',
+  );
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
-  const [sshType, setSshType] = React.useState((props.selectedNode && props.selectedNode?.SshPassword != '') ? 'password' : 'key');
+  const [sshType, setSshType] = React.useState(
+    props.selectedNode && props.selectedNode?.SshPassword != ''
+      ? 'password'
+      : 'key',
+  );
 
   const installNode = () => {
-
     setIsLoading(true);
 
-    const sshPwd = sshType === "key" ? "" : sshPassword
+    const sshPwd = sshType === 'key' ? '' : sshPassword;
     const formData = new FormData();
     formData.append('id', name);
     formData.append('host', host);
@@ -59,8 +74,8 @@ const Install: React.FC<Props> = (props: Props) => {
       WalletPassword: password,
       SshPassword: sshPwd,
       DiscordId: discordId,
-      Status: "Installing",
-    }
+      Status: 'Installing',
+    };
     props.SetNode(newNode);
 
     localApiPost(
@@ -84,14 +99,14 @@ const Install: React.FC<Props> = (props: Props) => {
           WalletPassword: password,
           SshPassword: sshPassword,
           DiscordId: discordId,
-          Status: "Installing",
-        }
+          Status: 'Installing',
+        };
         props.SetNode(newNode);
       })
       .catch((error) => {
         console.error(error);
         setIsLoading(false);
-        props.fetchNodes()
+        props.fetchNodes();
       });
   };
 
@@ -119,9 +134,22 @@ const Install: React.FC<Props> = (props: Props) => {
         justifyContent: 'center',
       }}
     >
+      <Typography variant="h4">
+        Install and manage your node in 1-click.
+      </Typography>
+      <Typography variant="h5" sx={{ mb: '16px' }}>
+        You simply need a{' '}
+        <Link
+          underline="hover"
+          href="https://github.com/massalabs/thyra-node-manager-plugin/wiki/Get-your-VPS"
+        >
+          <b>server</b>
+        </Link>{' '}
+        and you can start.
+      </Typography>
       <TextField
         required
-        sx={{ marginTop: '8px' }}
+        sx={{ mt: '8px' }}
         label="Node Name"
         id="name"
         onChange={(e) => setName(e.target.value)}
@@ -129,37 +157,43 @@ const Install: React.FC<Props> = (props: Props) => {
       />
       <TextField
         required
-        sx={{ marginTop: '8px' }}
+        sx={{ mt: '8px' }}
         label="Host IP"
         id="host"
         onChange={(e) => setHost(e.target.value)}
         defaultValue={props.selectedNode?.Host}
       />
-      <TextField
-        required
-        sx={{ marginTop: '8px' }}
-        label="Wallet password"
-        id="password"
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-        defaultValue={props.selectedNode?.WalletPassword}
-      />
-      <TextField
-        sx={{ marginTop: '8px' }}
-        label="Discord token"
-        id="discordId"
-        onChange={(e) => setDiscord(e.target.value)}
-        defaultValue={props.selectedNode?.DiscordId}
-      />
-      <TextField
-        required
-        sx={{ marginTop: '8px' }}
-        label="SSH user"
-        id="username"
-        onChange={(e) => setUser(e.target.value)}
-        defaultValue={props.selectedNode?.Username}
-      />
-      <FormControl component="fieldset" sx={{ marginTop: '8px' }}>
+      <Tooltip title="A wallet is created for staking. This password is used to encrypt the wallet.">
+        <TextField
+          required
+          sx={{ mt: '8px' }}
+          label="Wallet password"
+          id="password"
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+          defaultValue={props.selectedNode?.WalletPassword}
+        />
+      </Tooltip>
+      <Tooltip title="This token is used to send you a notification on Discord when your node has an issue.">
+        <TextField
+          sx={{ mt: '8px' }}
+          label="Discord token"
+          id="discordId"
+          onChange={(e) => setDiscord(e.target.value)}
+          defaultValue={props.selectedNode?.DiscordId}
+        />
+      </Tooltip>
+      <Tooltip title="The username used to connect to your server.">
+        <TextField
+          required
+          sx={{ mt: '8px' }}
+          label="SSH user"
+          id="username"
+          onChange={(e) => setUser(e.target.value)}
+          defaultValue={props.selectedNode?.Username}
+        />
+      </Tooltip>
+      <FormControl component="fieldset" sx={{ mt: '8px' }}>
         <FormLabel component="legend">SSH Authentication</FormLabel>
         <RadioGroup
           row
@@ -168,14 +202,22 @@ const Install: React.FC<Props> = (props: Props) => {
           value={sshType}
           onChange={(e) => setSshType(e.target.value)}
         >
-          <FormControlLabel value="key" control={<Radio />} label="Ssh key file" />
-          <FormControlLabel value="password" control={<Radio />} label="Password" />
+          <FormControlLabel
+            value="key"
+            control={<Radio />}
+            label="Ssh key file"
+          />
+          <FormControlLabel
+            value="password"
+            control={<Radio />}
+            label="Password"
+          />
         </RadioGroup>
       </FormControl>
       {sshType === 'password' ? (
         <TextField
           required
-          sx={{ marginTop: '8px' }}
+          sx={{ mt: '4px' }}
           label="SSH password"
           id="password"
           type="password"
@@ -197,14 +239,14 @@ const Install: React.FC<Props> = (props: Props) => {
               backgroundColor: '#1976d2',
               borderColor: '#1976d2',
             },
-            marginTop: '16px',
           }}
           startIcon={<CloudUploadIcon />}
         >
-          {selectedFile ? selectedFile.name :
-            (props.isUpdating && props.selectedNode?.SshPassword == '') ?
-              `${props.selectedNode?.Id}-key.ssh` :
-              'Select SSH private key file'}
+          {selectedFile
+            ? selectedFile.name
+            : props.isUpdating && props.selectedNode?.SshPassword == ''
+            ? `${props.selectedNode?.Id}-key.ssh`
+            : 'Select SSH private key file'}
           <input
             type="file"
             style={{ display: 'none' }}
@@ -218,38 +260,26 @@ const Install: React.FC<Props> = (props: Props) => {
         color="primary"
         onClick={installNode}
         sx={{
-          borderRadius: 8,
-          width: { xs: '100%', sm: '100%', md: '450px', lg: '550px' },
-          height: '96px',
-          marginTop: '16px',
+          borderRadius: 5,
+          width: { xs: '100%', sm: '50%', md: '350px', lg: '450px' },
+          height: '64px',
+          mt: '20px',
         }}
       >
         {isLoading ? (
           <CircularProgress size={24} />
         ) : (
-          <Typography variant="h6">{props.isUpdating ? "Update node" : "Setup node"}</Typography>
+          <Typography variant="h6">
+            {props.isUpdating ? 'Update node' : 'Setup node'}
+          </Typography>
         )}
       </Button>
-
       <Typography variant="overline">
         By clicking the button above, you will install a node on your server.
       </Typography>
 
-      <Typography variant="h5" sx={{ mt: 4 }}>
-        Install and manage your node in 1-click,
-      </Typography>
-      <Typography variant="h5">
-        You simply need a VPS{' '}
-        <Link
-          underline="hover"
-          href="https://github.com/massalabs/thyra-node-manager-plugin/wiki/Get-your-VPS"
-        >
-          <b>click here</b>
-        </Link>{' '}
-        and you can start
-      </Typography>
       <Typography variant="h4" sx={{ mt: 4 }}>
-        Don't wait, become an actor of the decentralisation <b>now! </b>
+        Don't wait, become an actor of the decentralisation <b>now</b> !
       </Typography>
     </Container>
   );
