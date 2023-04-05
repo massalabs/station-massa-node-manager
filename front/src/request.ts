@@ -52,7 +52,7 @@ export const localApiGet = async (
   path: string,
   options?: AxiosRequestConfig,
   // Change to personal port
-) => apiGet(`${localPrefixUrl}${path}`,options);
+) => apiGet(`${localPrefixUrl}${path}`, options);
 
 export const apiGet = async (url: string, options?: AxiosRequestConfig) => {
   return axios

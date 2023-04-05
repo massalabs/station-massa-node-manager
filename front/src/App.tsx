@@ -28,7 +28,6 @@ export default function App() {
     })(),
   );
 
-
   const [nodeMonitor, setNodeMonitor] = React.useState<NodeMonitor | undefined>(
     undefined,
   );
@@ -61,7 +60,7 @@ export default function App() {
             },
             status: 'Down',
             wallet_infos: {
-              Address: "",
+              Address: '',
               Thread: 0,
               Candidate_rolls: 0,
               Final_rolls: 0,
@@ -69,7 +68,7 @@ export default function App() {
               Final_balance: '0',
               Candidate_balance: '0',
             },
-            node_infos: {} as NodeStatus
+            node_infos: {} as NodeStatus,
           });
           console.error(error);
         });
@@ -103,8 +102,8 @@ export default function App() {
     }, 2000);
 
     return () => {
-      clearInterval(fetchNodeInt)
-      clearInterval(monitorInt)
+      clearInterval(fetchNodeInt);
+      clearInterval(monitorInt);
     };
   }, [selectedNode, nodeMonitor]);
 
@@ -138,7 +137,7 @@ export default function App() {
             transform: 'translate(-50%, -50%)',
           }}
         />
-      ) : (!isUpdating && selectedNode) ? (
+      ) : !isUpdating && selectedNode ? (
         <Manager
           selectedNode={selectedNode}
           nodeMonitor={nodeMonitor}
