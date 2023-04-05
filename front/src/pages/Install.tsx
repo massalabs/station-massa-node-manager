@@ -150,7 +150,7 @@ const Install: React.FC<Props> = (props: Props) => {
       <TextField
         required
         sx={{ mt: '8px' }}
-        label="Node Name"
+        label="Node nickname"
         id="name"
         onChange={(e) => setName(e.target.value)}
         defaultValue={props.selectedNode?.Id}
@@ -158,7 +158,7 @@ const Install: React.FC<Props> = (props: Props) => {
       <TextField
         required
         sx={{ mt: '8px' }}
-        label="Host IP"
+        label="Server IP"
         id="host"
         onChange={(e) => setHost(e.target.value)}
         defaultValue={props.selectedNode?.Host}
@@ -183,16 +183,14 @@ const Install: React.FC<Props> = (props: Props) => {
           defaultValue={props.selectedNode?.DiscordId}
         />
       </Tooltip>
-      <Tooltip title="The username used to connect to your server.">
-        <TextField
-          required
-          sx={{ mt: '8px' }}
-          label="SSH user"
-          id="username"
-          onChange={(e) => setUser(e.target.value)}
-          defaultValue={props.selectedNode?.Username}
-        />
-      </Tooltip>
+      <TextField
+        required
+        sx={{ mt: '8px' }}
+        label="SSH user"
+        id="username"
+        onChange={(e) => setUser(e.target.value)}
+        defaultValue={props.selectedNode?.Username}
+      />
       <FormControl component="fieldset" sx={{ mt: '8px' }}>
         <FormLabel component="legend">SSH Authentication</FormLabel>
         <RadioGroup
