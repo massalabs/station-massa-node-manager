@@ -163,7 +163,7 @@ const Install: React.FC<Props> = (props: Props) => {
         onChange={(e) => setHost(e.target.value)}
         defaultValue={props.selectedNode?.Host}
       />
-      <Tooltip title="A wallet is created for staking. This password is used to encrypt the wallet.">
+      <Tooltip title="A wallet will be created for staking purposes. Define password of your choice.">
         <TextField
           required
           sx={{ mt: '8px' }}
@@ -174,7 +174,7 @@ const Install: React.FC<Props> = (props: Props) => {
           defaultValue={props.selectedNode?.WalletPassword}
         />
       </Tooltip>
-      <Tooltip title="This token is used to log into a Discord account to perfom some actions such as asking coins to the faucet.">
+      <Tooltip title="This token is used to log into your Discord account. Add it if you want to participate to Massa Testnet reward program.">
         <TextField
           sx={{ mt: '8px' }}
           label="Discord token"
