@@ -37,8 +37,8 @@ Start the frontend development server:
 
 You can also do integration test by installing manually the plugin:
 
-    mkdir -p ~/.config/thyra/my_plugins/node_manager
-    mv node_manager ~/.config/thyra/my_plugins/node_manager
+    mkdir -p ~/.config/thyra/plugins/node_manager
+    mv node_manager ~/.config/thyra/plugins/node_manager
 
 Then you can run Thyra and navigate into the plugin.
 
