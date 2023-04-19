@@ -51,7 +51,7 @@ jobs:
             logo.svg
       - name: Zip binary
         if: ${{ inputs.tag_name != '' }}
-        run: zip $TARGET_NAME.zip $TARGET_NAME${{ matrix.ext }}
+        run: zip $TARGET_NAME.zip $TARGET_NAME${{ matrix.ext }} manifest.json logo.svg
       - name: Print archive hash
         if: ${{ inputs.tag_name != '' }}
         run: md5sum $TARGET_NAME.zip
