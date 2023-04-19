@@ -31,8 +31,6 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       TARGET_NAME: thyra-plugin-node-manager_${{ matrix.target }}-${{ matrix.arch }}
-      ZIP_NAME: thyra-plugin-node-manager_${{ matrix.target }}-${{ matrix.arch }}.zip
-
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
@@ -42,20 +40,21 @@ jobs:
         run: ./build-frontend.sh
       - name: Build binary
         run: GOOS=${{ matrix.target }} GOARCH=${{ matrix.arch }} go build -o $TARGET_NAME${{ matrix.ext }} ./cmd/node_manager_server
-      - name: Zip binary
-        if: ${{ inputs.tag_name != '' }}
-        run: zip $TARGET_NAME.zip $TARGET_NAME${{ matrix.ext }}
-      - name: Add manifest & logo
-        run: zip -ur $ZIP_NAME manifest.json logo.svg
-      - name: Print archive hash
-        if: ${{ inputs.tag_name != '' }}
-        run: md5sum $TARGET_NAME.zip
       - name: Upload artifacts
         if: ${{ inputs.tag_name == '' && github.ref_name == 'main' }}
         uses: actions/upload-artifact@v3
         with:
-          name: thyra-plugin-node-manager_${{ matrix.target }}-${{ matrix.arch }}
-          path: ${{ env.ZIP_NAME }}
+          name: ${{ env.TARGET_NAME }}
+          path: |
+            ${{ env.TARGET_NAME }}${{ matrix.ext }}
+            manifest.json
+            logo.svg
+      - name: Zip binary
+        if: ${{ inputs.tag_name != '' }}
+        run: zip $TARGET_NAME.zip $TARGET_NAME${{ matrix.ext }}
+      - name: Print archive hash
+        if: ${{ inputs.tag_name != '' }}
+        run: md5sum $TARGET_NAME.zip
       - name: Create release and upload binaries
         if: ${{ inputs.tag_name != '' }}
         uses: softprops/action-gh-release@v1
