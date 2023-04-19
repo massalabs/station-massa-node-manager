@@ -41,7 +41,7 @@ jobs:
       - name: Build binary
         run: GOOS=${{ matrix.target }} GOARCH=${{ matrix.arch }} go build -o $TARGET_NAME${{ matrix.ext }} ./cmd/node_manager_server
       - name: Upload artifacts
-        if: ${{ inputs.tag_name == '' && github.ref_name == 'main' }}
+        # if: ${{ inputs.tag_name == '' && github.ref_name == 'main' }}
         uses: actions/upload-artifact@v3
         with:
           name: thyra-plugin-node-manager_${{ matrix.target }}-${{ matrix.arch }}
@@ -50,17 +50,17 @@ jobs:
             manifest.json
             logo.svg
       - name: Zip binary
-        if: ${{ inputs.tag_name != '' }}
+        # if: ${{ inputs.tag_name != '' }}
         run: zip $TARGET_NAME.zip $TARGET_NAME${{ matrix.ext }} manifest.json logo.svg
       - name: Print archive hash
-        if: ${{ inputs.tag_name != '' }}
+        # if: ${{ inputs.tag_name != '' }}
         run: md5sum $TARGET_NAME.zip
-      - name: Create release and upload binaries
-        if: ${{ inputs.tag_name != '' }}
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ inputs.tag_name }}
-          draft: ${{ inputs.draft }}
-          prerelease: ${{ inputs.prerelease }}
-          generate_release_notes: ${{ inputs.generate_release_notes }}
-          files: "*.zip"
+      # - name: Create release and upload binaries
+      #   if: ${{ inputs.tag_name != '' }}
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     tag_name: ${{ inputs.tag_name }}
+      #     draft: ${{ inputs.draft }}
+      #     prerelease: ${{ inputs.prerelease }}
+      #     generate_release_notes: ${{ inputs.generate_release_notes }}
+      #     files: "*.zip"

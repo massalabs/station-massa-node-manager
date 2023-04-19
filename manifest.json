@@ -1,5 +1,9 @@
 {
-    "name":"Node Manager plugin",
-    "bin": "node-manager-plugin",
-    "version": "0.0.1"
+    "author" : "Massa Labs",
+    "name" : "Node Manager",
+    "description" : "Node Manager plugin for Massa",
+    "logo" : "logo.svg",
+    "home" : "http://my.massa/thyra/plugin/massalabs/node-manager/",
+    "version" : "0.0.10",
+    "apispec":""
 }
