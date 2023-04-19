@@ -3,7 +3,7 @@
     "name" : "Node Manager",
     "description" : "Node Manager plugin for Massa",
     "logo" : "logo.svg",
-    "home" : "http://my.massa/thyra/plugin/massalabs/node-manager/",
+    "home" : "",
     "version" : "0.0.10",
     "apispec":""
 }
