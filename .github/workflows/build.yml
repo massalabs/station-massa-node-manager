@@ -39,7 +39,11 @@ jobs:
       - name: Build front end
         run: ./build-frontend.sh
       - name: Build binary
-        run: GOOS=${{ matrix.target }} GOARCH=${{ matrix.arch }} go build -o $TARGET_NAME${{ matrix.ext }} ./cmd/node_manager_server
+        run: |
+          export GOOS=${{ matrix.target }}
+          export GOARCH=${{ matrix.arch }}
+          export CGO_ENABLED=1
+          go build -o $TARGET_NAME${{ matrix.ext }} ./cmd/node_manager_server
       - name: Prepare logo for packaging
         run: cp front/public/logo.svg .
       - name: Upload artifacts
@@ -51,6 +55,8 @@ jobs:
             ${{ env.TARGET_NAME }}${{ matrix.ext }}
             manifest.json
             logo.svg
+          if-no-files-found: error
+          retention-days: 7
       - name: Zip binary
         if: ${{ inputs.tag_name != '' }}
         run: zip $TARGET_NAME.zip $TARGET_NAME${{ matrix.ext }} manifest.json logo.svg
