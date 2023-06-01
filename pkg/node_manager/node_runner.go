@@ -44,7 +44,6 @@ func (node *Node) StopNode() (string, error) {
 
 func (node *Node) GetLogs() (string, error) {
 	output, err := node.runCommandSSH("sudo docker compose logs -n 100 massa-core")
-
 	if err != nil {
 		return "", err
 	}
@@ -64,7 +63,6 @@ func (node *Node) BackupWallet() (string, error) {
 
 	output, err := node.runCommandSSH("zip -j " + backupFile +
 		" massa_mount/node_privkey.key massa_mount/staking_wallet.dat massa_mount/wallet.dat")
-
 	if err != nil {
 		return "", fmt.Errorf("creating backup zip archive: %s", err)
 	}

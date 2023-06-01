@@ -34,7 +34,7 @@ func (node *Node) uploadDefaultDockerComposeFile() error {
 	tmpDir := os.TempDir()
 
 	tmpFile := path.Join(tmpDir, composeFileName)
-	err = os.WriteFile(tmpFile, composeFile, 0644)
+	err = os.WriteFile(tmpFile, composeFile, 0o644)
 	if err != nil {
 		fmt.Printf("failed to write %s: %s", composeFileName, err)
 		return err
@@ -52,9 +52,8 @@ func (node *Node) uploadDefaultDockerComposeFile() error {
 }
 
 func Install(node Node, isDockerComposePresent bool) {
-
 	if node.SshPassword == "" {
-		if os.Chmod(GetSSHKeyPath(node.Id), 0600) != nil {
+		if os.Chmod(GetSSHKeyPath(node.Id), 0o600) != nil {
 			fmt.Println("unable to set sshKey file permissions")
 			node.SetStatus(Unknown)
 			return
@@ -131,7 +130,7 @@ echo %s
 func CreateDirIfNotExists(dirname string) error {
 	_, err := os.Stat(dirname)
 	if os.IsNotExist(err) {
-		err = os.Mkdir(dirname, 0755)
+		err = os.Mkdir(dirname, 0o755)
 		if err != nil {
 			return err
 		}
