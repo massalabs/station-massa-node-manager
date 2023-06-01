@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-const ThyraRegisterEndpoint = "http://my.massa/plugin-manager/register"
+const ThyraRegisterEndpoint = "http://station.massa/plugin-manager/register"
 
 type registerBody struct {
 	ID          string
