@@ -26,7 +26,6 @@ type WalletInfo struct {
 }
 
 func (node *Node) FetchStatus() (NodeStatus, State) {
-
 	var nodeInfos State
 	var status NodeStatus
 
@@ -102,7 +101,8 @@ func (node *Node) WalletInfo() (*WalletInfo, error) {
 			address_info["final_rolls"].(float64),
 			address_info["final_rolls"].(float64),
 			address_info["final_balance"].(string),
-			address_info["candidate_balance"].(string)},
+			address_info["candidate_balance"].(string),
+		},
 		nil
 }
 
@@ -145,7 +145,7 @@ func GetNodes() ([]Node, error) {
 
 	_, err := os.Stat(filePath)
 	if os.IsNotExist(err) {
-		err := os.WriteFile(filePath, []byte(`[]`), 0644)
+		err := os.WriteFile(filePath, []byte(`[]`), 0o644)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -241,5 +241,5 @@ func WriteNodeList(nodes []Node) error {
 		return err
 	}
 
-	return os.WriteFile(GetNodesListFile(), content, 0644)
+	return os.WriteFile(GetNodesListFile(), content, 0o644)
 }

@@ -60,7 +60,9 @@ func (node *Node) GetDockerComposePath() string {
 }
 
 func (input *InstallNodeInput) CreateNode() Node {
-	return Node{Id: input.Id, Username: input.Username, Host: input.Host,
+	return Node{
+		Id: input.Id, Username: input.Username, Host: input.Host,
 		DiscordId: input.DiscordId, WalletPassword: input.WalletPassword,
-		Status: Unknown, SshPassword: input.SshPassword}
+		Status: Unknown, SshPassword: input.SshPassword,
+	}
 }

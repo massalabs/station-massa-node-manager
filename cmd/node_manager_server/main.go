@@ -15,7 +15,7 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/massalabs/thyra-node-manager-plugin/pkg/node_manager"
-	"github.com/massalabs/thyra-node-manager-plugin/pkg/plugin"
+	"github.com/massalabs/thyra-plugin-hello-world/pkg/plugin"
 	cors "github.com/rs/cors/wrapper/gin"
 )
 
@@ -46,7 +46,6 @@ func embedStatics(router *gin.Engine) {
 }
 
 func installMassaNode(c *gin.Context) {
-
 	var input node_manager.InstallNodeInput
 	if err := c.ShouldBind(&input); err != nil {
 		fmt.Println(fmt.Errorf("binding: %w", err))
@@ -72,7 +71,7 @@ func installMassaNode(c *gin.Context) {
 		_, err = os.Stat(node_manager.GetSSHKeyPath(nodeToUpdate))
 		if err == nil { // old key file exists
 
-			if needSshKey { //rename ssh key file
+			if needSshKey { // rename ssh key file
 				err = node_manager.UpdateSshKeyName(nodeToUpdate, input.Id)
 				if err != nil {
 					c.JSON(http.StatusInternalServerError, err.Error())
@@ -272,13 +271,12 @@ func getNodeStatus(c *gin.Context) {
 }
 
 func main() {
-
 	//nolint:gomnd
 	if len(os.Args) < 2 {
 		panic("this program must be run with correlation id argument!")
 	}
 
-	pluginID := os.Args[1]
+	// pluginID := os.Args[1]
 
 	standaloneMode := false
 	address := ":"
@@ -304,10 +302,10 @@ func main() {
 
 	log.Println("Listening on " + ln.Addr().String())
 	if !standaloneMode {
-		err := plugin.Register(pluginID, "Node Manager", "Massalabs", "Install and manage Massa nodes", ln.Addr())
-		if err != nil {
-			log.Panicln(err)
-		}
+		plugin.RegisterPlugin(ln, plugin.Info{
+			Name: "Node Manager", Author: "Massalabs",
+			Description: "Install and manage Massa nodes", APISpec: "", Logo: "front/public/logo.svg",
+		})
 	}
 
 	nodes, err := node_manager.GetNodes()
