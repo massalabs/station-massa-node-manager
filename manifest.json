@@ -1,9 +1,9 @@
 {
-    "author" : "Massa Labs",
-    "name" : "Node Manager",
-    "description" : "Node Manager plugin for Massa",
-    "logo" : "logo.svg",
-    "home" : "",
-    "version" : "0.0.10",
-    "apispec":""
+  "author": "Massa Labs",
+  "name": "Massa Node-manager",
+  "description": "Join Massa network now. Automatically install, configure and manage Massa nodes",
+  "logo": "node.svg",
+  "home": "",
+  "version": "0.0.12",
+  "apispec": ""
 }
