@@ -16,7 +16,8 @@
 
 bin/
 .cache/
-static/
+cmd/node_manager_server/static/*
+!cmd/node_manager_server/static/.gitkeep
 
 nodes.json
 ssh-private-keys

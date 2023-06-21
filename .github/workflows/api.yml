@@ -15,10 +15,7 @@ jobs:
         with:
           go-version: 1.19.2
       - name: Build
-        run: |
-          mkdir cmd/node_manager_server/static
-          touch cmd/node_manager_server/static/nothing # don't waste time to build the whole react frontend
-          go build ./cmd/node_manager_server/main.go
+        run: go build ./cmd/node_manager_server/main.go
       - name: Run plugin API
         run: ./main 1 --standalone &
       - name: Test plugin API
