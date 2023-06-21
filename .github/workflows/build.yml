@@ -30,7 +30,7 @@ jobs:
             target: darwin
     runs-on: ubuntu-20.04
     env:
-      TARGET_NAME: thyra-plugin-node-manager_${{ matrix.target }}-${{ matrix.arch }}
+      TARGET_NAME: station-massa-node-manager_${{ matrix.target }}-${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
@@ -50,7 +50,7 @@ jobs:
         if: ${{ inputs.tag_name == '' && github.ref_name == 'main' }}
         uses: actions/upload-artifact@v3
         with:
-          name: thyra-plugin-node-manager_${{ matrix.target }}-${{ matrix.arch }}
+          name: station-massa-node-manager_${{ matrix.target }}-${{ matrix.arch }}
           path: |
             ${{ env.TARGET_NAME }}${{ matrix.ext }}
             manifest.json

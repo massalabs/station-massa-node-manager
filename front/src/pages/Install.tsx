@@ -141,7 +141,7 @@ const Install: React.FC<Props> = (props: Props) => {
         You simply need a{' '}
         <Link
           underline="hover"
-          href="https://github.com/massalabs/thyra-node-manager-plugin/wiki/Get-your-VPS"
+          href="https://github.com/massalabs/station-massa-node-manager/wiki/Get-your-VPS"
         >
           <b>server</b>
         </Link>{' '}
