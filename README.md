@@ -33,14 +33,6 @@ Start the frontend development server:
     cd front
     npm run start
 
-### Install the plugin
-
-You can also do integration test by installing manually the plugin:
-
-    mkdir -p ~/.config/massastation/plugins/node_manager
-    mv node_manager ~/.config/massastatio/plugins/node_manager
-
-Then you can run Massa Station and navigate into the plugin.
 
 ## Get your Discord token
 
