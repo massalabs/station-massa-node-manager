@@ -14,8 +14,8 @@ import (
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/massalabs/station-massa-hello-world/pkg/plugin"
 	"github.com/massalabs/station-massa-node-manager/pkg/node_manager"
-	"github.com/massalabs/thyra-plugin-hello-world/pkg/plugin"
 	cors "github.com/rs/cors/wrapper/gin"
 )
 
