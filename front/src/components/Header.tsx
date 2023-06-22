@@ -8,7 +8,7 @@ const Header: React.FC = () => {
   return (
     <AppBar position="static" color="transparent">
       <Toolbar style={{ paddingLeft: 0 }}>
-        <img src="logo.svg" alt="logo" height="64px" />
+        <img src="node.svg" alt="logo" height="64px" />
         <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
           Node Manager
         </Typography>

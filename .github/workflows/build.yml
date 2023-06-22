@@ -45,7 +45,7 @@ jobs:
           export CGO_ENABLED=1
           go build -o $TARGET_NAME${{ matrix.ext }} ./cmd/node_manager_server
       - name: Prepare logo for packaging
-        run: cp front/public/logo.svg .
+        run: cp front/public/node.svg .
       - name: Upload artifacts
         if: ${{ inputs.tag_name == '' && github.ref_name == 'main' }}
         uses: actions/upload-artifact@v3
@@ -54,12 +54,12 @@ jobs:
           path: |
             ${{ env.TARGET_NAME }}${{ matrix.ext }}
             manifest.json
-            logo.svg
+            node.svg
           if-no-files-found: error
           retention-days: 7
       - name: Zip binary
         if: ${{ inputs.tag_name != '' }}
-        run: zip $TARGET_NAME.zip $TARGET_NAME${{ matrix.ext }} manifest.json logo.svg
+        run: zip $TARGET_NAME.zip $TARGET_NAME${{ matrix.ext }} manifest.json node.svg
       - name: Print archive hash
         if: ${{ inputs.tag_name != '' }}
         run: md5sum $TARGET_NAME.zip
