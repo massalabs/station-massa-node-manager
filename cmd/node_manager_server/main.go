@@ -304,7 +304,7 @@ func main() {
 	if !standaloneMode {
 		plugin.RegisterPlugin(ln, plugin.Info{
 			Name: "Node Manager", Author: "Massalabs",
-			Description: "Install and manage Massa nodes", APISpec: "", Logo: "front/public/logo.svg",
+			Description: "Install and manage Massa nodes", APISpec: "", Logo: "front/public/node.svg",
 		})
 	}
 
