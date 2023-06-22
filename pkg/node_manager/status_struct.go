@@ -1,6 +1,6 @@
 package node_manager
 
-import "github.com/massalabs/thyra/pkg/node"
+import "github.com/massalabs/station/pkg/node"
 
 type ExecutionStats struct {
 	TimeWindowStart              *uint      `json:"time_window_start"`

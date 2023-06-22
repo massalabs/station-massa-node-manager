@@ -1,4 +1,4 @@
-# thyra-node-manager-plugin
+# station-massa-node-manager
 
 ## Development guide
 
@@ -33,14 +33,6 @@ Start the frontend development server:
     cd front
     npm run start
 
-### Install the plugin
-
-You can also do integration test by installing manually the plugin:
-
-    mkdir -p ~/.config/thyra/plugins/node_manager
-    mv node_manager ~/.config/thyra/plugins/node_manager
-
-Then you can run Thyra and navigate into the plugin.
 
 ## Get your Discord token
 
