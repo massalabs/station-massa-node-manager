@@ -4,6 +4,6 @@
   "description": "Join Massa network now. Automatically install, configure and manage Massa nodes",
   "logo": "node.svg",
   "home": "",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "apispec": ""
 }
